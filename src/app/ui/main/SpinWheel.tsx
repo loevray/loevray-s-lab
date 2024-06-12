@@ -1,24 +1,23 @@
-import { SectorData } from "../store/useSpinwheelStore";
+"use client";
+import useSpinwheelStore, { SectorData } from "../../store/useSpinwheelStore";
 import SpinWheelSector from "./SpinWheelSector";
 
 interface SpinWheelProps {
   diameter: number;
-  sectorData: SectorData[];
   onStopRotate: () => void;
   onStartRotate: () => void;
 }
 
 const SpinWheel = ({
   diameter,
-  sectorData,
   onStopRotate,
   onStartRotate,
 }: SpinWheelProps) => {
+  const { sectorData } = useSpinwheelStore();
   const totalSector = sectorData.reduce((acc, cur) => acc + cur.ratio, 0);
 
   return (
     <div>
-      돌림판 자리
       <svg
         viewBox={`0 0 ${diameter} ${diameter}`}
         width={diameter}

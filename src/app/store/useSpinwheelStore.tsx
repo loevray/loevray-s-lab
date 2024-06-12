@@ -20,7 +20,12 @@ const initializeSecotorData = (sectorData: SectorData[]) => {
   return sectorData;
 };
 
-const useSpinwheelStore = create<{ sectorData: SectorData[] }>((set) => ({
+type UpdateSectorTextType = (id: number, text: string) => void;
+
+const useSpinwheelStore = create<{
+  sectorData: SectorData[];
+  updateSectorText: UpdateSectorTextType;
+}>((set) => ({
   sectorData: initializeSecotorData([
     {
       id: 0,
@@ -35,6 +40,12 @@ const useSpinwheelStore = create<{ sectorData: SectorData[] }>((set) => ({
       style: { backgroundColor: "pink" },
     },
   ]),
+  updateSectorText: (id, text) =>
+    set((state) => ({
+      sectorData: state.sectorData.map((sector) =>
+        sector.id === id ? { ...structuredClone(sector), text } : sector
+      ),
+    })),
 }));
 
 export default useSpinwheelStore;
