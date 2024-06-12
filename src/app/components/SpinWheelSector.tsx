@@ -10,7 +10,7 @@ const SpinWheelSector = ({
   text,
   style,
   totalSector,
-  accRatio,
+  accRatio = 0,
   radius,
 }: SpinWheelSectorProps) => {
   const sectorRatio = ratio / totalSector;

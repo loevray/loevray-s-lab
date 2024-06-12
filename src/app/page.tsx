@@ -1,4 +1,5 @@
-import SpinWheel from "./components/SpinWheel";
+import SpinWheel, { SectorData } from "./components/SpinWheel";
+import SpinWheelTextList from "./components/SpinWheelTextList";
 
 const Home = () => {
   //diameter는 4의 배수여야 합니다
@@ -27,15 +28,15 @@ const Home = () => {
     return acc + cur.ratio;
   }, 0);
   return (
-    <>
-      <div></div>
+    <div>
       <SpinWheel
         diameter={560}
         sectorData={sectorData}
         onStartRotate={() => console.log("돌림판 시작")}
         onStopRotate={() => console.log("돌림판 멈춤")}
       />
-    </>
+      <SpinWheelTextList sectorData={sectorData} />
+    </div>
   );
 };
 export default Home;

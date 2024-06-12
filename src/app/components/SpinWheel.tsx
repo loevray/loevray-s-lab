@@ -16,7 +16,7 @@ export interface SectorData {
   ratio: number;
   text: string;
   style: SpinWheelStypeProps;
-  accRatio: number;
+  accRatio?: number;
 }
 
 const SpinWheel = ({
