@@ -7,7 +7,7 @@ const SpinWheelTextList = () => {
   const { sectorData, updateSectorText } = useSpinwheelStore();
 
   return (
-    <div>
+    <>
       {sectorData.map(({ id, text }) => (
         <EditableDiv
           text={text}
@@ -15,7 +15,7 @@ const SpinWheelTextList = () => {
           onInput={(text: string) => updateSectorText(id, text)}
         />
       ))}
-    </div>
+    </>
   );
 };
 
