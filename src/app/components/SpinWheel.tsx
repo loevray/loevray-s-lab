@@ -1,3 +1,4 @@
+import { SectorData } from "../store/useSpinwheelStore";
 import SpinWheelSector from "./SpinWheelSector";
 
 interface SpinWheelProps {
@@ -5,18 +6,6 @@ interface SpinWheelProps {
   sectorData: SectorData[];
   onStopRotate: () => void;
   onStartRotate: () => void;
-}
-
-interface SpinWheelStypeProps {
-  backgroundColor: string;
-}
-
-export interface SectorData {
-  id: number;
-  ratio: number;
-  text: string;
-  style: SpinWheelStypeProps;
-  accRatio?: number;
 }
 
 const SpinWheel = ({

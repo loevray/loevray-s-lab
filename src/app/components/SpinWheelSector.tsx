@@ -1,4 +1,4 @@
-import { SectorData } from "./SpinWheel";
+import { SectorData } from "../store/useSpinwheelStore";
 
 interface SpinWheelSectorProps extends SectorData {
   radius: number;
