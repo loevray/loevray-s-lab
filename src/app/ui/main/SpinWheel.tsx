@@ -1,15 +1,18 @@
 "use client";
+import { MutableRefObject, RefObject } from "react";
 import useSpinwheelStore, { SectorData } from "../../store/useSpinwheelStore";
 import SpinWheelSector from "./SpinWheelSector";
 
 interface SpinWheelProps {
   diameter: number;
+  spinWheelRef: RefObject<SVGSVGElement>;
   onStopRotate: () => void;
   onStartRotate: () => void;
 }
 
 const SpinWheel = ({
   diameter,
+  spinWheelRef,
   onStopRotate,
   onStartRotate,
 }: SpinWheelProps) => {
@@ -29,6 +32,7 @@ const SpinWheel = ({
         style={{ clipPath: "polygon(50% 100%, 25% 0, 75% 0)" }}
       ></span>
       <svg
+        ref={spinWheelRef}
         viewBox={`0 0 ${diameter} ${diameter}`}
         width={diameter}
         height={diameter}

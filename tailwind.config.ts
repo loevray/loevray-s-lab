@@ -13,6 +13,14 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      keyframes:{
+        spinwheel:{
+          'to':{transform:'rotate(270deg)'}
+        }
+      },
+      animation:{
+        spinwheel: 'spinwheel linear 0.4s infinite'
+      }
     },
   },
   plugins: [],
