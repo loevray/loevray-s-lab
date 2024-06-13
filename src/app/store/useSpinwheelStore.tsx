@@ -28,6 +28,7 @@ type AddSectorType = (prevId: string) => void;
 type DeleteSectorType = (deleteId: string) => void;
 const useSpinwheelStore = create<{
   sectorData: SectorData[];
+  totalRatio: number;
   updateSectorText: UpdateSectorTextType;
   addSector: AddSectorType;
   deleteSector: DeleteSectorType;
@@ -46,6 +47,7 @@ const useSpinwheelStore = create<{
       style: { backgroundColor: "pink" },
     },
   ]),
+  totalRatio: 2,
   updateSectorText: (id, text) =>
     set((state) => ({
       sectorData: state.sectorData.map((sector) =>
@@ -63,13 +65,19 @@ const useSpinwheelStore = create<{
         style: { backgroundColor: "green" }, //이부분은 컬러팔레트에서 가져오게
       };
       newSectorData.splice(prevIndex + 1, 0, newSector);
-      return { sectorData: calculateAccRatio(newSectorData) };
+      return {
+        sectorData: calculateAccRatio(newSectorData),
+        totalRatio: state.totalRatio + 1,
+      };
     }),
   deleteSector: (deleteId) =>
     set((state) => ({
       sectorData: calculateAccRatio(
         state.sectorData.filter(({ id }) => id !== deleteId)
       ),
+      totalRatio:
+        state.totalRatio -
+        (state.sectorData.find(({ id }) => id === deleteId)?.ratio ?? 0),
     })),
 }));
 

@@ -33,9 +33,7 @@ const Home = () => {
         </div>
       </section>
       <section className="w-1/2">
-        <article className="flex flex-col gap-5">
-          <SpinWheelTextList />
-        </article>
+        <SpinWheelTextList />
       </section>
     </main>
   );
