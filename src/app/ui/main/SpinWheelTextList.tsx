@@ -29,7 +29,7 @@ const SpinWheelTextList = () => {
   };
 
   return (
-    <>
+    <div>
       {sectorData.map(({ id, text }) => (
         <EditableDiv
           text={text}
@@ -38,7 +38,7 @@ const SpinWheelTextList = () => {
           onKeyDown={(e: KeyEventWithChangeEventType) => onKeyDown(e, id)}
         />
       ))}
-    </>
+    </div>
   );
 };
 
