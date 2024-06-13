@@ -8,6 +8,13 @@ const useSpinWheel = () => {
   let currentDeg = DEFAULT_VALUES.DEG;
   let isStopping = false; // 멈춤 중인지 여부
 
+  const init = () => {
+    rotationDeg = 20;
+    const transformAttr = spinWheelRef.current?.getAttribute("transform");
+    const currentSvgDeg =
+      transformAttr?.match(/rotate\((.*?)\)/)?.[1] ?? DEFAULT_VALUES.DEG;
+    currentDeg = +currentSvgDeg;
+  };
   function animateWheel() {
     if (!isStopping) {
       currentDeg += rotationDeg;
@@ -23,11 +30,12 @@ const useSpinWheel = () => {
     //멈출때
     if (rotationDeg > 0.2) {
       //16.6ms당 회전각이 윗 값보다 클때
-      rotationDeg *= 0.996; //회전속도 감속
+      const randomDecelerationCoefficient = 0.99 + Math.random() * 0.009;
+      console.log(randomDecelerationCoefficient);
+      rotationDeg *= randomDecelerationCoefficient;
       currentDeg += rotationDeg;
       currentDeg = currentDeg > 270 ? -90 : currentDeg;
 
-      console.log(currentDeg);
       if (spinWheelRef.current)
         spinWheelRef.current.style.transform = `rotate(${currentDeg}deg)`;
 
@@ -35,6 +43,7 @@ const useSpinWheel = () => {
     } else {
       if (spinWheelRef.current)
         spinWheelRef.current.style.transform = `rotate(${currentDeg}deg)`;
+      init();
     }
   }
   const start = () => {
