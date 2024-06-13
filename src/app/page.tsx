@@ -11,7 +11,7 @@ const Home = () => {
   const { start, stop, spinWheelRef } = useSpinWheel();
   return (
     <main className="w-screen h-screen flex items-center">
-      <section className="pl-[50px] w-1/2 flex items-center flex-col gap-10">
+      <section className="pl-[50px] w-1/2 flex items-center flex-col gap-20">
         <SpinWheel
           diameter={DEFAULT_VALUES.CIRCLE_DIAMETER} //지름은 무조건 4의 배수여야 함
           onStartRotate={() => console.log("돌림판 시작")}

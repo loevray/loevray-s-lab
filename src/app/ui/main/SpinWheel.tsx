@@ -2,6 +2,7 @@
 import { MutableRefObject, RefObject } from "react";
 import useSpinwheelStore, { SectorData } from "../../store/useSpinwheelStore";
 import SpinWheelSector from "./SpinWheelSector";
+import { DEFAULT_VALUES } from "@/constants/SpinWheel";
 
 interface SpinWheelProps {
   diameter: number;
@@ -36,7 +37,7 @@ const SpinWheel = ({
         viewBox={`0 0 ${diameter} ${diameter}`}
         width={diameter}
         height={diameter}
-        transform="rotate(-90)"
+        transform={`rotate(${DEFAULT_VALUES.DEG})`}
       >
         {sectorData.map((data) => (
           <SpinWheelSector

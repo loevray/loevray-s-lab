@@ -19,7 +19,7 @@ const config: Config = {
         }
       },
       animation:{
-        spinwheel: 'spinwheel linear 0.4s infinite'
+        spinwheel: 'spinwheel linear 0.3s infinite'
       }
     },
   },

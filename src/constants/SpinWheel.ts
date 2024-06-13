@@ -1,3 +1,4 @@
 export const DEFAULT_VALUES = {
   CIRCLE_DIAMETER:560,
+  DEG:-90,
 }
