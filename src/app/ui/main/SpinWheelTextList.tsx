@@ -1,13 +1,22 @@
 "use client";
 import useSpinwheelStore from "../../store/useSpinwheelStore";
+import Button from "./Button";
 import EditableDiv from "./EditableDiv";
 
 export type KeyEventWithChangeEventType = React.KeyboardEvent &
   React.ChangeEvent<HTMLDivElement>;
 
 const SpinWheelTextList = () => {
-  const { sectorData, totalRatio, updateSectorText, addSector, deleteSector } =
-    useSpinwheelStore();
+  const {
+    sectorData,
+    totalRatio,
+    updateSectorText,
+    addSector,
+    deleteSector,
+    updateSectorRatio,
+  } = useSpinwheelStore();
+
+  console.log(sectorData, totalRatio);
 
   const onKeyDown = (e: KeyEventWithChangeEventType, id: string) => {
     if (e.key === "Enter") {
@@ -30,7 +39,7 @@ const SpinWheelTextList = () => {
   };
 
   return (
-    <article className="flex flex-col gap-5 max-h-[50vh] overflow-y-scroll w-max p-5">
+    <article className="flex flex-col gap-5 max-h-[50vh] overflow-y-auto w-max p-5">
       {sectorData.map(({ id, text, ratio }) => (
         <div key={id} className="flex gap-3">
           <EditableDiv
@@ -39,6 +48,8 @@ const SpinWheelTextList = () => {
             onKeyDown={(e: KeyEventWithChangeEventType) => onKeyDown(e, id)}
           />
           <div>{`x${ratio}`}</div>
+          <Button onClick={() => updateSectorRatio(id, ratio + 1)}>+</Button>
+          <Button onClick={() => updateSectorRatio(id, ratio - 1)}>-</Button>
           <div>{`${((ratio / totalRatio) * 100).toFixed(2)}%`}</div>
         </div>
       ))}

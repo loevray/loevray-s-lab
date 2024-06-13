@@ -1,15 +1,16 @@
 interface ButtonProps {
-  text: string;
+  text?: string;
   onClick: () => void;
+  children?: React.ReactNode;
 }
 
-const Button = ({ text, onClick }: ButtonProps) => {
+const Button = ({ text, onClick, children }: ButtonProps) => {
   return (
     <button
       className="w-20 h-10 bg-purple-400 border-solid rounded-md border-purple-600 border-2"
       onClick={onClick}
     >
-      {text}
+      {text ? text : children}
     </button>
   );
 };

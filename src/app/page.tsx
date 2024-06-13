@@ -28,8 +28,8 @@ const Home = () => {
           arrowRef={arrowRef}
         />
         <div className="w-[200px] flex justify-between pt-20">
-          <Button text="회전" onClick={start} />
-          <Button text="멈춤" onClick={stop} />
+          <Button onClick={start}>회전</Button>
+          <Button onClick={stop}>멈춤</Button>
         </div>
       </section>
       <section className="w-1/2">

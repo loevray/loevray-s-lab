@@ -26,12 +26,16 @@ type UpdateSectorTextType = (id: string, text: string) => void;
 type AddSectorType = (prevId: string) => void;
 
 type DeleteSectorType = (deleteId: string) => void;
+
+type UpdateSectorRatioType = (id: string, newRatio: number) => void;
+
 const useSpinwheelStore = create<{
   sectorData: SectorData[];
   totalRatio: number;
   updateSectorText: UpdateSectorTextType;
   addSector: AddSectorType;
   deleteSector: DeleteSectorType;
+  updateSectorRatio: UpdateSectorRatioType;
 }>((set) => ({
   sectorData: calculateAccRatio([
     {
@@ -79,6 +83,25 @@ const useSpinwheelStore = create<{
         state.totalRatio -
         (state.sectorData.find(({ id }) => id === deleteId)?.ratio ?? 0),
     })),
+  updateSectorRatio: (id, newRatio) => {
+    if (newRatio < 1) return;
+
+    set((state) => {
+      const prevRatio =
+        state.sectorData.find((sector) => sector.id === id)?.ratio ?? 0;
+
+      return {
+        sectorData: calculateAccRatio(
+          state.sectorData.map((sector) =>
+            sector.id === id
+              ? { ...structuredClone(sector), ratio: newRatio }
+              : sector
+          )
+        ),
+        totalRatio: state.totalRatio + (newRatio - prevRatio),
+      };
+    });
+  },
 }));
 
 export default useSpinwheelStore;
