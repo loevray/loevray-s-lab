@@ -7,7 +7,7 @@ import SpinWheelTextList from "./ui/main/SpinWheelTextList";
 const Home = () => {
   return (
     <main className="w-screen h-screen flex items-center">
-      <section className="pl-[50px]">
+      <section className="pl-[50px] w-1/2">
         <article>
           <SpinWheel
             diameter={DEFAULT_VALUES.CIRCLE_DIAMETER} //지름은 무조건 4의 배수여야 함
@@ -16,7 +16,7 @@ const Home = () => {
           />
         </article>
       </section>
-      <section>
+      <section className="w-1/2">
         <article className="flex flex-col gap-5">
           <SpinWheelTextList />
         </article>

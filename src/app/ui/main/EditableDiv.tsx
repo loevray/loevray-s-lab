@@ -1,11 +1,13 @@
 import { useEffect, useRef } from "react";
+import { KeyEventWithChangeEventType } from "./SpinWheelTextList";
 
 interface EdtiableDiv {
   text: string;
   onInput: (text: string) => void;
+  onKeyDown: (e: KeyEventWithChangeEventType) => void;
 }
 
-const EditableDiv = ({ text, onInput }: EdtiableDiv) => {
+const EditableDiv = ({ text, onInput, onKeyDown }: EdtiableDiv) => {
   const divRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -20,6 +22,9 @@ const EditableDiv = ({ text, onInput }: EdtiableDiv) => {
       onInput={(e: React.ChangeEvent<HTMLDivElement>) => {
         onInput(e.target.textContent || "");
         divRef.current && (divRef.current.textContent = e.target.textContent);
+      }}
+      onKeyDown={(e: KeyEventWithChangeEventType) => {
+        onKeyDown(e);
       }}
       contentEditable
       ref={divRef}
