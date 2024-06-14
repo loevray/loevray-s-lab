@@ -47,7 +47,7 @@ const useSpinWheel = ({ onStart, onStop }: UseSpinWheelProps) => {
     }
 
     //멈출때
-    if (rotationDeg > 0.2) {
+    if (rotationDeg > 0.02) {
       //16.6ms당 회전각이 윗 값보다 클때
       const randomDecelerationCoefficient = 0.99 + Math.random() * 0.009;
       rotationDeg *= randomDecelerationCoefficient;
