@@ -16,21 +16,23 @@ const useSpinWheel = ({ onStart, onStop }: UseSpinWheelProps) => {
   let currentDeg = DEFAULT_VALUES.DEG;
 
   const init = () => {
-    rotationDeg = 20;
     const transformAttr = spinWheelRef.current?.getAttribute("transform");
     const currentSvgDeg =
       transformAttr?.match(/rotate\((.*?)\)/)?.[1] ?? DEFAULT_VALUES.DEG;
+
+    rotationDeg = 20;
     currentDeg = +currentSvgDeg;
   };
 
   const getWinText = () => {
     if (!arrowRef.current || !winTextRef.current) return;
     const { x, y } = arrowRef.current.getBoundingClientRect();
-    const yAxisCoefficient = 10;
+    const yAxisCoefficient = 1;
     const winText = document
       .elementsFromPoint(x, y + yAxisCoefficient)
       .find((node) => node.nodeName === "circle")
       ?.nextElementSibling?.textContent;
+
     winTextRef.current.textContent = winText || "빈 값";
   };
 

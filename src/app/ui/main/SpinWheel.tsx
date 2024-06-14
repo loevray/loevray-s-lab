@@ -25,6 +25,9 @@ const SpinWheel = ({ diameter, spinWheelRef, arrowRef }: SpinWheelProps) => {
       <span
         className="bg-blue-500 w-10 h-10 absolute left-1/2 translate-x-[-50%] z-10"
         style={{ clipPath: "polygon(50% 100%, 25% 0, 75% 0)" }}
+      />
+      <span
+        className="display:none size-[1px] absolute left-1/2 translate-x-[-50%]"
         ref={arrowRef}
       />
       <svg
