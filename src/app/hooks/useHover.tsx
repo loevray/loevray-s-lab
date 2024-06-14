@@ -1,12 +1,20 @@
-import { useEffect, useRef, useState } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
 
-const useHover = () => {
+interface UseHoverProps {
+  hoverRef: RefObject<HTMLElement>;
+}
+const useHover = ({ hoverRef }: UseHoverProps) => {
   const [isHover, setIsHover] = useState(false);
-  const hoverRef = useRef<HTMLElement>(null);
 
-  const onMouseEnter = (e: MouseEvent) => setIsHover(true);
+  const onMouseEnter = (e: MouseEvent) => {
+    console.log("mouse enter");
+    setIsHover(true);
+  };
 
-  const onMouseLeave = (e: MouseEvent) => setIsHover(false);
+  const onMouseLeave = (e: MouseEvent) => {
+    console.log("mouse leave");
+    setIsHover(false);
+  };
 
   useEffect(() => {
     if (!hoverRef.current) return;
@@ -20,7 +28,7 @@ const useHover = () => {
       hoverRef.current.removeEventListener("mouseleave", onMouseLeave);
     };
   }, []);
-  return { isHover, hoverRef };
+  return { isHover };
 };
 
 export default useHover;
