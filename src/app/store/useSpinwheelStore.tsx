@@ -43,13 +43,13 @@ const useSpinwheelStore = create<{
       id: "default_id_1",
       text: "돌림판",
       ratio: 1,
-      style: { backgroundColor: "tomato" },
+      style: { backgroundColor: DEFAULT_VALUES.COLOR_PALETTE[0] },
     },
     {
       id: "default_id_2",
       text: "입니다",
       ratio: 1,
-      style: { backgroundColor: "pink" },
+      style: { backgroundColor: DEFAULT_VALUES.COLOR_PALETTE[1] },
     },
   ]),
   totalRatio: DEFAULT_VALUES.TOTAL_RATIO,
@@ -67,7 +67,12 @@ const useSpinwheelStore = create<{
         id: uuidv4(),
         text: "",
         ratio: 1,
-        style: { backgroundColor: "green" }, //이부분은 컬러팔레트에서 가져오게
+        style: {
+          backgroundColor:
+            DEFAULT_VALUES.COLOR_PALETTE[
+              newSectorData.length % DEFAULT_VALUES.COLOR_PALETTE.length
+            ],
+        }, //이부분은 컬러팔레트에서 가져오게
       };
       newSectorData.splice(prevIndex + 1, 0, newSector);
       return {
