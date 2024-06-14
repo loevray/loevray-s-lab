@@ -57,6 +57,8 @@ const SpinWheelTextList = ({ isLocked }: { isLocked: boolean }) => {
   const onModifyButtonClick = (id: string) => (ratio: number) =>
     updateSectorRatio(id, ratio);
 
+  const onInput = (id: string) => (text: string) => updateSectorText(id, text);
+
   return (
     <>
       <button
@@ -75,7 +77,7 @@ const SpinWheelTextList = ({ isLocked }: { isLocked: boolean }) => {
             index={index}
             isLocked={isLocked}
             percentage={((ratio / totalRatio) * 100).toFixed(2)}
-            onInput={() => updateSectorText(text, id)}
+            onInput={onInput(id)}
             onKeyDown={onKeyDown(id)}
             onModifyButtonClick={onModifyButtonClick(id)}
           />

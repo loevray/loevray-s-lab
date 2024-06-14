@@ -9,7 +9,7 @@ interface SpinWheelTextItemProps {
   index: number;
   isLocked: boolean;
   percentage: string;
-  onInput: () => void;
+  onInput: (text: string) => void;
   onKeyDown: (e: KeyEventWithChangeEventType) => void;
   onModifyButtonClick: (ratio: number) => void;
 }
