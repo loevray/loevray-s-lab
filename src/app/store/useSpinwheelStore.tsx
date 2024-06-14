@@ -23,7 +23,7 @@ const calculateAccRatio = (sectorData: SectorData[]) => {
   return sectorData;
 };
 
-const initialSectorData = [
+const INITIAL_SECTOR_DATA = [
   {
     id: "default_id_1",
     text: "돌림판",
@@ -57,7 +57,7 @@ const useSpinwheelStore = create<{
 }>()(
   persist(
     (set, get) => ({
-      sectorData: calculateAccRatio(initialSectorData),
+      sectorData: calculateAccRatio(INITIAL_SECTOR_DATA),
       totalRatio: DEFAULT_VALUES.TOTAL_RATIO,
 
       updateSectorText: (id, text) =>
@@ -118,7 +118,7 @@ const useSpinwheelStore = create<{
       },
       initializeSectorData: () => {
         set(() => ({
-          sectorData: calculateAccRatio(initialSectorData),
+          sectorData: calculateAccRatio(INITIAL_SECTOR_DATA),
           totalRatio: 2,
         }));
       },
