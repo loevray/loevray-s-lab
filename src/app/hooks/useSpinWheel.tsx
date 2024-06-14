@@ -31,7 +31,7 @@ const useSpinWheel = ({ onStart, onStop }: UseSpinWheelProps) => {
       .elementsFromPoint(x, y + yAxisCoefficient)
       .find((node) => node.nodeName === "circle")
       ?.nextElementSibling?.textContent;
-    winTextRef.current.textContent = winText ?? "";
+    winTextRef.current.textContent = winText || "빈 값";
   };
 
   function animateWheel() {

@@ -19,7 +19,7 @@ const EditableDiv = ({ text, isDisabled, onInput, onKeyDown }: EdtiableDiv) => {
 
   return (
     <div
-      className="w-[300px] h-[35px] border-solid border-black border-2 flex-shrink-0"
+      className="w-[300px] h-[35px] flex items-center flex-shrink-0 bg-blue-50 pl-3"
       onInput={(e: React.ChangeEvent<HTMLDivElement>) => {
         onInput(e.target.textContent || "");
         divRef.current && (divRef.current.textContent = e.target.textContent);

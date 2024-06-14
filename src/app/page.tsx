@@ -18,8 +18,8 @@ const Home = () => {
     });
 
   return (
-    <main className="w-screen h-screen flex items-center">
-      <section className="pl-[50px] w-1/2 flex items-center flex-col gap-10">
+    <main className="w-screen h-screen flex items-center pt-20">
+      <section className="pl-[50px] w-1/2 flex items-center flex-col gap-10 h-full">
         <span ref={winTextRef} className="text-xl">
           돌려돌려 돌림판!
         </span>
@@ -36,7 +36,7 @@ const Home = () => {
           )}
         </div>
       </section>
-      <section className="w-1/2">
+      <section className="w-1/2 h-full">
         <SpinWheelTextList isLocked={isRotating} />
       </section>
     </main>
