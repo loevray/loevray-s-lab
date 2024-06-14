@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { v4 as uuidv4 } from "uuid";
+import { DEFAULT_VALUES } from "@/constants/SpinWheel";
 
 export interface SectorStyle {
   backgroundColor: string;
@@ -51,7 +52,7 @@ const useSpinwheelStore = create<{
       style: { backgroundColor: "pink" },
     },
   ]),
-  totalRatio: 2,
+  totalRatio: DEFAULT_VALUES.TOTAL_RATIO,
   updateSectorText: (id, text) =>
     set((state) => ({
       sectorData: state.sectorData.map((sector) =>
@@ -84,7 +85,7 @@ const useSpinwheelStore = create<{
         (state.sectorData.find(({ id }) => id === deleteId)?.ratio ?? 0),
     })),
   updateSectorRatio: (id, newRatio) => {
-    if (newRatio < 1) return;
+    if (newRatio < DEFAULT_VALUES.RATIO_STANDARD) return;
 
     set((state) => {
       const prevRatio =

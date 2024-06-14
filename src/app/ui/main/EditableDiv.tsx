@@ -3,11 +3,12 @@ import { KeyEventWithChangeEventType } from "./SpinWheelTextList";
 
 interface EdtiableDiv {
   text: string;
+  isDisabled: boolean;
   onInput: (text: string) => void;
   onKeyDown: (e: KeyEventWithChangeEventType) => void;
 }
 
-const EditableDiv = ({ text, onInput, onKeyDown }: EdtiableDiv) => {
+const EditableDiv = ({ text, isDisabled, onInput, onKeyDown }: EdtiableDiv) => {
   const divRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -26,7 +27,7 @@ const EditableDiv = ({ text, onInput, onKeyDown }: EdtiableDiv) => {
       onKeyDown={(e: KeyEventWithChangeEventType) => {
         onKeyDown(e);
       }}
-      contentEditable
+      contentEditable={!isDisabled}
       ref={divRef}
     />
   );

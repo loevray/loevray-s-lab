@@ -1,5 +1,5 @@
 import { DEFAULT_VALUES } from "@/constants/SpinWheel";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 interface UseSpinWheelProps {
   onStart?: () => void;
@@ -9,10 +9,11 @@ const useSpinWheel = ({ onStart, onStop }: UseSpinWheelProps) => {
   const spinWheelRef = useRef<SVGSVGElement>(null);
   const arrowRef = useRef<HTMLElement>(null);
   const winTextRef = useRef<HTMLElement>(null);
+  const [isRotating, setIsRotating] = useState(false);
+  const isStopping = useRef(false);
 
   let rotationDeg = 20;
   let currentDeg = DEFAULT_VALUES.DEG;
-  let isStopping = false; // 멈춤 중인지 여부
 
   const init = () => {
     rotationDeg = 20;
@@ -35,9 +36,9 @@ const useSpinWheel = ({ onStart, onStop }: UseSpinWheelProps) => {
 
   function animateWheel() {
     getWinText();
-    if (!isStopping) {
+    if (!isStopping.current) {
       currentDeg += rotationDeg;
-      currentDeg = currentDeg > 270 ? -90 : currentDeg; // 360도 넘어가면 다시 0부터 시작
+      currentDeg = currentDeg > 270 ? -90 : currentDeg;
 
       if (spinWheelRef.current)
         spinWheelRef.current.style.transform = `rotate(${currentDeg}deg)`;
@@ -61,6 +62,7 @@ const useSpinWheel = ({ onStart, onStop }: UseSpinWheelProps) => {
       if (spinWheelRef.current)
         spinWheelRef.current.style.transform = `rotate(${currentDeg}deg)`;
       onStop?.();
+      setIsRotating(false);
       init();
     }
   }
@@ -68,16 +70,17 @@ const useSpinWheel = ({ onStart, onStop }: UseSpinWheelProps) => {
   const start = () => {
     if (!spinWheelRef.current) return;
     onStart?.();
-    isStopping = false;
+    setIsRotating(true);
+    isStopping.current = false;
     animateWheel();
   };
 
   const stop = () => {
     if (!spinWheelRef.current) return;
-    isStopping = true;
+    isStopping.current = true;
   };
 
-  return { start, stop, spinWheelRef, arrowRef, winTextRef };
+  return { start, stop, isRotating, spinWheelRef, arrowRef, winTextRef };
 };
 
 export default useSpinWheel;

@@ -11,10 +11,11 @@ const Home = () => {
   const onStart = () => console.log("돌림판 시작");
   const onStop = () => console.log("돌림판 멈춤");
 
-  const { start, stop, spinWheelRef, arrowRef, winTextRef } = useSpinWheel({
-    onStart,
-    onStop,
-  });
+  const { start, stop, isRotating, spinWheelRef, arrowRef, winTextRef } =
+    useSpinWheel({
+      onStart,
+      onStop,
+    });
 
   return (
     <main className="w-screen h-screen flex items-center">
@@ -27,13 +28,16 @@ const Home = () => {
           spinWheelRef={spinWheelRef}
           arrowRef={arrowRef}
         />
-        <div className="w-[200px] flex justify-between pt-20">
-          <Button onClick={start}>회전</Button>
-          <Button onClick={stop}>멈춤</Button>
+        <div className="w-[200px] flex justify-center pt-20">
+          {isRotating ? (
+            <Button onClick={stop}>멈춤</Button>
+          ) : (
+            <Button onClick={start}>회전</Button>
+          )}
         </div>
       </section>
       <section className="w-1/2">
-        <SpinWheelTextList />
+        <SpinWheelTextList isLocked={isRotating} />
       </section>
     </main>
   );
