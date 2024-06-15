@@ -17,11 +17,10 @@ const SpinWheelSector = ({
   const sectorPercentage = sectorRatio * 100;
   const circumference = 2 * Math.PI * radius;
 
+  const sectorRotationDeg = (360 / totalSector) * accRatio;
+  const sectorTextRotationDeg = ((360 * sectorRatio) / 2).toFixed(1);
   return (
-    <g
-      transform={`rotate(${(360 / totalSector) * accRatio})`}
-      className="origin-center"
-    >
+    <g transform={`rotate(${sectorRotationDeg})`} className="origin-center">
       <circle
         className="origin-center"
         r={radius}
@@ -44,9 +43,7 @@ const SpinWheelSector = ({
         x="50%"
         y="50%"
         fill="white"
-        transform={`rotate(${((360 * sectorRatio) / 2).toFixed(
-          1
-        )}) translate(${radius} 10)`}
+        transform={`rotate(${sectorTextRotationDeg}) translate(${radius} 10)`}
       >
         {text}
       </text>
