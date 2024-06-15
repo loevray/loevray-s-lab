@@ -9,8 +9,10 @@ const useSpinWheel = ({ onStart, onStop }: UseSpinWheelProps) => {
   const spinWheelRef = useRef<SVGSVGElement>(null);
   const arrowRef = useRef<HTMLElement>(null);
   const winTextRef = useRef<HTMLElement>(null);
-  const [isRotating, setIsRotating] = useState(false);
   const isStopping = useRef(false);
+  const requestAnimationFrameId =
+    useRef<ReturnType<typeof requestAnimationFrame>>();
+  const [isRotating, setIsRotating] = useState(false);
 
   let rotationDeg = 20;
   let currentDeg = DEFAULT_VALUES.DEG;
@@ -44,7 +46,7 @@ const useSpinWheel = ({ onStart, onStop }: UseSpinWheelProps) => {
 
       if (spinWheelRef.current)
         spinWheelRef.current.style.transform = `rotate(${currentDeg}deg)`;
-      requestAnimationFrame(animateWheel);
+      requestAnimationFrameId.current = requestAnimationFrame(animateWheel);
       return;
     }
 
@@ -59,7 +61,7 @@ const useSpinWheel = ({ onStart, onStop }: UseSpinWheelProps) => {
       if (spinWheelRef.current)
         spinWheelRef.current.style.transform = `rotate(${currentDeg}deg)`;
 
-      requestAnimationFrame(animateWheel);
+      requestAnimationFrameId.current = requestAnimationFrame(animateWheel);
     } else {
       if (spinWheelRef.current)
         spinWheelRef.current.style.transform = `rotate(${currentDeg}deg)`;
@@ -82,7 +84,24 @@ const useSpinWheel = ({ onStart, onStop }: UseSpinWheelProps) => {
     isStopping.current = true;
   };
 
-  return { start, stop, isRotating, spinWheelRef, arrowRef, winTextRef };
+  const quickStop = () => {
+    if (typeof requestAnimationFrameId.current === "number") {
+      cancelAnimationFrame(requestAnimationFrameId.current);
+      onStop?.();
+      setIsRotating(false);
+      init();
+    }
+  };
+
+  return {
+    start,
+    stop,
+    quickStop,
+    isRotating,
+    spinWheelRef,
+    arrowRef,
+    winTextRef,
+  };
 };
 
 export default useSpinWheel;

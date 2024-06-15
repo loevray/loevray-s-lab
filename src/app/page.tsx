@@ -11,11 +11,18 @@ const Home = () => {
   const onStart = () => console.log("돌림판 시작");
   const onStop = () => console.log("돌림판 멈춤");
 
-  const { start, stop, isRotating, spinWheelRef, arrowRef, winTextRef } =
-    useSpinWheel({
-      onStart,
-      onStop,
-    });
+  const {
+    start,
+    stop,
+    quickStop,
+    isRotating,
+    spinWheelRef,
+    arrowRef,
+    winTextRef,
+  } = useSpinWheel({
+    onStart,
+    onStop,
+  });
 
   return (
     <main className="w-screen h-screen flex items-center pt-20">
@@ -30,9 +37,21 @@ const Home = () => {
         />
         <div className="w-[200px] flex justify-center pt-20">
           {isRotating ? (
-            <Button onClick={stop}>멈춤</Button>
+            <div className="flex gap-2">
+              <button className="bg-sky-400 w-20 h-8 rounded-md" onClick={stop}>
+                멈춤
+              </button>
+              <button
+                className="bg-sky-400 w-20 h-8 rounded-md"
+                onClick={quickStop}
+              >
+                바로 멈춤
+              </button>
+            </div>
           ) : (
-            <Button onClick={start}>회전</Button>
+            <button className="bg-sky-400 w-20 h-8 rounded-md" onClick={start}>
+              회전
+            </button>
           )}
         </div>
       </section>
