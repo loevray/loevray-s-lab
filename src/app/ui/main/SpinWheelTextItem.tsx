@@ -37,6 +37,7 @@ const SpinWheelTextItem = ({
         {index}
         {isHover && (
           <button
+            disabled={isLocked}
             className="rounded-full size-5 bg-white text-red-500 flex justify-center items-center absolute"
             onClick={onRemoveButtonClick}
           >
