@@ -38,6 +38,20 @@ const INITIAL_SECTOR_DATA = [
   },
 ];
 
+const STORAGE_KEY = {
+  SPIN_WHEEL: "Spin-Wheel-Storage",
+};
+
+const initializeState = <T extends Storage, U>(
+  storage: T,
+  defaultValue: U,
+  key: string
+) => {
+  const storedValue = storage.getItem(key);
+  if (storedValue) return JSON.parse(storedValue).state.sectorData;
+  return defaultValue;
+};
+
 type UpdateSectorTextType = (id: string, text: string) => void;
 
 type AddSectorType = (prevId: string) => void;
@@ -57,7 +71,13 @@ const useSpinwheelStore = create<{
 }>()(
   persist(
     (set, get) => ({
-      sectorData: calculateAccRatio(INITIAL_SECTOR_DATA),
+      sectorData: calculateAccRatio(
+        initializeState(
+          localStorage,
+          INITIAL_SECTOR_DATA,
+          STORAGE_KEY.SPIN_WHEEL
+        )
+      ),
       totalRatio: DEFAULT_VALUES.TOTAL_RATIO,
 
       updateSectorText: (id, text) =>
@@ -130,7 +150,7 @@ const useSpinwheelStore = create<{
       },
     }),
     {
-      name: "Spin-Wheel-Storage",
+      name: STORAGE_KEY.SPIN_WHEEL,
       storage: createJSONStorage(() => localStorage),
     }
   )

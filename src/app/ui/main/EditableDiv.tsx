@@ -12,7 +12,7 @@ const EditableDiv = ({ text, isDisabled, onInput, onKeyDown }: EdtiableDiv) => {
   const divRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (divRef.current && text) {
+    if (divRef.current) {
       divRef.current.textContent = text;
     }
   }, [text]);

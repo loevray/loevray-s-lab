@@ -30,7 +30,7 @@ const SpinWheelTextItem = ({
   const { isHover } = useHover({ hoverRef });
   return (
     <div
-      className="flex  items-center justify-around bg-green-200 hover:bg-green-300 h-[45px] w-[470px] rounded-md text-sm"
+      className="flex  items-center justify-evenly bg-green-200 hover:bg-green-300 h-[45px] w-[470px] rounded-md text-sm"
       ref={hoverRef}
     >
       <div className="w-5 flex justify-center relative">
@@ -44,7 +44,6 @@ const SpinWheelTextItem = ({
           </button>
         )}
       </div>
-
       <EditableDiv
         isDisabled={isLocked}
         text={text}

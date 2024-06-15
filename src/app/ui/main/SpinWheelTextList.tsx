@@ -77,7 +77,7 @@ const SpinWheelTextList = ({ isLocked }: { isLocked: boolean }) => {
             ratio={ratio}
             index={index}
             isLocked={isLocked}
-            percentage={((ratio / totalRatio) * 100).toFixed(2)}
+            percentage={`${((ratio / totalRatio) * 100).toFixed(2)}%`}
             onInput={onInput(id)}
             onKeyDown={onKeyDown(id)}
             onModifyButtonClick={onModifyButtonClick(id)}

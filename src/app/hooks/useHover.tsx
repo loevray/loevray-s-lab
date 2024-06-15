@@ -6,15 +6,9 @@ interface UseHoverProps {
 const useHover = ({ hoverRef }: UseHoverProps) => {
   const [isHover, setIsHover] = useState(false);
 
-  const onMouseEnter = (e: MouseEvent) => {
-    console.log("mouse enter");
-    setIsHover(true);
-  };
+  const onMouseEnter = (e: MouseEvent) => setIsHover(true);
 
-  const onMouseLeave = (e: MouseEvent) => {
-    console.log("mouse leave");
-    setIsHover(false);
-  };
+  const onMouseLeave = (e: MouseEvent) => setIsHover(false);
 
   useEffect(() => {
     if (!hoverRef.current) return;
