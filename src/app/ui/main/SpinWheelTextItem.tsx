@@ -28,11 +28,18 @@ const SpinWheelTextItem = ({
   const { isHover } = useHover({ hoverRef });
   return (
     <div
-      className="flex gap-3 items-center bg-green-200 h-[45px] w-[470px]"
+      className="flex  items-center justify-around bg-green-200 hover:bg-green-300 h-[45px] w-[470px] rounded-md text-sm"
       ref={hoverRef}
     >
-      <div>{index}</div>
-      {isHover && <div>x</div>}
+      <div className="w-5 flex justify-center relative">
+        {index}
+        {isHover && (
+          <button className="rounded-full size-5 bg-white text-red-500 flex justify-center items-center absolute">
+            x
+          </button>
+        )}
+      </div>
+
       <EditableDiv
         isDisabled={isLocked}
         text={text}

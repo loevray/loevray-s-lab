@@ -88,7 +88,12 @@ const useSpinwheelStore = create<{
             totalRatio: get().totalRatio + 1,
           };
         }),
-      deleteSector: (deleteId) =>
+      deleteSector: (deleteId) => {
+        const deleteSectorIndex = get().sectorData.findIndex(
+          ({ id }) => id === deleteId
+        );
+        if (deleteSectorIndex < DEFAULT_VALUES.TOTAL_RATIO) return;
+
         set(() => ({
           sectorData: calculateAccRatio(
             get().sectorData.filter(({ id }) => id !== deleteId)
@@ -96,7 +101,8 @@ const useSpinwheelStore = create<{
           totalRatio:
             get().totalRatio -
             (get().sectorData.find(({ id }) => id === deleteId)?.ratio ?? 0),
-        })),
+        }));
+      },
       updateSectorRatio: (id, newRatio) => {
         if (newRatio < DEFAULT_VALUES.RATIO_STANDARD) return;
 
