@@ -12,6 +12,7 @@ interface SpinWheelTextItemProps {
   onInput: (text: string) => void;
   onKeyDown: (e: KeyEventWithChangeEventType) => void;
   onModifyButtonClick: (ratio: number) => void;
+  onRemoveButtonClick: () => void;
 }
 
 const SpinWheelTextItem = ({
@@ -23,6 +24,7 @@ const SpinWheelTextItem = ({
   onInput,
   onKeyDown,
   onModifyButtonClick,
+  onRemoveButtonClick,
 }: SpinWheelTextItemProps) => {
   const hoverRef = useRef<HTMLDivElement>(null);
   const { isHover } = useHover({ hoverRef });
@@ -34,7 +36,10 @@ const SpinWheelTextItem = ({
       <div className="w-5 flex justify-center relative">
         {index}
         {isHover && (
-          <button className="rounded-full size-5 bg-white text-red-500 flex justify-center items-center absolute">
+          <button
+            className="rounded-full size-5 bg-white text-red-500 flex justify-center items-center absolute"
+            onClick={onRemoveButtonClick}
+          >
             x
           </button>
         )}

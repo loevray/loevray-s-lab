@@ -59,6 +59,7 @@ const SpinWheelTextList = ({ isLocked }: { isLocked: boolean }) => {
 
   const onInput = (id: string) => (text: string) => updateSectorText(id, text);
 
+  const onRemoveButtonClick = (id: string) => () => deleteSector(id);
   return (
     <>
       <button
@@ -80,6 +81,7 @@ const SpinWheelTextList = ({ isLocked }: { isLocked: boolean }) => {
             onInput={onInput(id)}
             onKeyDown={onKeyDown(id)}
             onModifyButtonClick={onModifyButtonClick(id)}
+            onRemoveButtonClick={onRemoveButtonClick(id)}
           />
         ))}
       </article>
