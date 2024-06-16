@@ -1,6 +1,5 @@
-"use client";
-import { MutableRefObject, RefObject, useRef } from "react";
-import useSpinwheelStore, { SectorData } from "../../store/useSpinwheelStore";
+import { RefObject } from "react";
+import useSpinwheelStore from "../../store/useSpinwheelStore";
 import SpinWheelSector from "./SpinWheelSector";
 import { DEFAULT_VALUES } from "@/constants/SpinWheel";
 

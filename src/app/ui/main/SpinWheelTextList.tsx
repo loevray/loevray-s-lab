@@ -1,9 +1,4 @@
-"use client";
-import useHover from "@/app/hooks/useHover";
 import useSpinwheelStore from "../../store/useSpinwheelStore";
-import Button from "./Button";
-import EditableDiv from "./EditableDiv";
-import { useRef } from "react";
 import SpinWheelTextItem from "./SpinWheelTextItem";
 import { DEFAULT_VALUES } from "@/constants/SpinWheel";
 

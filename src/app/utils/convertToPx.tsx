@@ -1,5 +1,4 @@
-const getRemInPx = () =>
-  parseFloat(getComputedStyle(document.documentElement).fontSize);
+import getRemInPx from "./getRemInPx";
 
 const convertToPx = (value: string) => {
   const units = value.match(/[a-z%]+$/i);

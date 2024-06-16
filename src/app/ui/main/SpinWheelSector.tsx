@@ -1,4 +1,3 @@
-import convertToPx from "@/app/utils/convertToPx";
 import { SectorData } from "../../store/useSpinwheelStore";
 
 interface SpinWheelSectorProps extends SectorData {
