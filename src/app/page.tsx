@@ -8,10 +8,6 @@ import Link from "next/link";
 const Home = () => {
   //useSpinWheel?
 
-  return (
-    <main>
-      <Link href="/spin-wheel">룰렛으로 이동</Link>
-    </main>
-  );
+  return <main>홈페이쥐</main>;
 };
 export default Home;
