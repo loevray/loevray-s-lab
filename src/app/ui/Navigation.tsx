@@ -9,7 +9,7 @@ const linksArray = Object.entries(links);
 
 const Navigation = () => {
   return (
-    <nav className="sticky top-0 bg-teal-600 h-screen w-10">
+    <nav className="sticky top-0 bg-teal-600 h-screen w-20">
       <ul>
         {linksArray.map(([link, name]) => (
           <li key={link}>

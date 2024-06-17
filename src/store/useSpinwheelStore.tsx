@@ -28,13 +28,13 @@ const INITIAL_SECTOR_DATA = [
     id: "default_id_1",
     text: "돌림판",
     ratio: 1,
-    style: { backgroundColor: DEFAULT_VALUES.COLOR_PALETTE[0] },
+    style: { backgroundColor: DEFAULT_VALUES.COLOR_PALLETTE[0] },
   },
   {
     id: "default_id_2",
     text: "입니다",
     ratio: 1,
-    style: { backgroundColor: DEFAULT_VALUES.COLOR_PALETTE[1] },
+    style: { backgroundColor: DEFAULT_VALUES.COLOR_PALLETTE[1] },
   },
 ];
 
@@ -81,8 +81,8 @@ const useSpinwheelStore = create<{
             ratio: 1,
             style: {
               backgroundColor:
-                DEFAULT_VALUES.COLOR_PALETTE[
-                  newSectorData.length % DEFAULT_VALUES.COLOR_PALETTE.length
+                DEFAULT_VALUES.COLOR_PALLETTE[
+                  newSectorData.length % DEFAULT_VALUES.COLOR_PALLETTE.length
                 ],
             }, //이부분은 컬러팔레트에서 가져오게
           };
