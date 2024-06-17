@@ -27,7 +27,7 @@ const Home = () => {
   return (
     <main className="w-screen h-screen flex items-center py-20">
       <section className="pl-[50px] w-1/2 flex items-center flex-col gap-10 h-full">
-        <span ref={winTextRef} className="text-xl">
+        <span ref={winTextRef} className="italic text-2xl">
           돌려돌려 돌림판!
         </span>
         <SpinWheel
