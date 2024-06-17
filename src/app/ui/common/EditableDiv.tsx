@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { KeyEventWithChangeEventType } from "./SpinWheelTextList";
+import { KeyEventWithChangeEventType } from "../spin-wheel/SpinWheelTextList";
 
 interface EdtiableDiv {
   text: string;

@@ -1,5 +1,5 @@
 import useHover from "@/app/hooks/useHover";
-import EditableDiv from "./EditableDiv";
+import EditableDiv from "../common/EditableDiv";
 import { KeyEventWithChangeEventType } from "./SpinWheelTextList";
 import { useRef } from "react";
 

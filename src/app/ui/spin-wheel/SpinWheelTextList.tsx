@@ -1,5 +1,5 @@
 import useSpinwheelStore from "../../store/useSpinwheelStore";
-import Button from "./Button";
+import Button from "../common/Button";
 import SpinWheelTextItem from "./SpinWheelTextItem";
 import { DEFAULT_VALUES } from "@/constants/SpinWheel";
 
