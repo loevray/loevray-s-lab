@@ -25,8 +25,8 @@ const Page = () => {
 
   return (
     <main className="w-full flex items-center">
-      <section className="w-1/2 h-full flex justify-center items-center flex-col gap-6">
-        <span ref={winTextRef} className="italic text-2xl">
+      <section className="w-1/2 h-full flex justify-center items-center flex-col">
+        <span ref={winTextRef} className="italic text-20 pb-5">
           돌려돌려 돌림판!
         </span>
         <SpinWheel
@@ -34,7 +34,7 @@ const Page = () => {
           spinWheelRef={spinWheelRef}
           arrowRef={arrowRef}
         />
-        <div className="w-[200px] flex justify-center">
+        <div className="w-[200px] flex justify-center pt-10">
           {isRotating ? (
             <div className="flex gap-2">
               <Button onClick={stop} text="멈춤" />
