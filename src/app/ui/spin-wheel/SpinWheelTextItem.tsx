@@ -1,4 +1,4 @@
-import useHover from "@/app/hooks/useHover";
+import useHover from "@/hooks/useHover";
 import EditableDiv from "../common/EditableDiv";
 import { KeyEventWithChangeEventType } from "./SpinWheelTextList";
 import { useRef } from "react";
@@ -31,7 +31,7 @@ const SpinWheelTextItem = ({
   return (
     <div
       className="flex shrink-0  items-center justify-between 
-      border-cyan-400 border-solid border-2  h-[45px] w-[470px] rounded-md text-sm px-2 shadow-md"
+      border-cyan-400 border-solid border-2  h-[45px] w-[470px] rounded-md text-1 px-2 shadow-md"
       ref={hoverRef}
     >
       <div className="w-5 flex justify-center relative">

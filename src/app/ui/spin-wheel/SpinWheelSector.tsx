@@ -1,5 +1,5 @@
-import getTruncateText from "@/app/utils/getTruncateText";
-import { SectorData } from "../../store/useSpinwheelStore";
+import getTruncateText from "@/utils/getTruncateText";
+import { SectorData } from "../../../store/useSpinwheelStore";
 
 interface SpinWheelSectorProps extends SectorData {
   radius: number;

@@ -1,5 +1,5 @@
 import { RefObject } from "react";
-import useSpinwheelStore from "../../store/useSpinwheelStore";
+import useSpinwheelStore from "../../../store/useSpinwheelStore";
 import SpinWheelSector from "./SpinWheelSector";
 import { DEFAULT_VALUES } from "@/constants/SpinWheel";
 
