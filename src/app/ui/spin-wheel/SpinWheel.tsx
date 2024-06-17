@@ -22,7 +22,7 @@ const SpinWheel = ({ diameter, spinWheelRef, arrowRef }: SpinWheelProps) => {
       }}
     >
       <span
-        className="bg-blue-500 w-10 h-10 absolute left-1/2 translate-x-[-50%] z-10"
+        className="bg-blue-500 w-4 h-5 absolute left-1/2 translate-x-[-50%] z-10"
         style={{ clipPath: "polygon(50% 100%, 25% 0, 75% 0)" }}
       />
       <span

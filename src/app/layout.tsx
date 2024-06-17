@@ -18,8 +18,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Navigation />
-        {children}
+        <div className="flex overflow-y-auto w-screen min-h-screen">
+          <Navigation />
+          {children}
+        </div>
       </body>
     </html>
   );

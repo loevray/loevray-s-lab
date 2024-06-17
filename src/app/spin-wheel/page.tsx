@@ -1,7 +1,7 @@
 "use client";
 
 import { DEFAULT_VALUES } from "@/constants/SpinWheel";
-import useSpinWheel from "../hooks/useSpinWheel";
+import useSpinWheel from "../../hooks/useSpinWheel";
 import SpinWheel from "../ui/spin-wheel/SpinWheel";
 import Button from "../ui/common/Button";
 import SpinWheelTextList from "../ui/spin-wheel/SpinWheelTextList";
@@ -24,8 +24,8 @@ const Page = () => {
   });
 
   return (
-    <main className="w-screen h-screen flex items-center py-20">
-      <section className="pl-[50px] w-1/2 flex items-center flex-col gap-10 h-full">
+    <main className="w-full flex items-center">
+      <section className="w-1/2 h-full flex justify-center items-center flex-col gap-6">
         <span ref={winTextRef} className="italic text-2xl">
           돌려돌려 돌림판!
         </span>
@@ -34,7 +34,7 @@ const Page = () => {
           spinWheelRef={spinWheelRef}
           arrowRef={arrowRef}
         />
-        <div className="w-[200px] flex justify-center pt-20">
+        <div className="w-[200px] flex justify-center">
           {isRotating ? (
             <div className="flex gap-2">
               <Button onClick={stop} text="멈춤" />
