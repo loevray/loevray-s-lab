@@ -87,6 +87,7 @@ const useSpinWheel = ({ onStart, onStop }: UseSpinWheelProps) => {
   const quickStop = () => {
     if (typeof requestAnimationFrameId.current === "number") {
       cancelAnimationFrame(requestAnimationFrameId.current);
+      getWinText();
       onStop?.();
       setIsRotating(false);
       init();
