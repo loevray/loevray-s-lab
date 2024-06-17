@@ -24,7 +24,7 @@ const Page = () => {
   });
 
   return (
-    <main className="w-full flex items-center">
+    <main className="w-full h-full flex items-center">
       <section className="w-1/2 h-full flex justify-center items-center flex-col">
         <span ref={winTextRef} className="italic text-3 pb-5">
           돌려돌려 돌림판!

@@ -1,4 +1,8 @@
 const Home = () => {
-  return <main>홈페이쥐</main>;
+  return (
+    <main className="w-full h-full text-6 flex justify-center items-center">
+      <span>loevray&apos;s lab입니다🥳</span>
+    </main>
+  );
 };
 export default Home;

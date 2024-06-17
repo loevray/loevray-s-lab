@@ -6,8 +6,8 @@ import Navigation from "./ui/Navigation";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "심플 룰렛",
-  description: "간단한 룰렛입니다!",
+  title: "loevray's lab",
+  description: "다양한 기능을 가진 사이트",
 };
 
 export default function RootLayout({
@@ -20,7 +20,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <div className="flex overflow-y-auto w-screen min-h-screen">
           <Navigation />
-          {children}
+          <div className="flex-1 min-h-screen">{children}</div>
         </div>
       </body>
     </html>
