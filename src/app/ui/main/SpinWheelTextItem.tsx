@@ -30,7 +30,7 @@ const SpinWheelTextItem = ({
   const { isHover } = useHover({ hoverRef });
   return (
     <div
-      className="flex  items-center justify-evenly bg-green-200 hover:bg-green-300 h-[45px] w-[470px] rounded-md text-sm"
+      className="flex shrink-0  items-center justify-between bg-green-200 hover:bg-green-300 h-[45px] w-[470px] rounded-md text-sm px-2"
       ref={hoverRef}
     >
       <div className="w-5 flex justify-center relative">
@@ -51,7 +51,7 @@ const SpinWheelTextItem = ({
         onInput={onInput}
         onKeyDown={(e: KeyEventWithChangeEventType) => onKeyDown(e)}
       />
-      <div>{`x${ratio}`}</div>
+      <div className="w-[40px]">{`x${ratio}`}</div>
       <div className="flex flex-col gap-1">
         <button
           className="rounded-full size-4 bg-yellow-100 flex justify-center items-center hover:bg-yellow-300"
@@ -68,7 +68,7 @@ const SpinWheelTextItem = ({
           -
         </button>
       </div>
-      <div>{percentage}</div>
+      <div className="w-[50px]">{percentage}</div>
     </div>
   );
 };
