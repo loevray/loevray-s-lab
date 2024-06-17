@@ -5,8 +5,8 @@ import "./global.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Next.js Spin wheel",
-  description: "Simple Spin wheel",
+  title: "심플 룰렛",
+  description: "간단한 룰렛입니다!",
 };
 
 export default function RootLayout({
