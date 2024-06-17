@@ -25,7 +25,7 @@ const Home = () => {
   });
 
   return (
-    <main className="w-screen h-screen flex items-center pt-20">
+    <main className="w-screen h-screen flex items-center py-20">
       <section className="pl-[50px] w-1/2 flex items-center flex-col gap-10 h-full">
         <span ref={winTextRef} className="text-xl">
           돌려돌려 돌림판!
@@ -38,18 +38,24 @@ const Home = () => {
         <div className="w-[200px] flex justify-center pt-20">
           {isRotating ? (
             <div className="flex gap-2">
-              <button className="bg-sky-400 w-20 h-8 rounded-md" onClick={stop}>
+              <button
+                className="bg-cyan-500 w-[100px] h-[30px] rounded-sm text-white shadow-md"
+                onClick={stop}
+              >
                 멈춤
               </button>
               <button
-                className="bg-sky-400 w-20 h-8 rounded-md"
+                className="bg-cyan-500 w-[100px] h-[30px] rounded-sm text-white shadow-md"
                 onClick={quickStop}
               >
                 바로 멈춤
               </button>
             </div>
           ) : (
-            <button className="bg-sky-400 w-20 h-8 rounded-md" onClick={start}>
+            <button
+              className="bg-cyan-500 w-[100px] h-[30px] rounded-sm text-white shadow-md"
+              onClick={start}
+            >
               회전
             </button>
           )}

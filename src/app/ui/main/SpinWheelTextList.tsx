@@ -59,12 +59,12 @@ const SpinWheelTextList = ({ isLocked }: { isLocked: boolean }) => {
     <>
       <button
         disabled={isLocked}
-        className="bg-indigo-300 w-30 ml-5"
+        className="bg-cyan-500 w-[100px] h-[30px] rounded-sm text-white shadow-md"
         onClick={initializeSectorData}
       >
         룰렛 초기화
       </button>
-      <article className="flex flex-col gap-5 max-h-[60vh] overflow-y-auto w-max p-5">
+      <article className="flex flex-col gap-5 max-h-[60vh] overflow-y-auto w-max mt-5 pr-5">
         {sectorData.map(({ id, text, ratio }, index) => (
           <SpinWheelTextItem
             key={id}
