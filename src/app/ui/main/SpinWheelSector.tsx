@@ -36,7 +36,7 @@ const SpinWheelSector = ({
       <text
         className="origin-center"
         textAnchor="middle"
-        fontSize="25"
+        fontSize="25px"
         strokeWidth="4"
         paintOrder="stroke"
         stroke="black"

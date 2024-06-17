@@ -14,6 +14,10 @@ describe('getRemInPx',()=>{
   test("other values convert to pixel", () => {
     expect(convertToPx('1rem')).toBe(16)
   });
+  
+  test("other values convert to pixel", () => {
+    expect(convertToPx(16)).toBe(16)
+  });
 });
 
 
