@@ -1,4 +1,4 @@
-import { mockGetComputedStyle } from "../../../__mocks__/mockGetComputedStyle";
+import { mockGetComputedStyle } from "../../__mocks__/mockGetComputedStyle";
 import getRemInPx from "./getRemInPx";
 
 describe('getRemInPx',()=>{

@@ -1,6 +1,6 @@
 import convertToPx from "./convertToPx";
 
-import { mockGetComputedStyle } from "../../../__mocks__/mockGetComputedStyle";
+import { mockGetComputedStyle } from "../../__mocks__/mockGetComputedStyle";
 
 describe('getRemInPx',()=>{
   beforeEach(() => {
