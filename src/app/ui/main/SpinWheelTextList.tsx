@@ -1,4 +1,5 @@
 import useSpinwheelStore from "../../store/useSpinwheelStore";
+import Button from "./Button";
 import SpinWheelTextItem from "./SpinWheelTextItem";
 import { DEFAULT_VALUES } from "@/constants/SpinWheel";
 
@@ -57,14 +58,12 @@ const SpinWheelTextList = ({ isLocked }: { isLocked: boolean }) => {
   const onRemoveButtonClick = (id: string) => () => deleteSector(id);
   return (
     <>
-      <button
+      <Button
         disabled={isLocked}
-        className="bg-cyan-500 w-[100px] h-[30px] rounded-sm text-white shadow-md"
         onClick={initializeSectorData}
-      >
-        룰렛 초기화
-      </button>
-      <article className="flex flex-col gap-5 max-h-[60vh] overflow-y-auto w-max mt-5 pr-5">
+        text="룰렛초기화"
+      />
+      <article className="flex flex-col gap-5 max-h-[60vh] overflow-y-auto w-max mt-5 pr-5 pb-5">
         {sectorData.map(({ id, text, ratio }, index) => (
           <SpinWheelTextItem
             key={id}

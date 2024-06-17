@@ -38,26 +38,11 @@ const Home = () => {
         <div className="w-[200px] flex justify-center pt-20">
           {isRotating ? (
             <div className="flex gap-2">
-              <button
-                className="bg-cyan-500 w-[100px] h-[30px] rounded-sm text-white shadow-md"
-                onClick={stop}
-              >
-                멈춤
-              </button>
-              <button
-                className="bg-cyan-500 w-[100px] h-[30px] rounded-sm text-white shadow-md"
-                onClick={quickStop}
-              >
-                바로 멈춤
-              </button>
+              <Button onClick={stop} text="멈춤" />
+              <Button onClick={quickStop} text="바로 멈춤" />
             </div>
           ) : (
-            <button
-              className="bg-cyan-500 w-[100px] h-[30px] rounded-sm text-white shadow-md"
-              onClick={start}
-            >
-              회전
-            </button>
+            <Button onClick={start} text="회전" />
           )}
         </div>
       </section>

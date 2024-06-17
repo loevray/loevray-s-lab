@@ -1,4 +1,4 @@
-const ELLIPSIS = "...";
+/* const ELLIPSIS = "...";
 
 const svgEllipsis = <T extends SVGSVGElement, U>(element: T, maxWidth: U) => {
   let text = element.textContent;
@@ -9,3 +9,4 @@ const svgEllipsis = <T extends SVGSVGElement, U>(element: T, maxWidth: U) => {
 };
 
 export default svgEllipsis;
+ */

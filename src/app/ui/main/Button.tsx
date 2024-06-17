@@ -1,14 +1,23 @@
 interface ButtonProps {
   text?: string;
   disabled?: boolean;
+  width?: string;
+  height?: string;
   onClick: () => void;
   children?: React.ReactNode;
 }
 
-const Button = ({ text, onClick, disabled = false, children }: ButtonProps) => {
+const Button = ({
+  text,
+  onClick,
+  disabled = false,
+  children,
+  width = "w-[100px]",
+  height = "h-[30px]",
+}: ButtonProps) => {
   return (
     <button
-      className="w-[50px] h-[30px] bg-purple-400 border-solid rounded-md border-purple-600 border-2"
+      className={`bg-cyan-500 cursor-pointer hover:bg-cyan-400 rounded-sm text-white shadow-md ${width} ${height}`}
       onClick={onClick}
       disabled={disabled}
     >
