@@ -28,18 +28,19 @@ const SpinWheelTextItem = ({
 }: SpinWheelTextItemProps) => {
   const hoverRef = useRef<HTMLDivElement>(null);
   const { isHover } = useHover({ hoverRef });
+
   return (
     <div
       className="flex shrink-0  items-center justify-between 
-      border-cyan-400 border-solid border-2  h-[45px] w-[470px] rounded-md text-1 px-2 shadow-md"
+      border-cyan-400 border-solid border-2  h-4.5 w-47 rounded-md text-1.4 px-1 shadow-md"
       ref={hoverRef}
     >
-      <div className="w-5 flex justify-center relative">
+      <div className="w-2 flex justify-center relative">
         {index}
         {isHover && (
           <button
             disabled={isLocked}
-            className="rounded-full size-5 bg-white text-red-500 flex justify-center items-center absolute border-[1px] border-solid border-gray-300"
+            className="rounded-full size-2 bg-white text-red-500 flex justify-center items-center absolute border-[1px] border-solid border-gray-300"
             onClick={onRemoveButtonClick}
           >
             X
@@ -52,17 +53,17 @@ const SpinWheelTextItem = ({
         onInput={onInput}
         onKeyDown={(e: KeyEventWithChangeEventType) => onKeyDown(e)}
       />
-      <div className="w-[40px]">{`x${ratio}`}</div>
-      <div className="flex flex-col gap-1">
+      <div className="w-4">{`x${ratio}`}</div>
+      <div className="flex flex-col gap-0.2">
         <button
-          className="rounded-full size-4 bg-teal-300 hover:bg-teal-400 flex justify-center items-center "
+          className="rounded-full size-1.6 bg-teal-300 hover:bg-teal-400 flex justify-center items-center "
           disabled={isLocked}
           onClick={() => onModifyButtonClick(ratio + 1)}
         >
           +
         </button>
         <button
-          className="rounded-full size-4 bg-teal-300 hover:bg-teal-400 flex justify-center items-center "
+          className="rounded-full size-1.6 bg-teal-300 hover:bg-teal-400 flex justify-center items-center "
           disabled={isLocked}
           onClick={() => onModifyButtonClick(ratio - 1)}
         >

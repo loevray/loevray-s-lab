@@ -26,7 +26,7 @@ const Page = () => {
   return (
     <main className="w-full flex items-center">
       <section className="w-1/2 h-full flex justify-center items-center flex-col">
-        <span ref={winTextRef} className="italic text-20 pb-5">
+        <span ref={winTextRef} className="italic text-3 pb-5">
           돌려돌려 돌림판!
         </span>
         <SpinWheel
@@ -45,7 +45,8 @@ const Page = () => {
           )}
         </div>
       </section>
-      <section className="w-1/2 h-full">
+      <section className="w-1/2 h-full flex flex-col pt-10">
+        {/* 버튼 밖으로 꺼내오기? */}
         <SpinWheelTextList isLocked={isRotating} />
       </section>
     </main>
