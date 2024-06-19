@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="flex overflow-y-auto w-screen min-h-screen">
+        <div className="flex min-h-screen">
           <Navigation />
           <div className="flex-1 min-h-screen">{children}</div>
         </div>

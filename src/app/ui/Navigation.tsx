@@ -43,7 +43,7 @@ const Navigation = () => {
     : "bg-black";
 
   return (
-    <nav className={`sticky top-0  h-screen w-20 ${currentBackgroundColor}`}>
+    <nav className={`sticky top-0 h-screen w-20 ${currentBackgroundColor}`}>
       <ul>
         {mappedRoutesStyleArray.map(([link, { name }]) => (
           <li key={link}>
