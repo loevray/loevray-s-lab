@@ -30,7 +30,6 @@ const SpinWheelTextList = ({ isLocked }: { isLocked: boolean }) => {
         ) as HTMLDivElement;
 
         nextNode.focus();
-        console.log(nextNode);
       }, 0);
     }
     if (e.key === "Backspace") {
@@ -60,7 +59,10 @@ const SpinWheelTextList = ({ isLocked }: { isLocked: boolean }) => {
     <>
       <Button
         disabled={isLocked}
-        onClick={initializeSectorData}
+        onClick={() => {
+          initializeSectorData();
+          console.log("초기화 됨", sectorData);
+        }}
         text="룰렛초기화"
       />
       <article className="flex flex-col gap-1.4 max-h-[60vh] overflow-y-auto mt-5 pr-5 pb-5 w-fit">

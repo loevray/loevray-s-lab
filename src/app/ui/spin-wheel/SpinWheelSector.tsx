@@ -20,7 +20,6 @@ const SpinWheelSector = ({
 
   const sectorRotationDeg = (360 / totalSector) * accRatio;
   const sectorTextRotationDeg = ((360 * sectorRatio) / 2).toFixed(1);
-  console.log(text);
   const truncatedText = getTruncateText(text, 9);
   return (
     <g transform={`rotate(${sectorRotationDeg})`} className="origin-center">

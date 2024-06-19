@@ -38,6 +38,8 @@ const INITIAL_SECTOR_DATA = [
   },
 ];
 
+const getInitialSectorData = () => structuredClone(INITIAL_SECTOR_DATA);
+
 const STORAGE_KEY = {
   SPIN_WHEEL: "Spin-Wheel-Storage",
 };
@@ -61,7 +63,7 @@ const useSpinwheelStore = create<{
 }>()(
   persist(
     (set, get) => ({
-      sectorData: calculateAccRatio(INITIAL_SECTOR_DATA),
+      sectorData: calculateAccRatio(getInitialSectorData()),
       totalRatio: DEFAULT_VALUES.TOTAL_RATIO,
 
       updateSectorText: (id, text) =>
@@ -128,7 +130,7 @@ const useSpinwheelStore = create<{
       },
       initializeSectorData: () => {
         set(() => ({
-          sectorData: calculateAccRatio(INITIAL_SECTOR_DATA),
+          sectorData: calculateAccRatio(getInitialSectorData()),
           totalRatio: 2,
         }));
       },
