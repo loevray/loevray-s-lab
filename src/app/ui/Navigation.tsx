@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Accordion from "./common/accordion/Accordion";
 
 export type RoutesType = "/" | "spin-wheel" | "youtube-comment-raffle";
 
@@ -53,6 +54,7 @@ const Navigation = () => {
           </li>
         ))}
       </ul>
+      <Accordion defaultExpanded={true} />
     </nav>
   );
 };
