@@ -45,21 +45,16 @@ const Navigation = () => {
 
   return (
     <nav className={`sticky top-0 h-screen w-20 ${currentBackgroundColor}`}>
-      <ul>
-        {mappedRoutesStyleArray.map(([link, { name }]) => (
-          <li key={link}>
-            <Link href={link} className="text-white">
-              {name}
-            </Link>
-          </li>
-        ))}
-      </ul>
-      <Accordion defaultExpanded={true}>
+      <Accordion>
         <Accordion.Summary>
           메뉴
-          <Accordion.Content>내용1</Accordion.Content>
-          <Accordion.Content>내용2</Accordion.Content>
-          <Accordion.Content>내용3</Accordion.Content>
+          {mappedRoutesStyleArray.map(([link, { name }]) => (
+            <Accordion.Content key={link}>
+              <Link href={link} className="text-white">
+                {name}
+              </Link>
+            </Accordion.Content>
+          ))}
         </Accordion.Summary>
       </Accordion>
     </nav>
