@@ -1,55 +1,70 @@
-import { Container } from "postcss";
-import { SyntheticEvent } from "react";
+import AccordionContextProvider, {
+  useAccordionContext,
+} from "@/provider/AccordionContextProvider";
+import {
+  Children,
+  HTMLAttributes,
+  ReactNode,
+  SyntheticEvent,
+  isValidElement,
+} from "react";
 
-interface AccordionSummaryProps {
-  children: React.ReactNode;
-  icon?: React.ReactNode;
-}
-const AccordionSummary = ({ children, icon = "◁" }: AccordionSummaryProps) => (
-  <summary className="cursor-pointer list-none flex justify-between">
-    {children}
-    <span>{icon}</span>
-  </summary>
-);
-
-interface AccordionSummaryProps {
-  children: React.ReactNode;
-}
-const AccrodionContent = ({ children }: AccordionSummaryProps) => (
+const AccrodionContent = ({ children }: { children?: ReactNode }) => (
   <div>{children}</div>
 );
 
-interface AccordionContainerProps {
-  defaultExpanded?: boolean;
-  children: React.ReactNode;
+const AccordionContentType = (<AccrodionContent />).type;
+
+interface AccordionSummaryProps {
+  children: ReactNode;
+  icon?: ReactNode;
   onChange?: (e: SyntheticEvent<HTMLDetailsElement>) => void;
 }
 
-const AccordionContainer = ({
-  children,
-  defaultExpanded = false,
-  onChange,
-}: AccordionContainerProps) => {
+const divideAccordionChildren = (children: ReactNode) => {
+  const childrenArray = Children.toArray(children);
+  const accordionContentChildren = childrenArray.filter(
+    (child) => isValidElement(child) && child.type === AccordionContentType
+  );
+  const restChildren = childrenArray.filter(
+    (child) => !accordionContentChildren.includes(child)
+  );
+  return { accordionContentChildren, restChildren };
+};
+
+const AccordionSummary = ({ children, icon = "◁" }: AccordionSummaryProps) => {
+  const { expanded, iconRef, onToggle } = useAccordionContext();
+  const { accordionContentChildren, restChildren } =
+    divideAccordionChildren(children);
   return (
     <details
-      className="text-white p-1"
-      open={defaultExpanded}
+      open={expanded}
       onToggle={(e) => {
-        onChange?.(e);
-        //context.provider에서 icon에대한 ref를 가져와서 회전시켜준다
+        onToggle?.(e);
       }}
     >
-      {children}
+      <summary className="cursor-pointer list-none flex justify-between">
+        {restChildren}
+        <span ref={iconRef}>{icon}</span>
+      </summary>
+
+      {accordionContentChildren}
     </details>
   );
 };
-const Accordion = Object.assign(AccordionContainer, {
-  Summary: AccordionSummary,
-  Content: AccrodionContent,
-});
+interface AccordionProps extends HTMLAttributes<HTMLDivElement> {
+  children: ReactNode;
+  defaultExpanded: boolean;
+}
+const Accordion = ({ children, defaultExpanded }: AccordionProps) => {
+  return (
+    <AccordionContextProvider defaultExpanded={defaultExpanded}>
+      <div className="text-white p-1">{children}</div>
+    </AccordionContextProvider>
+  );
+};
 
-/* 
-  1. 제어-비제어 컴포넌트가 가능해야한다.
-  2. compound패턴을 사용한다.
-*/
+Accordion.Summary = AccordionSummary;
+Accordion.Content = AccrodionContent;
+
 export default Accordion;

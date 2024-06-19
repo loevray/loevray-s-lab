@@ -55,8 +55,12 @@ const Navigation = () => {
         ))}
       </ul>
       <Accordion defaultExpanded={true}>
-        <Accordion.Summary>메뉴</Accordion.Summary>
-        <Accordion.Content>내용</Accordion.Content>
+        <Accordion.Summary>
+          메뉴
+          <Accordion.Content>내용1</Accordion.Content>
+          <Accordion.Content>내용2</Accordion.Content>
+          <Accordion.Content>내용3</Accordion.Content>
+        </Accordion.Summary>
       </Accordion>
     </nav>
   );
