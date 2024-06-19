@@ -54,7 +54,10 @@ const Navigation = () => {
           </li>
         ))}
       </ul>
-      <Accordion defaultExpanded={true} />
+      <Accordion defaultExpanded={true}>
+        <Accordion.Summary>메뉴</Accordion.Summary>
+        <Accordion.Content>내용</Accordion.Content>
+      </Accordion>
     </nav>
   );
 };
