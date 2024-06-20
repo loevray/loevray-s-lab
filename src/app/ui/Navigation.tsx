@@ -47,7 +47,7 @@ const Navigation = () => {
     <nav className={`sticky top-0 h-screen w-20 ${currentBackgroundColor}`}>
       <Accordion>
         <Accordion.Summary>
-          메뉴
+          메뉴1
           {mappedRoutesStyleArray.map(([link, { name }]) => (
             <Accordion.Content key={link}>
               <Link href={link} className="text-white">
@@ -55,6 +55,14 @@ const Navigation = () => {
               </Link>
             </Accordion.Content>
           ))}
+        </Accordion.Summary>
+      </Accordion>
+      <Accordion>
+        <Accordion.Summary>
+          메뉴2
+          <Accordion.Content>이동1</Accordion.Content>
+          <Accordion.Content>이동2</Accordion.Content>
+          <Accordion.Content>이동3</Accordion.Content>
         </Accordion.Summary>
       </Accordion>
     </nav>
