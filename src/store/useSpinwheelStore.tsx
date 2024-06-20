@@ -99,7 +99,7 @@ const useSpinwheelStore = create<{
           };
           newSectorData.splice(prevIndex + 1, 0, newSector);
           return {
-            sectorData: calculateAccRatio(newSectorData),
+            sectorData: mixSectorBackground(calculateAccRatio(newSectorData)),
             totalRatio: get().totalRatio + 1,
           };
         }),
