@@ -1,7 +1,5 @@
 import { useAccordionContext } from "@/provider/AccordionContextProvider";
-import divideChildrenTwoTypes from "./divideChildrenTwoTypes";
 import { ReactNode, SyntheticEvent } from "react";
-import { AccordionContentType } from "./AccordionContent";
 interface AccordionSummaryProps {
   children: ReactNode;
   icon?: ReactNode;
