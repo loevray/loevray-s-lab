@@ -1,9 +1,20 @@
 import { useAccordionContext } from "@/provider/AccordionContextProvider";
-import { ReactNode } from "react";
+import { HTMLAttributes, ReactNode } from "react";
 
-const AccordionContent = ({ children }: { children?: ReactNode }) => {
+interface AccordionContentProps extends HTMLAttributes<HTMLDivElement> {}
+
+const AccordionContent = ({ children, ...rest }: AccordionContentProps) => {
   const { expanded } = useAccordionContext();
-  return expanded && <div>{children}</div>;
+  return (
+    <div
+      className={`transition-opacity ${
+        expanded ? "opacity-100 visible h-auto" : "opacity-0 invisible h-0"
+      } `}
+      {...rest}
+    >
+      {children}
+    </div>
+  );
 };
 
 export const AccordionContentType = (<AccordionContent />).type;

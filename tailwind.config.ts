@@ -4,18 +4,18 @@ interface PresetInterface{
   [key:string]:string
 }
 
-const rem1_10:PresetInterface = {};
-const rem1_20:PresetInterface = {};
-const rem1_200:PresetInterface = {};
+const rem0_10:PresetInterface = {};
+const rem0_20:PresetInterface = {};
+const rem0_200:PresetInterface = {};
 
-for (let i = 1; i <= 2000; i++) {
-  rem1_200[`${i/10}`] = `${i/10}rem`
+for (let i = 0; i <= 2000; i++) {
+  rem0_200[`${i/10}`] = `${i/10}rem`
   if(i<=200){
-    rem1_20[`${i / 10}`] = `${i / 10}rem`;
+    rem0_20[`${i / 10}`] = `${i / 10}rem`;
   }
 
   if (i <= 100) {
-    rem1_10[`${i / 10}`] = `${i / 10}rem`;
+    rem0_10[`${i / 10}`] = `${i / 10}rem`;
   }
 }
 
@@ -28,8 +28,8 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      spacing:rem1_200,
-      fontSize:rem1_20,
+      spacing:rem0_200,
+      fontSize:rem0_20,
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

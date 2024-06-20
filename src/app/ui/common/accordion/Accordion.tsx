@@ -1,12 +1,11 @@
 import AccordionContextProvider, {
   useAccordionContext,
 } from "@/provider/AccordionContextProvider";
-import { HTMLAttributes, ReactNode, SyntheticEvent } from "react";
+import { HTMLAttributes, SyntheticEvent } from "react";
 import AccordionSummary from "./AccordionSummary";
 import AccordionContent from "./AccordionContent";
 
 interface AccordionProps extends HTMLAttributes<HTMLDivElement> {
-  children: ReactNode;
   defaultExpanded?: boolean;
   expanded?: boolean;
   handleToggle?: (e: SyntheticEvent, expanded: boolean) => void;
