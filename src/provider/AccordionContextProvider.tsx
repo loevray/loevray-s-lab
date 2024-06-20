@@ -5,7 +5,6 @@ import {
   createContext,
   useContext,
   useRef,
-  useState,
 } from "react";
 
 export interface AccordionContextProps {
@@ -25,7 +24,7 @@ interface AccordionContextProviderProps extends AccordionContextProps {
 const AccordionContextProvider = ({
   children,
   handleToggle,
-  expanded = false,
+  expanded,
   defaultExpanded = false,
 }: AccordionContextProviderProps) => {
   const [expandedState, setExpandedState] = useControlled({
@@ -36,9 +35,7 @@ const AccordionContextProvider = ({
   const iconRef = useRef<HTMLElement>(null);
 
   const onToggle = (e: SyntheticEvent, expanded: boolean) => {
-    setExpandedState((prev: boolean) => {
-      !prev;
-    });
+    setExpandedState((prev: boolean) => !prev);
 
     handleToggle?.(e, !expanded);
     if (iconRef.current) {
