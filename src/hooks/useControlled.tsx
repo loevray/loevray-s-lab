@@ -10,7 +10,7 @@ type IUseControlledReturn<T = any> = [
   React.Dispatch<React.SetStateAction<T>>
 ];
 
-function useControlled<T = any>(
+export default function useControlled<T = any>(
   args: IUseControlledArgs<T> = {}
 ): IUseControlledReturn {
   const { valueProp, defaultValue } = args;
@@ -20,6 +20,7 @@ function useControlled<T = any>(
   const [state, setState] = useState<T | undefined>(defaultValue);
 
   const value = isControlled ? valueProp : state;
+
   const setValue: React.Dispatch<React.SetStateAction<T | undefined>> =
     useCallback((newState) => {
       !isControlled && setState(newState);

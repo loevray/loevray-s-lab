@@ -9,21 +9,16 @@ interface AccordionSummaryProps {
 }
 const AccordionSummary = ({ children, icon = "◁" }: AccordionSummaryProps) => {
   const { expanded, iconRef, onToggle } = useAccordionContext();
-  const { typeAChildren: accordionContentChildren, restChildren } =
-    divideChildrenTwoTypes(children, AccordionContentType);
   return (
-    <details
-      open={expanded}
-      onToggle={(e) => {
-        onToggle?.(e);
+    <summary
+      onClick={(e) => {
+        onToggle?.(e, !!expanded);
       }}
+      className="cursor-pointer list-none flex justify-between"
     >
-      <summary className="cursor-pointer list-none flex justify-between">
-        {restChildren}
-        <span ref={iconRef}>{icon}</span>
-      </summary>
-      {accordionContentChildren}
-    </details>
+      {children}
+      <span ref={iconRef}>{icon}</span>
+    </summary>
   );
 };
 

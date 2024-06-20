@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Accordion from "./common/accordion/Accordion";
+import { SyntheticEvent, useState } from "react";
 
 export type RoutesType = "/" | "spin-wheel" | "youtube-comment-raffle";
 
@@ -43,27 +44,36 @@ const Navigation = () => {
     ? mappedRoutesStyle[currentPath].backgroundColor
     : "bg-black";
 
+  const [expanded, setExpanded] = useState<string | false>(false);
+
+  const handleToggle =
+    (panel: string) => (e: SyntheticEvent, isExpanded: boolean) => {
+      setExpanded(isExpanded ? panel : false);
+    };
+
   return (
     <nav className={`sticky top-0 h-screen w-20 ${currentBackgroundColor}`}>
-      <Accordion>
-        <Accordion.Summary>
-          메뉴1
-          {mappedRoutesStyleArray.map(([link, { name }]) => (
-            <Accordion.Content key={link}>
-              <Link href={link} className="text-white">
-                {name}
-              </Link>
-            </Accordion.Content>
-          ))}
-        </Accordion.Summary>
+      <Accordion
+        expanded={expanded === "panel1"}
+        handleToggle={handleToggle("panel1")}
+      >
+        <Accordion.Summary>메뉴1</Accordion.Summary>
+        {mappedRoutesStyleArray.map(([link, { name }]) => (
+          <Accordion.Content key={link}>
+            <Link href={link} className="text-white">
+              {name}
+            </Link>
+          </Accordion.Content>
+        ))}
       </Accordion>
-      <Accordion>
-        <Accordion.Summary>
-          메뉴2
-          <Accordion.Content>이동1</Accordion.Content>
-          <Accordion.Content>이동2</Accordion.Content>
-          <Accordion.Content>이동3</Accordion.Content>
-        </Accordion.Summary>
+      <Accordion
+        expanded={expanded === "panel2"}
+        handleToggle={handleToggle("panel2")}
+      >
+        <Accordion.Summary>메뉴2</Accordion.Summary>
+        <Accordion.Content>이동1</Accordion.Content>
+        <Accordion.Content>이동2</Accordion.Content>
+        <Accordion.Content>이동3</Accordion.Content>
       </Accordion>
     </nav>
   );
