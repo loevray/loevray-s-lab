@@ -43,6 +43,14 @@ const getInitialSectorData = () => structuredClone(INITIAL_SECTOR_DATA);
 const STORAGE_KEY = {
   SPIN_WHEEL: "Spin-Wheel-Storage",
 };
+const mixSectorBackground = (sectorData: SectorData[]) =>
+  sectorData.map((sector, i) => ({
+    ...structuredClone(sector),
+    style: {
+      backgroundColor:
+        DEFAULT_VALUES.COLOR_PALLETTE[i % DEFAULT_VALUES.COLOR_PALLETTE.length],
+    },
+  }));
 
 type UpdateSectorTextType = (id: string, text: string) => void;
 
@@ -95,13 +103,14 @@ const useSpinwheelStore = create<{
             totalRatio: get().totalRatio + 1,
           };
         }),
-
       deleteSector: (deleteId) => {
         if (get().sectorData.length <= DEFAULT_VALUES.TOTAL_RATIO) return;
 
         set(() => ({
-          sectorData: calculateAccRatio(
-            get().sectorData.filter(({ id }) => id !== deleteId)
+          sectorData: mixSectorBackground(
+            calculateAccRatio(
+              get().sectorData.filter(({ id }) => id !== deleteId)
+            )
           ),
           totalRatio:
             get().totalRatio -
