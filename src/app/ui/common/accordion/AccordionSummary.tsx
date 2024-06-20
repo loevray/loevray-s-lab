@@ -1,18 +1,21 @@
 import { useAccordionContext } from "@/provider/AccordionContextProvider";
-import { ReactNode, SyntheticEvent } from "react";
-interface AccordionSummaryProps {
-  children: ReactNode;
+import { HTMLAttributes, ReactNode } from "react";
+interface AccordionSummaryProps extends HTMLAttributes<HTMLDivElement> {
   icon?: ReactNode;
-  onChange?: (e: SyntheticEvent<HTMLDetailsElement>) => void;
 }
-const AccordionSummary = ({ children, icon = "◁" }: AccordionSummaryProps) => {
+const AccordionSummary = ({
+  children,
+  icon = "◁",
+  ...rest
+}: AccordionSummaryProps) => {
   const { expanded, iconRef, onToggle } = useAccordionContext();
   return (
     <summary
       onClick={(e) => {
         onToggle?.(e, !!expanded);
       }}
-      className="cursor-pointer list-none flex justify-between"
+      className="p-1 cursor-pointer list-none flex justify-between"
+      {...rest}
     >
       {children}
       <span ref={iconRef}>{icon}</span>
@@ -20,4 +23,5 @@ const AccordionSummary = ({ children, icon = "◁" }: AccordionSummaryProps) => 
   );
 };
 
+export const AccordionSummaryType = (<AccordionSummary />).type;
 export default AccordionSummary;

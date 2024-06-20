@@ -42,7 +42,7 @@ const Navigation = () => {
   const currentPath = pathname.split("/")[1];
   const currentBackgroundColor = isCorrectRoute(currentPath, mappedRoutesStyle)
     ? mappedRoutesStyle[currentPath].backgroundColor
-    : "bg-black";
+    : "bg-slate-100";
 
   /*   const [expanded, setExpanded] = useState<string | false>(false);
 
@@ -52,14 +52,14 @@ const Navigation = () => {
     };
  */
   return (
-    <nav className={`sticky top-0 h-screen w-20 ${currentBackgroundColor}`}>
+    <nav
+      className={`sticky top-0 h-screen w-20 ${currentBackgroundColor} flex flex-col gap-0.5`}
+    >
       <Accordion>
         <Accordion.Summary>메뉴1</Accordion.Summary>
         {mappedRoutesStyleArray.map(([link, { name }]) => (
           <Accordion.Content key={link}>
-            <Link href={link} className="text-white">
-              {name}
-            </Link>
+            <Link href={link}>{name}</Link>
           </Accordion.Content>
         ))}
       </Accordion>

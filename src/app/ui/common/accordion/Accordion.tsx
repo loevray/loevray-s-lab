@@ -1,8 +1,6 @@
-import AccordionContextProvider, {
-  useAccordionContext,
-} from "@/provider/AccordionContextProvider";
-import { HTMLAttributes, SyntheticEvent } from "react";
-import AccordionSummary from "./AccordionSummary";
+import AccordionContextProvider from "@/provider/AccordionContextProvider";
+import { HTMLAttributes, ReactNode, SyntheticEvent } from "react";
+import AccordionSummary, { AccordionSummaryType } from "./AccordionSummary";
 import AccordionContent from "./AccordionContent";
 
 interface AccordionProps extends HTMLAttributes<HTMLDivElement> {
@@ -24,7 +22,7 @@ const Accordion = ({
       expanded={expanded}
       handleToggle={handleToggle}
     >
-      <div className="text-white p-1" {...rest}>
+      <div className="bg-white shadow-lg pb-1" {...rest}>
         {children}
       </div>
     </AccordionContextProvider>

@@ -7,7 +7,7 @@ const AccordionContent = ({ children, ...rest }: AccordionContentProps) => {
   const { expanded } = useAccordionContext();
   return (
     <div
-      className={`transition-opacity ${
+      className={`transition-opacity px-1  ${
         expanded ? "opacity-100 visible h-auto" : "opacity-0 invisible h-0"
       } `}
       {...rest}
