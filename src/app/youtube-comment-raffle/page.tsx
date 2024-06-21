@@ -1,33 +1,17 @@
-"use client";
+import YOUTUBE_COMMENTS from "@/constants/YoutubeComment";
+import { testFn } from "@/lib/actions";
+const { COMMENTS_THREAD, PARTS, TEST_VIDEO_ID } = YOUTUBE_COMMENTS;
+const url = `${COMMENTS_THREAD}?part=${PARTS}&videoId=${TEST_VIDEO_ID}&key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY}`;
 
-import { useEffect, useState } from "react";
-
-const PARTS = "snippet";
-const VIDEO_ID = "FYrcyaSnK8Q";
-const COMMENTS_THREAD =
-  "https://youtube.googleapis.com/youtube/v3/commentThreads";
-const COMMENTS_LIST = "https://youtube.googleapis.com/youtube/v3/comments";
 const Page = () => {
-  useEffect(() => {
-    fetch(
-      `${COMMENTS_THREAD}?part=${PARTS}&videoId=${VIDEO_ID}&key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY}`
-    )
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => console.log(data))
-      .catch((e) => {
-        console.log(e);
-      });
-  }, []);
-
   return (
     <main className="w-full h-full flex justify-center items-center">
-      <form className="flex flex-col">
+      <form className="flex flex-col" action={testFn}>
         <label>여기 주소입력ㄱ</label>
         <input
           placeholder="주소를 입력하쇼"
           className="w-50 border-2 border-black border-solid"
+          name="link"
         />
         <button className="border-2 border-solid border-black w-10 mt-1">
           추첨하깅~
