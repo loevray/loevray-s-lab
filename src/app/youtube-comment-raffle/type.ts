@@ -3,10 +3,10 @@ interface YoutubeCommentsThreadListResponse {
     etag: string
     nextPageToken: string,
     pageInfo: {
-      "totalResults": number,
-      "resultsPerPage": number
+      totalResults: number,
+      resultsPerPage: number
     },
-    "items": YoutubeCommentThread[]
+    items: YoutubeCommentThread[]
 }
 
 interface YoutubeCommentThread {
@@ -21,7 +21,7 @@ interface YoutubeCommentThread {
       totalReplyCount: number
       isPublic: boolean
     },
-    replies: {
+    replies?: {
       comments: YoutubeComments[]
     }
 }
@@ -37,14 +37,15 @@ interface YoutubeComments {
     authorChannelId: {
       value: string
     },
+    videoId:string,
     channelId: string,
     textDisplay: string,
     textOriginal: string,
-    parentId: string,
+    parentId?: string,
     canRate: boolean,
     viewerRating: string,
     likeCount: Number,
-    moderationStatus: string,
+    moderationStatus?: string,
     publishedAt: string, // ISO 8601 formatted date type
     updatedAt: string // ISO 8601 formatted date type
   }

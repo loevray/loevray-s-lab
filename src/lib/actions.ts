@@ -1,19 +1,17 @@
 'use server'
 
-import REGEXP from "@/constants/Regex";
+import YOUTUBE_COMMENTS from "@/constants/YoutubeComment";
+import parseVideoIdFromYoutubeLink from "@/utils/parseVideoIdFromYoutubeLink";
 
-export async function fetchYoutubeCommentList(link:string){
+export async function fetchYoutubeCommentThread(link:string){
+  const {COMMENTS_THREAD, PARTS} = YOUTUBE_COMMENTS
   try{
-    const data = await fetch(link)
-    return data.json()
+    const videoId = parseVideoIdFromYoutubeLink(link);
+    if(!videoId) return new Error('유튜브 링크가 정확하지 않습니다!')
+    const data = await fetch(`${COMMENTS_THREAD}?part=${PARTS}&videoId=${videoId}&key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY}`);
+    if(data.ok) return data.json() 
   } catch(e){
     console.error(e)
+    alert(e)
   }
-}
-
-export async function testFn(formData:FormData){
-  const link = formData.get('link') as string;
-  const match = link.match(REGEXP.YOUTUBE);
-  
-  console.log(match?.[1])  
 }
