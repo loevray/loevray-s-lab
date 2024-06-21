@@ -45,7 +45,7 @@ const Page = () => {
           <label>답글 리스트 가져오기</label>
         </div>
         <button className="border-2 border-solid border-black w-10 mt-1">
-          추첨하깅~
+          가져왓!!!
         </button>
       </form>
       <div className="flex flex-col">
