@@ -44,18 +44,21 @@ const Navigation = () => {
     ? mappedRoutesStyle[currentPath].backgroundColor
     : "bg-slate-100";
 
-  /*   const [expanded, setExpanded] = useState<string | false>(false);
+  const [expanded, setExpanded] = useState<string | false>(false);
 
   const handleToggle =
     (panel: string) => (e: SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
     };
- */
+
   return (
     <nav
       className={`sticky top-0 h-screen w-20 ${currentBackgroundColor} flex flex-col gap-0.5`}
     >
-      <Accordion>
+      <Accordion
+        expanded={expanded === "accordion1"}
+        handleToggle={handleToggle("accordion1")}
+      >
         <Accordion.Summary>메뉴1</Accordion.Summary>
         {mappedRoutesStyleArray.map(([link, { name }]) => (
           <Accordion.Content key={link}>
@@ -63,7 +66,10 @@ const Navigation = () => {
           </Accordion.Content>
         ))}
       </Accordion>
-      <Accordion>
+      <Accordion
+        expanded={expanded === "accordion2"}
+        handleToggle={handleToggle("accordion2")}
+      >
         <Accordion.Summary>메뉴2</Accordion.Summary>
         <Accordion.Content>이동1</Accordion.Content>
         <Accordion.Content>이동2</Accordion.Content>

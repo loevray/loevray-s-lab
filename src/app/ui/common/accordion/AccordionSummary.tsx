@@ -8,7 +8,7 @@ const AccordionSummary = ({
   icon = "◁",
   ...rest
 }: AccordionSummaryProps) => {
-  const { expanded, iconRef, onToggle } = useAccordionContext();
+  const { expanded, onToggle } = useAccordionContext();
   return (
     <summary
       onClick={(e) => {
@@ -18,7 +18,9 @@ const AccordionSummary = ({
       {...rest}
     >
       {children}
-      <span ref={iconRef}>{icon}</span>
+      <span className={`${expanded ? "rotate-[-90deg]" : "rotate-0"}`}>
+        {icon}
+      </span>
     </summary>
   );
 };

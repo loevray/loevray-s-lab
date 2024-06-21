@@ -32,22 +32,14 @@ const AccordionContextProvider = ({
     defaultValue: defaultExpanded,
   });
 
-  const iconRef = useRef<HTMLElement>(null);
-
   const onToggle = (e: SyntheticEvent, expanded: boolean) => {
     setExpandedState((prev: boolean) => !prev);
 
     handleToggle?.(e, !expanded);
-    if (iconRef.current) {
-      const deg = expanded ? "" : "rotate(-90deg)";
-      iconRef.current.style.transform = deg;
-    }
   };
 
   return (
-    <AccordionContext.Provider
-      value={{ iconRef, expanded: expandedState, onToggle }}
-    >
+    <AccordionContext.Provider value={{ expanded: expandedState, onToggle }}>
       {children}
     </AccordionContext.Provider>
   );

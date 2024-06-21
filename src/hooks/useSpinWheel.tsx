@@ -29,7 +29,7 @@ const useSpinWheel = ({ onStart, onStop }: UseSpinWheelProps) => {
   const getWinText = () => {
     if (!arrowRef.current || !winTextRef.current) return;
     const { x, y } = arrowRef.current.getBoundingClientRect();
-    const yAxisCoefficient = 1;
+    const yAxisCoefficient = 5;
     const winText = document
       .elementsFromPoint(x, y + yAxisCoefficient)
       .find((node) => node.nodeName === "circle")
