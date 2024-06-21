@@ -1,12 +1,14 @@
 "use client";
 
 import { fetchYoutubeCommentThread } from "@/lib/actions";
-import { useRef } from "react";
+import parsedYoutubeCommentThread from "@/utils/parsedYoutubeCommentThread";
+import { useRef, useState } from "react";
 
 const Page = () => {
   const inputRef = useRef<HTMLInputElement>(null);
+  const [comments, setComments] = useState<{ [key: string]: string }>();
   return (
-    <main className="w-full h-full flex justify-center items-center">
+    <main className="w-full h-full flex flex-col justify-center items-center">
       <form
         className="flex flex-col"
         onSubmit={async (e) => {
@@ -14,7 +16,7 @@ const Page = () => {
           const data: YoutubeCommentsThreadListResponse =
             await fetchYoutubeCommentThread(inputRef.current?.value || "");
 
-          console.log(data.items);
+          setComments(parsedYoutubeCommentThread(data.items));
         }}
       >
         <label>유튜브 링크를 넣어주세요!</label>
@@ -46,6 +48,12 @@ const Page = () => {
           추첨하깅~
         </button>
       </form>
+      <div className="flex flex-col">
+        {comments &&
+          Object.entries(comments).map(([nickname, comment]) => (
+            <span key={nickname}>{`${nickname}님의 댓글 : ${comment}`}</span>
+          ))}
+      </div>
     </main>
   );
 };
