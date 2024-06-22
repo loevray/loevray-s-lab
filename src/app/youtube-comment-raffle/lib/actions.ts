@@ -61,8 +61,13 @@ const relayFetch = async <T, K>({ fetchFn, maxCount, initialParam, nextParam }: 
   let response: Awaited<K> | undefined;
   
   for await (const count of iteration) {
-    response = await fetchFn(count === 0 ? initialParam : nextParam(response!)); 
-    result.push(response);
+    try{
+      response = await fetchFn(response ? nextParam(response) : initialParam); 
+      result.push(response);
+    } catch(e) {
+      console.log('relayFetch error', e);
+      throw e
+    }
   }
   
   return result;
