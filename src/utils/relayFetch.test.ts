@@ -17,8 +17,7 @@ describe('relayFetch function', () => {
       nextParam: (response: number) => response + 1,
     });
 
-    // Assertions
-    expect(result).toEqual([2, 6, 14]); 
+    expect(result).toEqual([2, 6, 14]);  // 1*2, 2+1 * 2, 6+1 *2
     expect(mockFetchFn).toHaveBeenCalledTimes(3);
   });
 
