@@ -1,17 +1,23 @@
-const YOUTUBE_COMMENTS = {
-  COMMENTS_THREAD : {
-    API_END_POINT:"https://youtube.googleapis.com/youtube/v3/commentThreads",
-    PARTS:"snippet"
+const YOUTUBE_API_BASE_URL = 'https://youtube.googleapis.com/youtube/v3';
+
+const YOUTUBE_API = {
+  COMMENTS:{
+    THREAD:{
+      API_END_POINT:`${YOUTUBE_API_BASE_URL}/commentThreads`,
+      PARTS:"snippet",
+      MAX_RESULTS:100,
+    },
+    LIST:{
+      API_END_POINT:`${YOUTUBE_API_BASE_URL}/comments`,
+      PARTS:"snippet"
+    }
   },
-  COMMENTS_LIST: {
-    API_END_POINT:"https://youtube.googleapis.com/youtube/v3/comments",
-    PARTS:"snippet"
+  VIDEO:{
+    API_END_POINT:`${YOUTUBE_API_BASE_URL}/videos`,
+    PARTS:"snippet,statistics"
   },
-  VIDEO_METADATA:{
-    API_END_POINT:"https://youtube.googleapis.com/youtube/v3/videos",
-    PARTS:"snippet,contentDetails,statistics"
-  },
-  TEST_VIDEO_ID: "ZHaOU6E4pWU"
+  TEST_VIDEO_ID: "ZHaOU6E4pWU",
+  
 }
 
-export default YOUTUBE_COMMENTS
+export default YOUTUBE_API

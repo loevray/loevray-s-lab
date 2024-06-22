@@ -1,23 +1,22 @@
 "use client";
 
-import { fetchYoutubeCommentThread } from "@/lib/actions";
-import parsedYoutubeCommentThread from "@/utils/parsedYoutubeCommentThread";
+import { fetchYoutubeVideoMetadata } from "@/app/youtube-comment-raffle/lib/actions";
 import { useRef, useState } from "react";
+import { YoutubeVideoListResponse } from "./type";
 
 const Page = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [comments, setComments] = useState<{ [key: string]: string }>();
   return (
-    <main className="w-full h-full flex flex-col justify-center items-center">
+    <main className="w-full h-full flex justify-around items-center">
       <form
         className="flex flex-col"
         onSubmit={async (e) => {
           e.preventDefault();
-          const data: YoutubeCommentsThreadListResponse =
-            await fetchYoutubeCommentThread(inputRef.current?.value || "");
 
-          setComments(parsedYoutubeCommentThread(data.items));
-          console.log(data.items);
+          const metadata: YoutubeVideoListResponse =
+            await fetchYoutubeVideoMetadata(inputRef.current?.value || "");
+          console.log(metadata.items[0]);
         }}
       >
         <label>유튜브 링크를 넣어주세요!</label>
@@ -54,6 +53,7 @@ const Page = () => {
           Object.entries(comments).map(([nickname, comment]) => (
             <span key={nickname}>{`${nickname}님의 댓글 : ${comment}`}</span>
           ))}
+        dddddd
       </div>
     </main>
   );

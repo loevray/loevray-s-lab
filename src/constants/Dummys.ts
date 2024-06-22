@@ -1,3 +1,5 @@
+import { YoutubeCommentThread } from "@/app/youtube-comment-raffle/type"
+
 const DUMMY = {
   YOUTUBE_COMMENTS:  [
     {
@@ -374,7 +376,8 @@ const DUMMY = {
             "isPublic": true
         }
     }
-  ] as YoutubeCommentThread[]
+  ] as YoutubeCommentThread[],
+  YOUTUBE_VIDEO:''
 }
 
 export default DUMMY
