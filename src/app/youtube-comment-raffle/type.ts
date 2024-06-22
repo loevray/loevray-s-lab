@@ -1,4 +1,4 @@
-interface YoutubeCommentsThreadListResponse {
+export interface YoutubeCommentsThreadListResponse {
     kind: "youtube#commentListResponse",
     etag: string
     nextPageToken: string,
@@ -9,7 +9,7 @@ interface YoutubeCommentsThreadListResponse {
     items: YoutubeCommentThread[]
 }
 
-interface YoutubeCommentThread {
+export interface YoutubeCommentThread {
     kind: "youtube#commentThread",
     etag: string
     id: string,
@@ -26,7 +26,7 @@ interface YoutubeCommentThread {
     }
 }
 
-interface YoutubeComments {
+export interface YoutubeComments {
   kind: "youtube#comment",
   etag: string,
   id: string,
@@ -51,7 +51,18 @@ interface YoutubeComments {
   }
 }
 
-interface YoutubeVideo {
+type YoutubeThumbnailKeyType = 'default' | 'high' | 'maxres' | 'medium' | 'standard'
+
+export type YoutubeThunmbnailPropertyType = {
+  url: string;
+  width: number;
+  height: number;
+}
+
+type YoutubeThumbnailType = {
+  [key in YoutubeThumbnailKeyType] :YoutubeThunmbnailPropertyType
+}
+export interface YoutubeVideo {
   kind: "youtube#video";
   etag: string;
   id: string;
@@ -60,13 +71,7 @@ interface YoutubeVideo {
     channelId: string;
     title: string;
     description: string;
-    thumbnails: {
-      [key: string]: {
-        url: string;
-        width: number;
-        height: number;
-      };
-    };
+    thumbnails: YoutubeThumbnailType;
     channelTitle: string;
     tags: string[];
     categoryId: string;
@@ -191,7 +196,7 @@ interface YoutubeVideo {
   };
 }
 
-interface YoutubeVideoListResponse {
+export interface YoutubeVideoListResponse {
   kind: "youtube#videoListResponse";
   etag: string;
   nextPageToken: string;
