@@ -37,7 +37,7 @@ const Page = () => {
       const winner = Object.entries(comments[winnerIndex])[
         winnerIndex % YOUTUBE_API.COMMENTS.THREAD.MAX_RESULTS
       ];
-      alert({ nickname: winner[0], text: winner[1] });
+      alert(`nickname:${winner[0]}, text:${winner[1]}`);
     }
   };
 
