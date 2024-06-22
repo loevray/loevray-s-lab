@@ -1,6 +1,10 @@
 "use client";
 
-import { fetchYoutubeVideoMetadata } from "@/app/youtube-comment-raffle/lib/actions";
+import {
+  fetchYoutubeCommentThread,
+  fetchYoutubeVideoMetadata,
+  getYoutubeVideoCustomData,
+} from "@/app/youtube-comment-raffle/lib/actions";
 import { useRef, useState } from "react";
 import { YoutubeVideoListResponse } from "./type";
 
@@ -13,10 +17,10 @@ const Page = () => {
         className="flex flex-col"
         onSubmit={async (e) => {
           e.preventDefault();
-
-          const metadata: YoutubeVideoListResponse =
-            await fetchYoutubeVideoMetadata(inputRef.current?.value || "");
-          console.log(metadata.items[0]);
+          const result = await getYoutubeVideoCustomData(
+            inputRef.current?.value || ""
+          );
+          console.log(result);
         }}
       >
         <label>유튜브 링크를 넣어주세요!</label>

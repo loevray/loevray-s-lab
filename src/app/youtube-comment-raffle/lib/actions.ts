@@ -1,17 +1,18 @@
 'use server'
 
 import parseVideoIdFromYoutubeLink from "@/utils/parseVideoIdFromYoutubeLink";
-import { YoutubeCommentsThreadListResponse, YoutubeThunmbnailPropertyType, YoutubeVideoListResponse } from "../type";
+import { YoutubeCommentThread, YoutubeCommentsThreadListResponse, YoutubeThunmbnailPropertyType, YoutubeVideoListResponse } from "../type";
 import YOUTUBE_API from "@/constants/YoutubeComment";
+import calculateChunkRequests from "@/utils/calculateChunkRequests";
 
 
-export async function fetchYoutubeCommentThread(link:string):Promise<YoutubeCommentsThreadListResponse>{
+export async function fetchYoutubeCommentThread(link:string, nextPage = '', maxResults=100):Promise<YoutubeCommentsThreadListResponse>{
   const {COMMENTS:{THREAD:{API_END_POINT,PARTS}}} = YOUTUBE_API
   try{
     const videoId = parseVideoIdFromYoutubeLink(link);
     if(!videoId) throw new Error('유튜브 링크가 정확하지 않습니다!')
       
-    const fetchUrl = `${API_END_POINT}?part=${PARTS}&videoId=${videoId}&key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY}`
+    const fetchUrl = `${API_END_POINT}?part=${PARTS}&videoId=${videoId}${nextPage && `&pageToken=${nextPage}`}&maxResults=${maxResults}&key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY}`
     const response = await fetch(fetchUrl);
     if(!response.ok) throw new Error('유튜브 api요청에 실패했습니다.')
       
@@ -23,7 +24,7 @@ export async function fetchYoutubeCommentThread(link:string):Promise<YoutubeComm
 }
 
 export async function fetchYoutubeVideoMetadata(link:string):Promise<YoutubeVideoListResponse>{
-  const {COMMENTS:{LIST:{API_END_POINT,PARTS}}} = YOUTUBE_API
+  const {VIDEO:{API_END_POINT,PARTS}} = YOUTUBE_API
   try{
     const videoId = parseVideoIdFromYoutubeLink(link);
     if(!videoId) throw new Error('유튜브 링크가 정확하지 않습니다!')
@@ -44,18 +45,31 @@ interface YoutubeVideoCustomData {
   channelTitle:string;
   commentCount:number;
   thumnail:YoutubeThunmbnailPropertyType;
-  comments:[]
+  comments:YoutubeCommentsThreadListResponse[]
 }
+
+interface RelayFetchProps<T, K> {
+  initialParam: T;
+  maxCount: number;
+  fetchFn: (param: T) => Promise<K>; // fetchFn이 Promise를 반환한다는 것을 명시
+  nextParam: (response: K) => T;
+}
+
+const relayFetch = async <T, K>({ fetchFn, maxCount, initialParam, nextParam }: RelayFetchProps<T, K>) => {
+  const iteration = Array(maxCount).fill(0).map((_, i) => i);
+  const result: K[] = [];
+  let response: Awaited<K> | undefined;
+  
+  for await (const count of iteration) {
+    response = await fetchFn(count === 0 ? initialParam : nextParam(response!)); 
+    result.push(response);
+  }
+  
+  return result;
+};
 
 export async function getYoutubeVideoCustomData(link:string):Promise<YoutubeVideoCustomData>{
 
-  /* 
-    1. 비디오 데이터 긁어오기
-      1-1. 영상제목, 썸네일 보여주기
-    2. 현재 댓글 카운트를 기반으로 몇개씩 fetchYoutubeCommentThread할건지 계산하기 => 함수제작(페이지 네이션 같은 함수)
-    3.promise.all로 fetchyoutubecommentThread묶어서 fetching
-    4.모든 댓글 저장 후 추첨
-  */
   try{
     const videoMetaData = await fetchYoutubeVideoMetadata(link);
     const videoItem = videoMetaData.items[0];
@@ -64,14 +78,20 @@ export async function getYoutubeVideoCustomData(link:string):Promise<YoutubeVide
     
     const chunkPerRequest = calculateChunkRequests(+commentCount,YOUTUBE_API.COMMENTS.THREAD.MAX_RESULTS);
     
-    const promiseArray = [];
-    for(let i = 0; i<chunkPerRequest; ++i){
-      promiseArray.push()
-     }
+    const comments = await relayFetch({
+      fetchFn:(nextPage:string) => fetchYoutubeCommentThread(link,nextPage),
+      initialParam: '',
+      nextParam: (response:YoutubeCommentsThreadListResponse) => response.nextPageToken,
+      maxCount:chunkPerRequest
+    })
     
     
     return {
-      title,channelTitle,thumnail:thumbnailsDefault,commentCount:+commentCount
+      title,
+      channelTitle,
+      thumnail:thumbnailsDefault,
+      commentCount:+commentCount, 
+      comments
     }
   } catch(e){
     console.error('getYoutubeVideoCumstomData error', e);
@@ -81,4 +101,3 @@ export async function getYoutubeVideoCustomData(link:string):Promise<YoutubeVide
 
 }
 
-export const calculateChunkRequests = (maxChunkPerReuqest:number, totalChunk:number) => Math.ceil(maxChunkPerReuqest/totalChunk)
