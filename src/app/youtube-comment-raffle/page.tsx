@@ -17,6 +17,7 @@ const Page = () => {
             await fetchYoutubeCommentThread(inputRef.current?.value || "");
 
           setComments(parsedYoutubeCommentThread(data.items));
+          console.log(data.items);
         }}
       >
         <label>유튜브 링크를 넣어주세요!</label>
