@@ -6,6 +6,7 @@ import {
   fetchYoutubeVideoMetadata,
 } from "@/app/youtube-comment-raffle/lib/actions";
 import YOUTUBE_API from "@/constants/YoutubeComment";
+import raffle from "@/utils/raffle";
 import { useRef, useState } from "react";
 
 const Page = () => {
@@ -30,7 +31,7 @@ const Page = () => {
   const raffleComment = () => {
     if (videoData) {
       const maxNumber = videoData.commentCount;
-      const winnerNumber = Math.floor(Math.random() * maxNumber) + 1;
+      const [winnerNumber] = raffle({ low: 1, high: maxNumber });
       const winnerIndex = Math.floor(
         winnerNumber / YOUTUBE_API.COMMENTS.THREAD.MAX_RESULTS
       );
