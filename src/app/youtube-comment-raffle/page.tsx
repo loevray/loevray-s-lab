@@ -10,6 +10,7 @@ import { useRef, useState } from "react";
 import Button from "../ui/common/Button";
 import VideoInfo from "../ui/youtube-comment-raflle/VideoInfo";
 import { CustomCommentDataType } from "@/utils/parsedYoutubeCommentThread";
+import Comment from "../ui/youtube-comment-raflle/Comment";
 
 const Page = () => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -52,17 +53,19 @@ const Page = () => {
   const handleSubmitYoutubeLink = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const videoData = await fetchYoutubeVideoMetadata(
-      inputRef.current?.value || ""
-    );
+    const link = inputRef.current?.value || "";
+
+    //react hook form 등으로 validation필요
+    if (link === "") return alert("링크가 존재하지 않습니다");
+
+    const videoData = await fetchYoutubeVideoMetadata(link);
     setVideoData(videoData);
 
-    const result = await fetchYoutubeToplevelComments(
-      inputRef.current?.value || "",
+    const commentData = await fetchYoutubeToplevelComments(
+      link,
       videoData.commentCount
     );
-    console.log(result);
-    setComments(result);
+    setComments(commentData);
   };
 
   return (
@@ -120,12 +123,13 @@ const Page = () => {
           </div>
         </form>
       </section>
-      <section className="w-1/2 bg-teal-200 flex flex-col items-center">
-        <div className="flex flex-col h-60 bg-red-200 w-full overflow-y-auto">
-          {comments.map(({ authorDisplayName, textOriginal }) => (
-            <span
-              key={`${authorDisplayName}${textOriginal}`}
-            >{`${authorDisplayName}님의 댓글 : ${textOriginal}`}</span>
+      <section className="w-1/2 flex flex-col items-center">
+        <div className="flex flex-col h-60 w-full overflow-y-auto gap-1.6">
+          {comments.map((comment) => (
+            <Comment
+              key={`${comment.authorDisplayName}${comment.publishedAt}`}
+              {...comment}
+            />
           ))}
         </div>
       </section>
