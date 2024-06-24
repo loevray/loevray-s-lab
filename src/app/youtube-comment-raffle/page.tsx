@@ -124,7 +124,7 @@ const Page = () => {
         </form>
       </section>
       <section className="w-1/2 flex flex-col items-center">
-        <div className="flex flex-col h-60 w-full overflow-y-auto gap-1.6">
+        <div className="flex flex-col h-70 w-full overflow-y-auto gap-1.6">
           {comments.map((comment) => (
             <Comment
               key={`${comment.authorDisplayName}${comment.publishedAt}`}

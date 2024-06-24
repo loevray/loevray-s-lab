@@ -2,6 +2,7 @@ import { CustomCommentDataType } from "@/utils/parsedYoutubeCommentThread";
 import Avatar from "../common/Avatar/Avatar";
 import getRelativeTime from "@/utils/getRelativeTime";
 
+//코멘트 컴포넌트도 compound패턴 적용하면 좋아보임(임시)
 const Comment = ({
   authorDisplayName,
   authorProfileImageUrl,
@@ -23,8 +24,8 @@ const Comment = ({
           <span className="font-bold">{authorDisplayName}</span>
           <span className="text-1.2 text-gray-400">
             {getRelativeTime(publishedAt)}
+            {isModified && " (수정 됨)"}
           </span>
-          {isModified && <span>(수정 됨)</span>}
         </div>
         <span className="text-1.4">{textOriginal}</span>
         <div className="flex gap-1">
