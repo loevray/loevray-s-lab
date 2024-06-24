@@ -1,4 +1,4 @@
-const raffle = (range:{low:number,high:number},maxWinner:number) => {
+const raffle = (range:{low:number,high:number},maxWinner:number = 1) => {
   const {low,high} = range;
   
   const winners = new Set();
@@ -10,3 +10,4 @@ const raffle = (range:{low:number,high:number},maxWinner:number) => {
   return Array.from(winners)
 }
 
+export default raffle
