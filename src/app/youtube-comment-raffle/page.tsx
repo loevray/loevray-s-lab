@@ -27,6 +27,10 @@ const DEFAULT_VIDEO_CUSTOM_DATA = {
   },
 };
 
+export type SortType = {
+  [key in "좋아요순" | "최신순"]: boolean;
+};
+
 const Page = () => {
   const youtubeInputRef = useRef<HTMLInputElement>(null);
   const [comments, setComments] = useState<CustomCommentDataType[]>([]);
@@ -38,10 +42,37 @@ const Page = () => {
     reply: false,
   });
 
+  const [sortType, setSortType] = useState<SortType>({
+    좋아요순: true,
+    최신순: false,
+  });
+
   const onCommentTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
 
     setCommentType((prev) => ({ ...prev, [value]: true }));
+  };
+
+  const onSortTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { value } = e.target;
+    setSortType((prev) => ({
+      ...(Object.fromEntries(
+        Object.entries(prev).map(([key]) => [key, false])
+      ) as SortType),
+      [value]: true,
+    }));
+
+    if (value === "좋아요순") {
+      setComments((prev) => prev.sort((a, b) => b.likeCount - a.likeCount));
+    } else {
+      setComments((prev) =>
+        prev.sort(
+          (a, b) =>
+            new Date(b.publishedAt).getTime() -
+            new Date(a.publishedAt).getTime()
+        )
+      );
+    }
   };
 
   const raffleComment = () => {
@@ -106,9 +137,16 @@ const Page = () => {
           </form>
         </div>
       </section>
-      <section className="w-1/2 flex flex-col items-center">
-        <div>좋아요순, 최신순 정렬</div>
+      <section className="w-1/2 flex flex-col items-center gap-6">
         <div className="flex flex-col h-60 w-full overflow-y-auto gap-1.6 px-2">
+          <select
+            className="w-10 border-2 border-solid border-black"
+            onChange={onSortTypeChange}
+            disabled={!comments.length}
+          >
+            <option>최신순</option>
+            <option>좋아요순</option>
+          </select>
           {comments.map((comment) => (
             <Comment
               key={`${comment.authorDisplayName}${comment.publishedAt}`}
