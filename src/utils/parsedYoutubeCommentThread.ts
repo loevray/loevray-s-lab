@@ -7,15 +7,16 @@ export interface CustomCommentDataType  {
   publishedAt:string;
   updatedAt:string;
   likeCount:number;
-  isModified:boolean
+  authorProfileImageUrl:string;
+  isModified:boolean;
 }
 
 const parsedYoutubeCommentThread = (data: YoutubeCommentThread[]): CustomCommentDataType[] => 
   data.map(({snippet:
     {topLevelComment:
-      {snippet:{authorDisplayName,textOriginal,publishedAt,updatedAt,likeCount}}
+      {snippet:{authorDisplayName,authorProfileImageUrl,textOriginal,publishedAt,updatedAt,likeCount,}}
     }
-  }) => ({authorDisplayName,textOriginal,publishedAt,updatedAt,likeCount,isModified:publishedAt !==updatedAt}));
+  }) => ({authorDisplayName,authorProfileImageUrl,textOriginal,publishedAt,updatedAt,likeCount,isModified:publishedAt !==updatedAt}));
 
 
 export default parsedYoutubeCommentThread
