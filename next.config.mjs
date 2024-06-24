@@ -8,8 +8,13 @@ const nextConfig = {
         port: "",
         pathname: "/vi/**",
       },
+      {
+        protocol: "https",
+        hostname: "placehold.co",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
 };
-("https://i.ytimg.com/vi/ZHaOU6E4pWU/sddefault.jpg");
 export default nextConfig;

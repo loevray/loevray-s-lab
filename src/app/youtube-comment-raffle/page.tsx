@@ -14,7 +14,17 @@ import { CustomCommentDataType } from "@/utils/parsedYoutubeCommentThread";
 const Page = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [comments, setComments] = useState<CustomCommentDataType[]>([]);
-  const [videoData, setVideoData] = useState<YoutubeVideoCustomData>();
+  const [videoData, setVideoData] = useState<YoutubeVideoCustomData>({
+    title: "영상 제목",
+    channelTitle: "채널 이름",
+    commentCount: 0,
+    viewCount: 0,
+    thumbnail: {
+      url: "https://placehold.co/600x400/png",
+      width: 500,
+      height: 300,
+    },
+  });
   const [commentListMode, setCommentListMode] = useState<{
     thread: boolean;
     reply: boolean;
@@ -58,7 +68,7 @@ const Page = () => {
   return (
     <main className="w-full h-full flex justify-center">
       <section className="w-1/2 flex flex-col items-center">
-        {videoData && <VideoInfo {...videoData} />}
+        <VideoInfo {...videoData} />
         <form className="flex gap-2">
           <div>
             <input
