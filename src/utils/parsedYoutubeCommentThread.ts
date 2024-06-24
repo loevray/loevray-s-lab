@@ -1,10 +1,23 @@
 import { YoutubeCommentThread } from "@/app/youtube-comment-raffle/type";
 
-const parsedYoutubeCommentThread = (data: YoutubeCommentThread[]): { [key: string]: string } => 
-  data.reduce((acc, {snippet: {topLevelComment: {snippet: {authorDisplayName, textOriginal}}}}) => {
-    acc[authorDisplayName] = textOriginal;
-    return acc;
-  }, {} as { [key: string]: string });
+
+export interface CustomCommentDataType  {
+  authorDisplayName:string;
+  textOriginal:string;
+  publishedAt:string;
+  updatedAt:string;
+  likeCount:number;
+  isModified:boolean
+}
+
+const parsedYoutubeCommentThread = (data: YoutubeCommentThread[]): CustomCommentDataType[] => 
+  data.map(({snippet:
+    {topLevelComment:
+      {snippet:{authorDisplayName,textOriginal,publishedAt,updatedAt,likeCount}}
+    }
+  }) => ({authorDisplayName,textOriginal,publishedAt,updatedAt,likeCount,isModified:publishedAt !==updatedAt}));
 
 
 export default parsedYoutubeCommentThread
+
+// 닉네임, publishedAt, 수정됨(publishedAt !== updatedAt), 댓글내용, 좋아요

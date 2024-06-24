@@ -5,7 +5,7 @@ import { YoutubeCommentsThreadListResponse, YoutubeThunmbnailPropertyType, Youtu
 import YOUTUBE_API from "@/constants/YoutubeComment";
 import calculateChunkRequests from "@/utils/calculateChunkRequests";
 import relayFetch from "@/utils/relayFetch";
-import parsedYoutubeCommentThread from "@/utils/parsedYoutubeCommentThread";
+import parsedYoutubeCommentThread, { CustomCommentDataType } from "@/utils/parsedYoutubeCommentThread";
 
 export async function fetchYoutubeCommentThread(link:string, nextPage = '', maxResults=100):Promise<YoutubeCommentsThreadListResponse>{
   const {COMMENTS:{THREAD:{API_END_POINT,PARTS}}} = YOUTUBE_API
@@ -61,7 +61,7 @@ export async function fetchYoutubeVideoMetadata(link:string):Promise<YoutubeVide
   }
 }
 
-export async function fetchYoutubeToplevelComments(link:string, commentCount:number):Promise<{[key:string]:string}[]>{
+export async function fetchYoutubeToplevelComments(link:string, commentCount:number):Promise<CustomCommentDataType[]>{
 
   try{
     const chunkPerRequest = calculateChunkRequests(commentCount,YOUTUBE_API.COMMENTS.THREAD.MAX_RESULTS);
@@ -73,7 +73,7 @@ export async function fetchYoutubeToplevelComments(link:string, commentCount:num
       maxCount:chunkPerRequest
     })
     
-    const parsedComments = comments.map((comment) => parsedYoutubeCommentThread(comment.items));
+    const parsedComments = comments.flatMap((comment) => parsedYoutubeCommentThread(comment.items));
     
     return parsedComments;
   } catch(e){

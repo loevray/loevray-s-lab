@@ -5,15 +5,15 @@ import {
   fetchYoutubeToplevelComments,
   fetchYoutubeVideoMetadata,
 } from "@/app/youtube-comment-raffle/lib/actions";
-import YOUTUBE_API from "@/constants/YoutubeComment";
 import raffle from "@/utils/raffle";
-import { useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Button from "../ui/common/Button";
 import VideoInfo from "../ui/youtube-comment-raflle/VideoInfo";
+import { CustomCommentDataType } from "@/utils/parsedYoutubeCommentThread";
 
 const Page = () => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [comments, setComments] = useState<{ [key: string]: string }[]>([]);
+  const [comments, setComments] = useState<CustomCommentDataType[]>([]);
   const [videoData, setVideoData] = useState<YoutubeVideoCustomData>();
   const [commentListMode, setCommentListMode] = useState<{
     thread: boolean;
@@ -23,11 +23,6 @@ const Page = () => {
     reply: false,
   });
 
-  const parsedFromComments = useMemo(
-    () => comments.flatMap((commentChunk) => Object.entries(commentChunk)),
-    [comments]
-  );
-
   const onRadioButtonChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
 
@@ -35,16 +30,12 @@ const Page = () => {
   };
 
   const raffleComment = () => {
-    if (videoData) {
+    if (videoData && comments.length) {
       const maxNumber = videoData.commentCount;
-      const [winnerNumber] = raffle({ low: 1, high: maxNumber });
-      const winnerIndex = Math.floor(
-        winnerNumber / YOUTUBE_API.COMMENTS.THREAD.MAX_RESULTS
-      );
-      const winner = Object.entries(comments[winnerIndex])[
-        winnerNumber % YOUTUBE_API.COMMENTS.THREAD.MAX_RESULTS
-      ];
-      alert(`nickname:${winner[0]}, text:${winner[1]}`);
+      const [winnerIndex] = raffle({ low: 1, high: maxNumber });
+      const winner = comments[winnerIndex];
+      const { authorDisplayName, textOriginal } = winner;
+      alert(`${authorDisplayName}: ${textOriginal}`);
     }
   };
 
@@ -66,7 +57,7 @@ const Page = () => {
 
   return (
     <main className="w-full h-full flex justify-center">
-      <section className="w-1/2 bg-gray-200 flex flex-col items-center">
+      <section className="w-1/2 flex flex-col items-center">
         {videoData && <VideoInfo {...videoData} />}
         <form className="flex gap-2">
           <div>
@@ -121,10 +112,10 @@ const Page = () => {
       </section>
       <section className="w-1/2 bg-teal-200 flex flex-col items-center">
         <div className="flex flex-col h-60 bg-red-200 w-full overflow-y-auto">
-          {parsedFromComments.map(([nickname, comment]) => (
+          {comments.map(({ authorDisplayName, textOriginal }) => (
             <span
-              key={`${nickname}${comment}`}
-            >{`${nickname}님의 댓글 : ${comment}`}</span>
+              key={`${authorDisplayName}${textOriginal}`}
+            >{`${authorDisplayName}님의 댓글 : ${textOriginal}`}</span>
           ))}
         </div>
       </section>

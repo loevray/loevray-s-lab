@@ -44,7 +44,7 @@ export interface YoutubeComments {
     parentId?: string,
     canRate: boolean,
     viewerRating: string,
-    likeCount: Number,
+    likeCount: number,
     moderationStatus?: string,
     publishedAt: string, // ISO 8601 formatted date type
     updatedAt: string // ISO 8601 formatted date type
