@@ -10,14 +10,14 @@ const VideoInfo = ({
   viewCount,
 }: VideoInfoProps) => {
   return (
-    <Card>
+    <Card className="hover:brightness-[.85] cursor-pointer">
       <CardImage
         src={thumbnail.url}
         width={thumbnail.width}
         height={thumbnail.height}
         alt="youtube-thumbnail"
       />
-      <Card.Content className="flex flex-col">
+      <Card.Content className="flex flex-col p-0.5">
         <span className="font-bold">{title}</span>
         <span className="text-gray-400 text-1.4">{channelTitle}</span>
         <span className="text-gray-400 text-1.4">조회수 {viewCount}회</span>
