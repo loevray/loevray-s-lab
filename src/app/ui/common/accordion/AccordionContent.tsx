@@ -1,4 +1,4 @@
-import { useAccordionContext } from "@/provider/AccordionContextProvider";
+import { useAccordionContext } from "@/app/ui/common/accordion/provider/AccordionContextProvider";
 import { HTMLAttributes, ReactNode } from "react";
 
 interface AccordionContentProps extends HTMLAttributes<HTMLDivElement> {}

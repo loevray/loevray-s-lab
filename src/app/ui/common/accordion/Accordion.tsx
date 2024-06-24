@@ -1,4 +1,4 @@
-import AccordionContextProvider from "@/provider/AccordionContextProvider";
+import AccordionContextProvider from "@/app/ui/common/accordion/provider/AccordionContextProvider";
 import { HTMLAttributes, ReactNode, SyntheticEvent } from "react";
 import AccordionSummary, { AccordionSummaryType } from "./AccordionSummary";
 import AccordionContent from "./AccordionContent";
