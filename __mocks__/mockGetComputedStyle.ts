@@ -1,4 +1,3 @@
-import mocked from 'ts-jest'
 
 
 export const mockGetComputedStyle = (fontSize:number) => {
