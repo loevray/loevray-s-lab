@@ -15,12 +15,12 @@ const Button = ({
   ...rest
 }: ButtonProps) => {
   const color: { [key in DefaultColors]: string } = {
-    miku: "bg-cyan-500 hover:bg-cyan-400",
-    rin: "bg-yellow-300 hover:bg-yellow-200",
+    miku: "bg-cyan-500 hover:bg-cyan-400 text-white",
+    rin: "bg-yellow-300 hover:bg-yellow-200 text-black",
   };
   return (
     <button
-      className={`${color[colorPalette]} w-[100px] h-[30px] text-white ${className} cursor-pointer  rounded-sm  shadow-md `}
+      className={`${color[colorPalette]} w-[100px] h-[30px]  ${className} cursor-pointer  rounded-sm  shadow-md `}
       {...rest}
     >
       {text ? text : children}
