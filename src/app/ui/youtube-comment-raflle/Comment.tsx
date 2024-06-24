@@ -1,8 +1,14 @@
 import { CustomCommentDataType } from "@/utils/parsedYoutubeCommentThread";
 import Avatar from "../common/Avatar/Avatar";
 import getRelativeTime from "@/utils/getRelativeTime";
+import useToggle from "@/hooks/useToggle";
+import { HTMLAttributes } from "react";
 
 //코멘트 컴포넌트도 compound패턴 적용하면 좋아보임(임시)
+
+interface CommentProps
+  extends CustomCommentDataType,
+    HTMLAttributes<HTMLDivElement> {}
 const Comment = ({
   authorDisplayName,
   authorProfileImageUrl,
@@ -10,9 +16,20 @@ const Comment = ({
   publishedAt,
   likeCount,
   isModified,
-}: CustomCommentDataType) => {
+}: CommentProps) => {
+  const { isOn, toggle } = useToggle();
   return (
-    <div className="flex gap-1 cursor-pointer bg-white shadow-md rounded-xl py-1 hover:brightness-90">
+    <div
+      onClick={toggle}
+      className={`flex gap-1 cursor-pointer bg-white shadow-md rounded-xl py-1 relative p-1 ${
+        isOn ? "brightness-75 hover:brightness-50" : "hover:brightness-90"
+      }`}
+    >
+      {isOn && (
+        <span className="text-3 text-green-500 absolute top-1/2 left-1/2 translate-y-[-50%]">
+          ✔
+        </span>
+      )}
       <Avatar
         src={authorProfileImageUrl}
         alt={`${authorDisplayName}'s avatar`}

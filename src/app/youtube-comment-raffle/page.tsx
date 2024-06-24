@@ -70,61 +70,71 @@ const Page = () => {
 
   return (
     <main className="w-full h-full flex justify-center">
-      <section className="w-1/2 flex flex-col items-center">
+      <section className="w-1/2 flex flex-col items-center px-2 gap-7">
         <VideoInfo {...videoData} />
-        <form className="flex gap-2">
-          <div>
-            <input
-              className="h-1.5"
-              type="radio"
-              name="youtube-comments"
-              value="thread"
-              onChange={onRadioButtonChange}
-              defaultChecked={commentListMode.thread}
-            />
-            <label>특정 영상의 댓글 목록 가져오기</label>
-          </div>
-          <div>
-            <input
-              className="h-1.5"
-              type="radio"
-              name="youtube-comments"
-              data-name="comments"
-              value="reply"
-              onChange={onRadioButtonChange}
-              defaultChecked={commentListMode.reply}
-            />
-            <label>특정 댓글의 답글 목록 가져오기</label>
-          </div>
-        </form>
-        <form className="flex flex-col" onSubmit={handleSubmitYoutubeLink}>
-          <label>유튜브 링크를 넣어주세요!</label>
-          <input
-            placeholder="https://youtube.com/watch?v=videoId"
-            className="w-50 h-3.5 pl-1 border-2 border-black border-solid"
-            name="link"
-            ref={inputRef}
-          />
-          <div className="flex gap-2 pt-2">
+        <div className="w-full flex items-center gap-6">
+          <h1 className="text-2 font-bold">1. 유튜브 링크 삽입</h1>
+          <form className="flex flex-col" onSubmit={handleSubmitYoutubeLink}>
+            <label className="text-1.2 text-gray-500">
+              ex{")"} youtube.com/watch?v=xxx, youtu.be/xxx,
+              youtube.com/shorts/xxx
+            </label>
+            <div className="flex">
+              <input
+                placeholder="https://youtube.com/watch?v=videoId"
+                className="w-45 h-3 pl-1 shadow-xl bg-yellow-50 focus:bg-yellow-100 focus:outline-none"
+                name="link"
+                ref={inputRef}
+              />
+              <Button text="검색" colorPalette="rin" className="shadow-xl" />
+            </div>
+          </form>
+        </div>
+
+        <div className="w-full flex items-center gap-6">
+          <h1 className="text-2 font-bold">2. 댓글 유형 선택</h1>
+          <form className="flex gap-2">
+            <div>
+              <input
+                className="h-1.5"
+                type="radio"
+                name="youtube-comments"
+                value="thread"
+                onChange={onRadioButtonChange}
+                defaultChecked={commentListMode.thread}
+                id="thread"
+              />
+              <label htmlFor="thread">댓글 목록</label>
+            </div>
+            <div>
+              <input
+                className="h-1.5"
+                type="radio"
+                name="youtube-comments"
+                data-name="comments"
+                value="reply"
+                onChange={onRadioButtonChange}
+                defaultChecked={commentListMode.reply}
+                id="reply"
+              />
+              <label htmlFor="reply">답글 목록</label>
+            </div>
             <Button
-              type="submit"
+              type="button"
               text="불러오기"
               colorPalette="rin"
-              className="text-black"
+              className="w-15"
             />
-            <Button
-              disabled={!!!comments.length}
-              onClick={raffleComment}
-              type="button"
-              text="랜덤 추첨"
-              colorPalette="rin"
-              className="text-black"
-            />
-          </div>
-        </form>
+          </form>
+        </div>
+
+        <div className="w-full flex items-center gap-6">
+          <h1 className="text-2 font-bold">3. 추첨 방식 결정</h1>
+          <div>몇명인지?</div>
+        </div>
       </section>
       <section className="w-1/2 flex flex-col items-center">
-        <div className="flex flex-col h-70 w-full overflow-y-auto gap-1.6">
+        <div className="flex flex-col h-70 w-full overflow-y-auto gap-1.6 px-2">
           {comments.map((comment) => (
             <Comment
               key={`${comment.authorDisplayName}${comment.publishedAt}`}
