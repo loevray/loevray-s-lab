@@ -9,6 +9,7 @@ import YOUTUBE_API from "@/constants/YoutubeComment";
 import raffle from "@/utils/raffle";
 import { useMemo, useRef, useState } from "react";
 import Button from "../ui/common/Button";
+import VideoInfo from "../ui/youtube-comment-raflle/VideoInfo";
 
 const Page = () => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -66,7 +67,7 @@ const Page = () => {
   return (
     <main className="w-full h-full flex justify-center">
       <section className="w-1/2 bg-gray-200 flex flex-col items-center">
-        <article></article>
+        {videoData && <VideoInfo {...videoData} />}
         <form className="flex gap-2">
           <div>
             <input
@@ -101,15 +102,20 @@ const Page = () => {
             ref={inputRef}
           />
           <div className="flex gap-2 pt-2">
-            <Button>가져왓!!!</Button>
-            <button
+            <Button
+              type="submit"
+              text="불러오기"
+              colorPalette="rin"
+              className="text-black"
+            />
+            <Button
               disabled={!!!comments.length}
-              className="border-2 border-solid border-black w-10"
               onClick={raffleComment}
               type="button"
-            >
-              추첨!!
-            </button>
+              text="추첨"
+              colorPalette="rin"
+              className="text-black"
+            />
           </div>
         </form>
       </section>
