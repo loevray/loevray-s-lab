@@ -7,13 +7,12 @@ import {
 } from "@/app/youtube-comment-raffle/lib/actions";
 import YOUTUBE_API from "@/constants/YoutubeComment";
 import raffle from "@/utils/raffle";
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 const Page = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [comments, setComments] = useState<{ [key: string]: string }[]>([]);
   const [videoData, setVideoData] = useState<YoutubeVideoCustomData>();
-
   const [commentListMode, setCommentListMode] = useState<{
     thread: boolean;
     reply: boolean;
@@ -21,6 +20,11 @@ const Page = () => {
     thread: true,
     reply: false,
   });
+
+  const parsedFromComments = useMemo(
+    () => comments.flatMap((commentChunk) => Object.entries(commentChunk)),
+    [comments]
+  );
 
   const onRadioButtonChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -42,6 +46,22 @@ const Page = () => {
     }
   };
 
+  const handleSubmitYoutubeLink = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const videoData = await fetchYoutubeVideoMetadata(
+      inputRef.current?.value || ""
+    );
+    setVideoData(videoData);
+
+    const result = await fetchYoutubeToplevelComments(
+      inputRef.current?.value || "",
+      videoData.commentCount
+    );
+    console.log(result);
+    setComments(result);
+  };
+
   return (
     <main className="w-full h-full flex justify-center">
       <section className="w-1/2 bg-gray-200 flex flex-col items-center">
@@ -53,6 +73,7 @@ const Page = () => {
               name="youtube-comments"
               value="thread"
               onChange={onRadioButtonChange}
+              defaultChecked={commentListMode.thread}
             />
             <label>특정 영상의 댓글 목록 가져오기</label>
           </div>
@@ -64,29 +85,12 @@ const Page = () => {
               data-name="comments"
               value="reply"
               onChange={onRadioButtonChange}
+              defaultChecked={commentListMode.reply}
             />
             <label>특정 댓글의 답글 목록 가져오기</label>
           </div>
         </form>
-        <form
-          className="flex flex-col"
-          onSubmit={async (e) => {
-            e.preventDefault();
-            const videoData = await fetchYoutubeVideoMetadata(
-              inputRef.current?.value || ""
-            );
-
-            setVideoData(videoData);
-
-            const result = await fetchYoutubeToplevelComments(
-              inputRef.current?.value || "",
-              videoData.commentCount
-            );
-
-            console.log(result);
-            setComments(result);
-          }}
-        >
+        <form className="flex flex-col" onSubmit={handleSubmitYoutubeLink}>
           <label>유튜브 링크를 넣어주세요!</label>
           <input
             placeholder="https://youtube.com/watch?v=videoId"
@@ -111,15 +115,11 @@ const Page = () => {
       </section>
       <section className="w-1/2 bg-teal-200 flex flex-col items-center">
         <div className="flex flex-col h-60 bg-red-200 w-full overflow-y-auto">
-          {comments.length
-            ? comments.map((commentChunk) =>
-                Object.entries(commentChunk).map(([nickname, comment]) => (
-                  <span
-                    key={nickname}
-                  >{`${nickname}님의 댓글 : ${comment}`}</span>
-                ))
-              )
-            : null}
+          {parsedFromComments.map(([nickname, comment]) => (
+            <span
+              key={`${nickname}${comment}`}
+            >{`${nickname}님의 댓글 : ${comment}`}</span>
+          ))}
         </div>
       </section>
     </main>

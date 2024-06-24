@@ -70,6 +70,8 @@ export async function fetchYoutubeToplevelComments(link:string, commentCount:num
       nextParam: (response:YoutubeCommentsThreadListResponse) => response.nextPageToken,
       maxCount:chunkPerRequest
     })
+    
+    comments.map(({nextPageToken}) => console.log(nextPageToken))
     const parsedComments = comments.map((comment) => parsedYoutubeCommentThread(comment.items));
     
     return parsedComments

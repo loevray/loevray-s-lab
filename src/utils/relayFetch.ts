@@ -12,12 +12,9 @@ const relayFetch = async <T, K>({ fetchFn, maxCount, initialParam, nextParam }: 
   
   for await (const count of iteration) {
     try{
-      let _nextParam;
-      if(response !== undefined){
-        _nextParam = nextParam(response)
-      } else {
-        _nextParam = initialParam
-      }
+      const _nextParam = response === undefined ? initialParam : nextParam(response);
+      
+      if(_nextParam === undefined) break;
       response = await fetchFn(_nextParam); 
       result.push(response);
     } catch(e) {
