@@ -45,13 +45,13 @@ export async function fetchYoutubeVideoMetadata(link:string):Promise<YoutubeVide
     const videoMetaData:YoutubeVideoListResponse = await response.json();
     const videoItem = videoMetaData.items[0];
     
-    const {title,channelTitle,thumbnails:{default:thumbnailsDefault}} = videoItem.snippet;
+    const {title,channelTitle,thumbnails:{standard}} = videoItem.snippet;
     const {commentCount, viewCount} = videoItem.statistics;
     
     return {
       title,
       channelTitle,
-      thumbnail:thumbnailsDefault,
+      thumbnail:standard,
       commentCount: +commentCount,
       viewCount: +viewCount
     }
