@@ -1,7 +1,7 @@
 'use server'
 
 import parseVideoIdFromYoutubeLink from "@/utils/parseVideoIdFromYoutubeLink";
-import { YoutubeCommentThread, YoutubeCommentsThreadListResponse, YoutubeThunmbnailPropertyType, YoutubeVideoListResponse } from "../type";
+import { YoutubeCommentsThreadListResponse, YoutubeThunmbnailPropertyType, YoutubeVideoListResponse } from "../type";
 import YOUTUBE_API from "@/constants/YoutubeComment";
 import calculateChunkRequests from "@/utils/calculateChunkRequests";
 import relayFetch from "@/utils/relayFetch";
@@ -28,6 +28,7 @@ export interface YoutubeVideoCustomData {
   title:string;
   channelTitle:string;
   commentCount:number;
+  viewCount:number;
   thumbnail:YoutubeThunmbnailPropertyType;
 }
 
@@ -45,13 +46,14 @@ export async function fetchYoutubeVideoMetadata(link:string):Promise<YoutubeVide
     const videoItem = videoMetaData.items[0];
     
     const {title,channelTitle,thumbnails:{default:thumbnailsDefault}} = videoItem.snippet;
-    const {commentCount} = videoItem.statistics;
+    const {commentCount, viewCount} = videoItem.statistics;
     
     return {
       title,
       channelTitle,
       thumbnail:thumbnailsDefault,
       commentCount: +commentCount,
+      viewCount: +viewCount
     }
   } catch(e){
     console.error(e)
@@ -71,10 +73,9 @@ export async function fetchYoutubeToplevelComments(link:string, commentCount:num
       maxCount:chunkPerRequest
     })
     
-    comments.map(({nextPageToken}) => console.log(nextPageToken))
     const parsedComments = comments.map((comment) => parsedYoutubeCommentThread(comment.items));
     
-    return parsedComments
+    return parsedComments;
   } catch(e){
     console.error('getYoutubeVideoCumstomData error', e);
     throw e
