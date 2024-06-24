@@ -8,6 +8,7 @@ import {
 import YOUTUBE_API from "@/constants/YoutubeComment";
 import raffle from "@/utils/raffle";
 import { useMemo, useRef, useState } from "react";
+import Button from "../ui/common/Button";
 
 const Page = () => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -65,6 +66,7 @@ const Page = () => {
   return (
     <main className="w-full h-full flex justify-center">
       <section className="w-1/2 bg-gray-200 flex flex-col items-center">
+        <article></article>
         <form className="flex gap-2">
           <div>
             <input
@@ -99,9 +101,7 @@ const Page = () => {
             ref={inputRef}
           />
           <div className="flex gap-2 pt-2">
-            <button className="border-2 border-solid border-black w-10">
-              가져왓!!!
-            </button>
+            <Button>가져왓!!!</Button>
             <button
               disabled={!!!comments.length}
               className="border-2 border-solid border-black w-10"
