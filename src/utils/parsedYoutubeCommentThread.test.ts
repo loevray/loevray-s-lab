@@ -9,6 +9,7 @@ test('parse youtube comment like { name: comment }', () => {
       authorDisplayName: "User1",
       textOriginal: "This is a comment",
       publishedAt: "2023-01-01T00:00:00Z",
+      authorProfileImageUrl:'http://example.com/image1.jpg',
       updatedAt: "2023-01-01T00:00:00Z",
       likeCount: 5,
       isModified: false
@@ -17,6 +18,7 @@ test('parse youtube comment like { name: comment }', () => {
       authorDisplayName: "User2",
       textOriginal: "This is another comment",
       publishedAt: "2023-01-02T00:00:00Z",
+      authorProfileImageUrl:'http://example.com/image2.jpg',
       updatedAt: "2023-01-03T00:00:00Z",
       likeCount: 3,
       isModified: true
