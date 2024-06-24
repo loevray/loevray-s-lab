@@ -21,7 +21,7 @@ const Comment = ({
       />
       <div className="flex flex-col gap-0.4">
         <div className="flex items-center gap-0.4">
-          <span className="font-bold">{authorDisplayName}</span>
+          <span className="text-1.4 font-bold">{authorDisplayName}</span>
           <span className="text-1.2 text-gray-400">
             {getRelativeTime(publishedAt)}
             {isModified && " (수정 됨)"}

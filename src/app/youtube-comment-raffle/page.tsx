@@ -116,7 +116,7 @@ const Page = () => {
               disabled={!!!comments.length}
               onClick={raffleComment}
               type="button"
-              text="추첨"
+              text="랜덤 추첨"
               colorPalette="rin"
               className="text-black"
             />

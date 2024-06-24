@@ -20,7 +20,7 @@ const Button = ({
   };
   return (
     <button
-      className={`${color[colorPalette]} w-[100px] h-[30px]  ${className} cursor-pointer  rounded-sm  shadow-md `}
+      className={`${color[colorPalette]} w-10 h-3  ${className} cursor-pointer  rounded-sm  shadow-md `}
       {...rest}
     >
       {text ? text : children}
