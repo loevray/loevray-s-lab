@@ -7,7 +7,6 @@ import {
 } from "@/app/youtube-comment-raffle/lib/actions";
 import raffle from "@/utils/raffle";
 import { useRef, useState } from "react";
-import Button from "../ui/common/Button";
 import VideoInfo from "../ui/youtube-comment-raflle/VideoInfo";
 import { CustomCommentDataType } from "@/utils/parsedYoutubeCommentThread";
 import Comment from "../ui/youtube-comment-raflle/Comment";
@@ -57,22 +56,28 @@ const Page = () => {
     alert(`${authorDisplayName}: ${textOriginal}`);
   };
 
-  const handleSubmitYoutubeLink =
-    (link: string) => async (e: React.FormEvent) => {
-      e.preventDefault();
+  const handleSubmitYoutubeLink = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const link = youtubeInputRef.current?.value || "";
+    console.log("hi");
+    //react hook form 등으로 validation필요
+    if (link === "") return alert("링크가 존재하지 않습니다");
 
-      //react hook form 등으로 validation필요
-      if (link === "") return alert("링크가 존재하지 않습니다");
+    const videoData = await fetchYoutubeVideoMetadata(link);
+    setVideoData(videoData);
+  };
 
-      const videoData = await fetchYoutubeVideoMetadata(link);
-      setVideoData(videoData);
+  const handleSubmitCommentList = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const link = youtubeInputRef.current?.value || "";
+    if (link === "") return alert("링크가 존재하지 않습니다!");
 
-      const commentData = await fetchYoutubeToplevelComments(
-        link,
-        videoData.commentCount
-      );
-      setComments(commentData);
-    };
+    const commentData = await fetchYoutubeToplevelComments(
+      link,
+      videoData.commentCount
+    );
+    setComments(commentData);
+  };
 
   return (
     <main className="w-full h-full flex justify-center text-amber-950">
@@ -82,9 +87,7 @@ const Page = () => {
           <h1 className="text-2 font-bold">1. 유튜브 링크 삽입</h1>
           <YoutubeLinkForm
             inputRef={youtubeInputRef}
-            handleSubmit={() =>
-              handleSubmitYoutubeLink(youtubeInputRef.current?.value || "")
-            }
+            handleSubmit={handleSubmitYoutubeLink}
           />
         </div>
         <div className="w-full flex items-center gap-6">
@@ -92,6 +95,7 @@ const Page = () => {
           <CommentTypeForm
             onChange={onCommentTypeChange}
             commentType={commentType}
+            handleSubmit={handleSubmitCommentList}
           />
         </div>
         <div className="w-full flex items-center gap-6">

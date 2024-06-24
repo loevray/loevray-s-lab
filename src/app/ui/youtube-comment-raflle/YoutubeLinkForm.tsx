@@ -19,7 +19,12 @@ const YoutubeLinkForm = ({ inputRef, handleSubmit }: YoutubeLinkFormProps) => {
           name="link"
           ref={inputRef}
         />
-        <Button text="검색" colorPalette="rin" className="shadow-xl" />
+        <Button
+          type="submit"
+          text="검색"
+          colorPalette="rin"
+          className="shadow-xl"
+        />
       </div>
     </form>
   );
