@@ -16,7 +16,7 @@ const Button = ({
 }: ButtonProps) => {
   const color: { [key in DefaultColors]: string } = {
     miku: "bg-cyan-500 hover:bg-cyan-400 text-white",
-    rin: "bg-yellow-300 hover:bg-yellow-200 text-black",
+    rin: "bg-yellow-300 hover:bg-yellow-200 text-amber-950",
   };
   return (
     <button
