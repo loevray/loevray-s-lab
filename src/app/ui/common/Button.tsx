@@ -1,21 +1,26 @@
 import { ButtonHTMLAttributes, HTMLAttributes } from "react";
 
+type DefaultColors = "miku" | "rin";
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   text?: string;
-  width?: string;
-  height?: string;
+  colorPalette?: DefaultColors;
+  className?: string;
 }
 
 const Button = ({
   text,
   children,
-  width = "w-[100px]",
-  height = "h-[30px]",
+  colorPalette = "miku",
+  className,
   ...rest
 }: ButtonProps) => {
+  const color: { [key in DefaultColors]: string } = {
+    miku: "bg-cyan-500 hover:bg-cyan-400",
+    rin: "bg-yellow-300 hover:bg-yellow-200",
+  };
   return (
     <button
-      className={`bg-cyan-500 cursor-pointer hover:bg-cyan-400 rounded-sm text-white shadow-md ${width} ${height}`}
+      className={`${color[colorPalette]} w-[100px] h-[30px] text-white ${className} cursor-pointer  rounded-sm  shadow-md `}
       {...rest}
     >
       {text ? text : children}
