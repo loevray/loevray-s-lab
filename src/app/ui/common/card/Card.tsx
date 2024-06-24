@@ -4,9 +4,11 @@ import CardContent from "./CardContent";
 import CardImage from "./CardImage";
 
 interface CardProps extends HTMLAttributes<HTMLElement> {}
-const Card = ({ children }: CardProps) => {
+const Card = ({ children, className }: CardProps) => {
   return (
-    <article className={`w-30 h-25 shadow-lg bg-white rounded-2xl`}>
+    <article
+      className={`w-30 h-25 shadow-lg bg-white rounded-2xl ${className}`}
+    >
       {children}
     </article>
   );
