@@ -13,7 +13,7 @@ test('parse youtube comment like { name: comment }', () => {
       updatedAt: "2023-01-01T00:00:00Z",
       likeCount: 5,
       isModified: false,
-      id:'comment1'
+      commentId:'comment1'
     },
     {
       authorDisplayName: "User2",
@@ -23,7 +23,7 @@ test('parse youtube comment like { name: comment }', () => {
       updatedAt: "2023-01-03T00:00:00Z",
       likeCount: 3,
       isModified: true,
-      id:'comment2'
+      commentId:'comment2'
     }
   ]
   expect(parsedYoutubeCommentThread(DUMMY.YOUTUBE_COMMENTS)).toEqual(result)

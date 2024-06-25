@@ -9,7 +9,7 @@ export interface CustomCommentDataType  {
   likeCount:number;
   authorProfileImageUrl:string;
   isModified:boolean;
-  id:string;
+  commentId:string;
 }
 
 const parsedYoutubeCommentThread = (data: YoutubeCommentThread[]): CustomCommentDataType[] => 
@@ -17,7 +17,7 @@ const parsedYoutubeCommentThread = (data: YoutubeCommentThread[]): CustomComment
     {topLevelComment:
       {id,snippet:{authorDisplayName,authorProfileImageUrl,textOriginal,publishedAt,updatedAt,likeCount,}}
     }
-  }) => ({authorDisplayName,authorProfileImageUrl,id,textOriginal,publishedAt,updatedAt,likeCount,isModified:publishedAt !==updatedAt}));
+  }) => ({authorDisplayName,authorProfileImageUrl,commentId:id,textOriginal,publishedAt,updatedAt,likeCount,isModified:publishedAt !==updatedAt}));
 
 
 export default parsedYoutubeCommentThread
