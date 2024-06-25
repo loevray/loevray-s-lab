@@ -14,6 +14,8 @@ import YoutubeLinkForm from "../ui/youtube-comment-raflle/YoutubeLinkForm";
 import CommentTypeForm, {
   CommentType,
 } from "../ui/youtube-comment-raflle/CommentTypeForm";
+import WinnerCountForm from "../ui/youtube-comment-raflle/WinnerCountForm";
+import CommentList from "../ui/youtube-comment-raflle/CommentList";
 
 const DEFAULT_VIDEO_CUSTOM_DATA = {
   title: "영상 제목",
@@ -80,12 +82,11 @@ const Page = () => {
       const selectedComment = comments.find(
         ({ commentId }) => commentId === id
       ) as CustomCommentDataType;
-
       const isSelected = !!winnerComments.find(
         ({ commentId }) => commentId === id
       );
-
       const currentWinnersCount = winnerLimitInputRef.current?.value;
+
       if (!currentWinnersCount) return alert("당첨자 수를 결정해주세요!");
 
       if (isSelected) {
@@ -104,7 +105,6 @@ const Page = () => {
           ...prev,
           structuredClone(selectedComment),
         ]);
-
         setToggledComments((prev) => ({
           ...prev,
           [id]: true,
@@ -158,13 +158,7 @@ const Page = () => {
         </div>
         <div className="w-full flex items-center gap-6">
           <h1 className="text-2 font-bold">2. 당첨자 수 결정</h1>
-          <form>
-            <input
-              className="w-6.5 h-3 pl-1 shadow-xl bg-yellow-50 focus:bg-yellow-100 focus:outline-none"
-              ref={winnerLimitInputRef}
-            />
-            명
-          </form>
+          <WinnerCountForm winnerCountInputRef={winnerLimitInputRef} />
         </div>
         <div className="w-full flex items-center gap-6">
           <h1 className="text-2 font-bold">3. 댓글 유형 선택</h1>
@@ -176,28 +170,12 @@ const Page = () => {
         </div>
       </section>
       <section className="w-1/2 flex flex-col items-center gap-6">
-        <div className="flex flex-col w-full gap-4 ">
-          {!!comments.length && (
-            <select
-              className="w-10 border-2 border-solid border-black"
-              onChange={onSortTypeChange}
-              disabled={!comments.length}
-            >
-              <option>최신순</option>
-              <option>좋아요순</option>
-            </select>
-          )}
-          <div className="flex flex-col h-60 overflow-y-auto pr-2 gap-1.4">
-            {comments.map((comment) => (
-              <Comment
-                isToggled={!!toggledComments[comment.commentId]}
-                key={comment.commentId}
-                {...comment}
-                onClick={onCommentClick(comment.commentId)}
-              />
-            ))}
-          </div>
-        </div>
+        <CommentList
+          comments={comments}
+          toggledComments={toggledComments}
+          onSortTypeChange={onSortTypeChange}
+          onCommentClick={onCommentClick}
+        />
       </section>
     </main>
   );
