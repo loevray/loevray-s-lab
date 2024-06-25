@@ -42,11 +42,6 @@ const Page = () => {
     reply: false,
   });
 
-  const [sortType, setSortType] = useState<SortType>({
-    좋아요순: true,
-    최신순: false,
-  });
-
   const onCommentTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
 
@@ -55,18 +50,16 @@ const Page = () => {
 
   const onSortTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target;
-    setSortType((prev) => ({
-      ...(Object.fromEntries(
-        Object.entries(prev).map(([key]) => [key, false])
-      ) as SortType),
-      [value]: true,
-    }));
 
     if (value === "좋아요순") {
-      setComments((prev) => prev.sort((a, b) => b.likeCount - a.likeCount));
-    } else {
+      console.log("좋아요순");
       setComments((prev) =>
-        prev.sort(
+        structuredClone(prev).sort((a, b) => b.likeCount - a.likeCount)
+      );
+    } else {
+      console.log("최신순");
+      setComments((prev) =>
+        structuredClone(prev).sort(
           (a, b) =>
             new Date(b.publishedAt).getTime() -
             new Date(a.publishedAt).getTime()
@@ -112,7 +105,7 @@ const Page = () => {
 
   return (
     <main className="w-full h-full flex justify-center text-amber-950">
-      <section className="w-1/2 flex flex-col items-center px-2 gap-7">
+      <section className="w-1/2 flex flex-col items-center px-2 gap-7 pt-7">
         <VideoInfo {...videoData} />
         <div className="w-full flex items-center gap-6">
           <h1 className="text-2 font-bold">1. 유튜브 링크 삽입</h1>
@@ -138,21 +131,25 @@ const Page = () => {
         </div>
       </section>
       <section className="w-1/2 flex flex-col items-center gap-6">
-        <div className="flex flex-col h-60 w-full overflow-y-auto gap-1.6 px-2">
-          <select
-            className="w-10 border-2 border-solid border-black"
-            onChange={onSortTypeChange}
-            disabled={!comments.length}
-          >
-            <option>최신순</option>
-            <option>좋아요순</option>
-          </select>
-          {comments.map((comment) => (
-            <Comment
-              key={`${comment.authorDisplayName}${comment.publishedAt}`}
-              {...comment}
-            />
-          ))}
+        <div className="flex flex-col w-full gap-4 ">
+          {!!comments.length && (
+            <select
+              className="w-10 border-2 border-solid border-black"
+              onChange={onSortTypeChange}
+              disabled={!comments.length}
+            >
+              <option>최신순</option>
+              <option>좋아요순</option>
+            </select>
+          )}
+          <div className="flex flex-col h-60 overflow-y-auto pr-2 gap-1.4">
+            {comments.map((comment) => (
+              <Comment
+                key={`${comment.authorDisplayName}${comment.publishedAt}`}
+                {...comment}
+              />
+            ))}
+          </div>
         </div>
       </section>
     </main>
