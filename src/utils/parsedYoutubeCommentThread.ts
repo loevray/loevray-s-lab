@@ -12,12 +12,50 @@ export interface CustomCommentDataType  {
   commentId:string;
 }
 
-const parsedYoutubeCommentThread = (data: YoutubeCommentThread[]): CustomCommentDataType[] => 
-  data.map(({snippet:
-    {topLevelComment:
-      {id,snippet:{authorDisplayName,authorProfileImageUrl,textOriginal,publishedAt,updatedAt,likeCount,}}
+const parsedYoutubeCommentThread = (data: YoutubeCommentThread[]): CustomCommentDataType[] => {
+  const usedIds = new Set<string>();
+
+  const customComments: CustomCommentDataType[] = [];
+
+  data.forEach(
+    ({
+      snippet: {
+        topLevelComment: {
+          id,
+          snippet: {
+            authorDisplayName,
+            authorProfileImageUrl,
+            textOriginal,
+            publishedAt,
+            updatedAt,
+            likeCount,
+          },
+        },
+      },
+    }) => {
+      const commentId = id;
+      
+      if (usedIds.has(commentId)) {
+        return; 
+      }
+      
+      usedIds.add(commentId);
+
+      customComments.push({
+        authorDisplayName,
+        authorProfileImageUrl,
+        textOriginal,
+        publishedAt,
+        updatedAt,
+        likeCount,
+        isModified: publishedAt !== updatedAt,
+        commentId,
+      });
     }
-  }) => ({authorDisplayName,authorProfileImageUrl,commentId:id,textOriginal,publishedAt,updatedAt,likeCount,isModified:publishedAt !==updatedAt}));
+  );
+
+  return customComments;
+};
 
 
 export default parsedYoutubeCommentThread

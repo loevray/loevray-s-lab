@@ -73,7 +73,8 @@ export async function fetchYoutubeToplevelComments(link:string, commentCount:num
       maxCount:chunkPerRequest
     })
     
-    const parsedComments = comments.flatMap((comment) => parsedYoutubeCommentThread(comment.items));
+    const commentItems = comments.flatMap((comment) => comment.items);
+    const parsedComments = parsedYoutubeCommentThread(commentItems);
     
     return parsedComments;
   } catch(e){
