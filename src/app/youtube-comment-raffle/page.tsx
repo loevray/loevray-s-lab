@@ -58,6 +58,19 @@ const Page = () => {
     [winnerComments, winnerLimitInputRef, comments]
   );
 
+  const sortedByLike = useMemo(
+    () => comments.toSorted((a, b) => b.likeCount - a.likeCount),
+    [comments]
+  );
+  const sortedByNew = useMemo(
+    () =>
+      comments.toSorted(
+        (a, b) =>
+          new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+      ),
+    [comments]
+  );
+
   const onCommentTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
 
@@ -68,18 +81,10 @@ const Page = () => {
     const { value } = e.target;
 
     if (value === "좋아요순") {
-      return setComments((prev) =>
-        structuredClone(prev).sort((a, b) => b.likeCount - a.likeCount)
-      );
+      return setComments(sortedByLike);
     }
     if (value === "최신순") {
-      return setComments((prev) =>
-        structuredClone(prev).sort(
-          (a, b) =>
-            new Date(b.publishedAt).getTime() -
-            new Date(a.publishedAt).getTime()
-        )
-      );
+      return setComments(sortedByNew);
     }
   };
 
