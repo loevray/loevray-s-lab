@@ -6,7 +6,7 @@ import {
   fetchYoutubeVideoMetadata,
 } from "@/app/youtube-comment-raffle/lib/actions";
 import raffle from "@/utils/raffle";
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import VideoInfo from "../ui/youtube-comment-raflle/VideoInfo";
 import { CustomCommentDataType } from "@/utils/parsedYoutubeCommentThread";
 import Comment from "../ui/youtube-comment-raflle/Comment";
@@ -16,6 +16,7 @@ import CommentTypeForm, {
 } from "../ui/youtube-comment-raflle/CommentTypeForm";
 import WinnerCountForm from "../ui/youtube-comment-raflle/WinnerCountForm";
 import CommentList from "../ui/youtube-comment-raflle/CommentList";
+import Button from "../ui/common/Button";
 
 const DEFAULT_VIDEO_CUSTOM_DATA = {
   title: "영상 제목",
@@ -51,6 +52,11 @@ const Page = () => {
   const [toggledComments, setToggledComments] = useState<{
     [key: string]: boolean;
   }>({});
+
+  const leftWinner = useMemo(
+    () => +(winnerLimitInputRef.current?.value || 0) - winnerComments.length,
+    [winnerComments, winnerLimitInputRef, comments]
+  );
 
   const onCommentTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -166,6 +172,18 @@ const Page = () => {
             onChange={onCommentTypeChange}
             commentType={commentType}
             handleSubmit={handleSubmitCommentList}
+          />
+        </div>
+        <div className="w-full flex items-center gap-6">
+          <h1 className="text-2 font-bold">4. 추첨 방식 선택</h1>
+          <span>댓글 목록에서 {winnerComments.length}명 선택하였음</span>
+          <Button
+            type="button"
+            text={leftWinner ? `남은 ${leftWinner}명 랜덤추첨` : "추첨 종료"}
+            colorPalette="rin"
+            onClick={() => alert("hi")}
+            disabled={!comments.length}
+            className="w-15"
           />
         </div>
       </section>
