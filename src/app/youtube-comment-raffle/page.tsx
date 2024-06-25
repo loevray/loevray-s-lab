@@ -33,6 +33,8 @@ export type SortType = {
 
 const Page = () => {
   const youtubeInputRef = useRef<HTMLInputElement>(null);
+  const winnerLimitInputRef = useRef<HTMLInputElement>(null);
+
   const [comments, setComments] = useState<CustomCommentDataType[]>([]);
   const [videoData, setVideoData] = useState<YoutubeVideoCustomData>(
     DEFAULT_VIDEO_CUSTOM_DATA
@@ -41,6 +43,12 @@ const Page = () => {
     thread: true,
     reply: false,
   });
+  const [winnerComments, setWinnerComments] = useState<CustomCommentDataType[]>(
+    []
+  );
+  const [toggledComments, setToggledComments] = useState<{
+    [key: string]: boolean;
+  }>({});
 
   const onCommentTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -52,13 +60,12 @@ const Page = () => {
     const { value } = e.target;
 
     if (value === "좋아요순") {
-      console.log("좋아요순");
-      setComments((prev) =>
+      return setComments((prev) =>
         structuredClone(prev).sort((a, b) => b.likeCount - a.likeCount)
       );
-    } else {
-      console.log("최신순");
-      setComments((prev) =>
+    }
+    if (value === "최신순") {
+      return setComments((prev) =>
         structuredClone(prev).sort(
           (a, b) =>
             new Date(b.publishedAt).getTime() -
@@ -68,9 +75,46 @@ const Page = () => {
     }
   };
 
+  const onCommentClick =
+    (id: string) => (e: React.MouseEvent<HTMLDivElement>) => {
+      const selectedComment = comments.find(
+        ({ commentId }) => commentId === id
+      ) as CustomCommentDataType;
+
+      const isSelected = !!winnerComments.find(
+        ({ commentId }) => commentId === id
+      );
+
+      const currentWinnersCount = winnerLimitInputRef.current?.value;
+      if (!currentWinnersCount) return alert("당첨자 수를 결정해주세요!");
+
+      if (isSelected) {
+        setWinnerComments((prev) =>
+          prev.filter(({ commentId }) => commentId !== id)
+        );
+        setToggledComments((prev) => ({
+          ...prev,
+          [id]: false,
+        }));
+      } else {
+        if (winnerComments.length + 1 > +currentWinnersCount)
+          return alert(`${currentWinnersCount}명을 모두 고르셨습니다`);
+
+        setWinnerComments((prev) => [
+          ...prev,
+          structuredClone(selectedComment),
+        ]);
+
+        setToggledComments((prev) => ({
+          ...prev,
+          [id]: true,
+        }));
+      }
+    };
+
   const raffleComment = () => {
-    if (!videoData) throw new Error("비디오 데이터가 없어요!");
-    if (!comments.length) throw new Error("댓글 데이터가 없어요!");
+    if (!videoData) return alert("비디오 데이터가 없어요!");
+    if (!comments.length) return alert("댓글 데이터가 없어요!");
 
     const maxNumber = videoData.commentCount;
     const [winnerIndex] = raffle({ low: 1, high: maxNumber });
@@ -83,8 +127,6 @@ const Page = () => {
   const handleSubmitYoutubeLink = async (e: React.FormEvent) => {
     e.preventDefault();
     const link = youtubeInputRef.current?.value || "";
-    console.log("hi");
-    //react hook form 등으로 validation필요
     if (link === "") return alert("링크가 존재하지 않습니다");
 
     const videoData = await fetchYoutubeVideoMetadata(link);
@@ -115,19 +157,22 @@ const Page = () => {
           />
         </div>
         <div className="w-full flex items-center gap-6">
-          <h1 className="text-2 font-bold">2. 댓글 유형 선택</h1>
+          <h1 className="text-2 font-bold">2. 당첨자 수 결정</h1>
+          <form>
+            <input
+              className="w-6.5 h-3 pl-1 shadow-xl bg-yellow-50 focus:bg-yellow-100 focus:outline-none"
+              ref={winnerLimitInputRef}
+            />
+            명
+          </form>
+        </div>
+        <div className="w-full flex items-center gap-6">
+          <h1 className="text-2 font-bold">3. 댓글 유형 선택</h1>
           <CommentTypeForm
             onChange={onCommentTypeChange}
             commentType={commentType}
             handleSubmit={handleSubmitCommentList}
           />
-        </div>
-        <div className="w-full flex items-center gap-6">
-          <h1 className="text-2 font-bold">3. 추첨 방식 결정</h1>
-          <form>
-            <input className="w-6.5 h-3 pl-1 shadow-xl bg-yellow-50 focus:bg-yellow-100 focus:outline-none" />
-            명
-          </form>
         </div>
       </section>
       <section className="w-1/2 flex flex-col items-center gap-6">
@@ -144,7 +189,12 @@ const Page = () => {
           )}
           <div className="flex flex-col h-60 overflow-y-auto pr-2 gap-1.4">
             {comments.map((comment) => (
-              <Comment key={comment.id} {...comment} />
+              <Comment
+                isToggled={!!toggledComments[comment.commentId]}
+                key={comment.commentId}
+                {...comment}
+                onClick={onCommentClick(comment.commentId)}
+              />
             ))}
           </div>
         </div>
