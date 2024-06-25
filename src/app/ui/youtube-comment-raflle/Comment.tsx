@@ -6,9 +6,7 @@ import { HTMLAttributes } from "react";
 
 //코멘트 컴포넌트도 compound패턴 적용하면 좋아보임(임시)
 
-interface CommentProps
-  extends CustomCommentDataType,
-    HTMLAttributes<HTMLDivElement> {}
+interface CommentProps extends CustomCommentDataType {}
 const Comment = ({
   authorDisplayName,
   authorProfileImageUrl,
@@ -16,10 +14,12 @@ const Comment = ({
   publishedAt,
   likeCount,
   isModified,
+  id,
 }: CommentProps) => {
   const { isOn, toggle } = useToggle();
   return (
     <div
+      data-id={id}
       onClick={toggle}
       className={`flex gap-1 cursor-pointer bg-white shadow-md rounded-xl py-1 relative p-1 ${
         isOn ? "brightness-75 hover:brightness-50" : "hover:brightness-90"

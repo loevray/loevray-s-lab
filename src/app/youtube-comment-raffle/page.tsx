@@ -144,10 +144,7 @@ const Page = () => {
           )}
           <div className="flex flex-col h-60 overflow-y-auto pr-2 gap-1.4">
             {comments.map((comment) => (
-              <Comment
-                key={`${comment.authorDisplayName}${comment.publishedAt}`}
-                {...comment}
-              />
+              <Comment key={comment.id} {...comment} />
             ))}
           </div>
         </div>
