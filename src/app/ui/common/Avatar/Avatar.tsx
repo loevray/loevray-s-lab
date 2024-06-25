@@ -1,9 +1,10 @@
 import Image, { ImageProps } from "next/image";
+import { HTMLAttributes, ImgHTMLAttributes } from "react";
 
-interface AvatarProps extends ImageProps {}
+interface AvatarProps extends ImgHTMLAttributes<HTMLImageElement> {}
 
 const Avatar = ({ className, ...rest }: AvatarProps) => {
-  return <Image className={`rounded-full size-4 ${className}`} {...rest} />;
+  return <img className={`rounded-full size-4 ${className}`} {...rest} />;
 };
 
 export default Avatar;
