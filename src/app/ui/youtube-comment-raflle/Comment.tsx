@@ -1,7 +1,6 @@
 import { CustomCommentDataType } from "@/utils/parsedYoutubeCommentThread";
 import Avatar from "../common/avatar/Avatar";
 import getRelativeTime from "@/utils/getRelativeTime";
-import useToggle from "@/hooks/useToggle";
 import { HTMLAttributes } from "react";
 
 //코멘트 컴포넌트도 compound패턴 적용하면 좋아보임(임시)

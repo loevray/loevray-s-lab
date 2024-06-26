@@ -18,6 +18,7 @@ import WinnerCountForm from "../ui/youtube-comment-raflle/WinnerCountForm";
 import Button from "../ui/common/Button";
 import YoutubeCommentList from "../ui/youtube-comment-raflle/YoutubeCommentList";
 import WinnerCommnetList from "../ui/youtube-comment-raflle/WinnerCommentList";
+import Modal from "../ui/common/modal/Modal";
 
 const DEFAULT_VIDEO_CUSTOM_DATA = {
   title: "영상 제목",
@@ -200,8 +201,18 @@ const Page = () => {
     setComments(commentData);
   };
 
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <main className="w-full h-full flex justify-center text-amber-950">
+      <Modal open={open} onClose={handleClose} />
+      <Button onClick={handleOpen}>오픈</Button>
       <section className="w-1/2 flex flex-col items-center px-2 gap-7 pt-7">
         <VideoInfo {...videoData} />
         <div className="w-full flex items-center ">
