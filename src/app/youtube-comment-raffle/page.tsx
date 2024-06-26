@@ -168,8 +168,6 @@ const Page = () => {
       newWinners.push(parsedComments[winnerId]);
     });
 
-    console.log(winners);
-
     setWinnerComments((prev) => ({
       ...prev,
       all: [...newWinners],
