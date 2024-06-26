@@ -38,28 +38,9 @@ const Page = () => {
   const winnerLimitInputRef = useRef<HTMLInputElement>(null);
 
   const [comments, setComments] = useState<CustomCommentDataType[]>([]);
-  const [videoData, setVideoData] = useState<YoutubeVideoCustomData>(
-    DEFAULT_VIDEO_CUSTOM_DATA
-  );
-  const [commentType, setCommentType] = useState<CommentType>({
-    thread: true,
-    reply: false,
-  });
-  const [winnerComments, setWinnerComments] = useState<CustomCommentDataType[]>(
-    []
-  );
-  const [toggledComments, setToggledComments] = useState<{
-    [key: string]: boolean;
-  }>({});
-
-  const leftWinner = useMemo(
-    () => +(winnerLimitInputRef.current?.value || 0) - winnerComments.length,
-    [winnerComments, winnerLimitInputRef, comments]
-  );
-
   const sortedByLike = useMemo(
     () => comments.toSorted((a, b) => b.likeCount - a.likeCount),
-    [comments]
+    [comments.length]
   );
   const sortedByNew = useMemo(
     () =>
@@ -67,7 +48,33 @@ const Page = () => {
         (a, b) =>
           new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
       ),
-    [comments]
+    [comments.length]
+  );
+
+  const [videoData, setVideoData] = useState<YoutubeVideoCustomData>(
+    DEFAULT_VIDEO_CUSTOM_DATA
+  );
+
+  const [commentType, setCommentType] = useState<CommentType>({
+    thread: true,
+    reply: false,
+  });
+
+  const [winnerComments, setWinnerComments] = useState<{
+    [key in "selected" | "all"]: CustomCommentDataType[];
+  }>({
+    selected: [],
+    all: [],
+  });
+
+  const [toggledComments, setToggledComments] = useState<{
+    [key: string]: boolean;
+  }>({});
+
+  const leftWinner = useMemo(
+    () =>
+      +(winnerLimitInputRef.current?.value || 0) - winnerComments.all.length,
+    [winnerComments, winnerLimitInputRef, comments]
   );
 
   const onCommentTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -93,7 +100,7 @@ const Page = () => {
         ({ commentId }) => commentId === id
       ) as CustomCommentDataType;
 
-      const isSelected = !!winnerComments.find(
+      const isSelected = !!winnerComments.selected.find(
         ({ commentId }) => commentId === id
       );
       const currentWinnersCount = winnerLimitInputRef.current?.value;
@@ -101,21 +108,26 @@ const Page = () => {
       if (!currentWinnersCount) return alert("당첨자 수를 결정해주세요!");
 
       if (isSelected) {
-        setWinnerComments((prev) =>
-          prev.filter(({ commentId }) => commentId !== id)
-        );
+        setWinnerComments((prev) => ({
+          ...structuredClone(prev),
+          selected: prev.selected.filter(({ commentId }) => commentId !== id),
+        }));
+
         setToggledComments((prev) => ({
           ...prev,
           [id]: false,
         }));
       } else {
-        if (winnerComments.length + 1 > +currentWinnersCount)
+        if (winnerComments.selected.length + 1 > +currentWinnersCount)
           return alert(`${currentWinnersCount}명을 모두 고르셨습니다`);
 
-        setWinnerComments((prev) => [
-          ...prev,
-          structuredClone(selectedComment),
-        ]);
+        setWinnerComments((prev) => ({
+          ...structuredClone(prev),
+          selected: [
+            ...structuredClone(prev.selected),
+            { ...structuredClone(selectedComment) },
+          ],
+        }));
         setToggledComments((prev) => ({
           ...prev,
           [id]: true,
@@ -127,12 +139,45 @@ const Page = () => {
     if (!videoData) return alert("비디오 데이터가 없어요!");
     if (!comments.length) return alert("댓글 데이터가 없어요!");
 
-    const maxNumber = videoData.commentCount;
-    const [winnerIndex] = raffle({ low: 1, high: maxNumber });
+    const selectedCommentIdCheckMap = winnerComments.selected.reduce<{
+      [key: string]: boolean;
+    }>((acc, cur) => ({ ...acc, [cur.commentId]: true }), {});
 
-    const winner = comments[winnerIndex];
-    const { authorDisplayName, textOriginal } = winner;
-    alert(`${authorDisplayName}: ${textOriginal}`);
+    const winners = new Set<string>();
+
+    for (const key in selectedCommentIdCheckMap) {
+      winners.add(key);
+    }
+
+    const maxWinners = +(winnerLimitInputRef.current?.value || 0);
+
+    while (winners.size < maxWinners) {
+      const randomRange = Math.floor(Math.random() * comments.length) + 1;
+      const winner = comments[randomRange].commentId;
+      winners.add(winner);
+    }
+
+    const parsedComments = comments.reduce<{
+      [key: string]: CustomCommentDataType;
+    }>(
+      (acc, cur) => ({
+        ...structuredClone(acc),
+        [cur.commentId]: { ...cur },
+      }),
+      {}
+    );
+
+    const newWinners: CustomCommentDataType[] = [];
+
+    console.log(newWinners);
+    winners.forEach((winnerId) => {
+      newWinners.push(parsedComments[winnerId]);
+    });
+
+    setWinnerComments((prev) => ({
+      ...prev,
+      all: [...structuredClone(prev.selected), ...newWinners],
+    }));
   };
 
   const handleSubmitYoutubeLink = async (e: React.FormEvent) => {
@@ -176,13 +221,13 @@ const Page = () => {
         <div className="w-full flex items-center">
           <h1 className="text-2 font-bold w-20">4. 추첨 방식 선택</h1>
           <span className="pr-2">
-            댓글 목록에서 {winnerComments.length}명 선택 됨
+            댓글 목록에서 {winnerComments.selected.length}명 선택 됨
           </span>
           <Button
             type="button"
             text={leftWinner ? `남은 ${leftWinner}명 랜덤추첨` : "추첨 종료"}
             colorPalette="rin"
-            onClick={() => alert("hi")}
+            onClick={raffleComment}
             disabled={!comments.length}
             className="w-15"
           />
