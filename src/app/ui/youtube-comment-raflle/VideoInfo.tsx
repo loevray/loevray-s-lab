@@ -18,7 +18,7 @@ const VideoInfo = ({
         alt="youtube-thumbnail"
       />
       <Card.Content className="flex flex-col p-0.5">
-        <span className="font-bold">{title}</span>
+        <span className="font-bold truncate">{title}</span>
         <span className="text-gray-400 text-1.4">{channelTitle}</span>
         <span className="text-gray-400 text-1.4">조회수 {viewCount}회</span>
       </Card.Content>
