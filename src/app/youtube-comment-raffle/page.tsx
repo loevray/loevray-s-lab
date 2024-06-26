@@ -14,8 +14,10 @@ import CommentTypeForm, {
   CommentType,
 } from "../ui/youtube-comment-raflle/CommentTypeForm";
 import WinnerCountForm from "../ui/youtube-comment-raflle/WinnerCountForm";
-import CommentList from "../ui/youtube-comment-raflle/CommentList";
+
 import Button from "../ui/common/Button";
+import YoutubeCommentList from "../ui/youtube-comment-raflle/YoutubeCommentList";
+import WinnerCommnetList from "../ui/youtube-comment-raflle/WinnerCommentList";
 
 const DEFAULT_VIDEO_CUSTOM_DATA = {
   title: "영상 제목",
@@ -73,7 +75,8 @@ const Page = () => {
 
   const leftWinner = useMemo(
     () =>
-      +(winnerLimitInputRef.current?.value || 0) - winnerComments.all.length,
+      +(winnerLimitInputRef.current?.value || 0) -
+      winnerComments.selected.length,
     [winnerComments, winnerLimitInputRef, comments]
   );
 
@@ -169,14 +172,15 @@ const Page = () => {
 
     const newWinners: CustomCommentDataType[] = [];
 
-    console.log(newWinners);
     winners.forEach((winnerId) => {
       newWinners.push(parsedComments[winnerId]);
     });
 
+    console.log(winners);
+
     setWinnerComments((prev) => ({
       ...prev,
-      all: [...structuredClone(prev.selected), ...newWinners],
+      all: [...newWinners],
     }));
   };
 
@@ -234,12 +238,13 @@ const Page = () => {
         </div>
       </section>
       <section className="w-1/2 flex flex-col items-center gap-6">
-        <CommentList
+        <YoutubeCommentList
           comments={comments}
           toggledComments={toggledComments}
           onSortTypeChange={onSortTypeChange}
           onCommentClick={onCommentClick}
         />
+        <WinnerCommnetList comments={winnerComments.all} />
       </section>
     </main>
   );

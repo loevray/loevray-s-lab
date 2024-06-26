@@ -1,18 +1,18 @@
 import { CustomCommentDataType } from "@/utils/parsedYoutubeCommentThread";
 import Comment from "./Comment";
 
-interface CommentListProps {
+interface YoutubeCommentListProps {
   comments: CustomCommentDataType[];
   toggledComments: { [key: string]: boolean };
   onSortTypeChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   onCommentClick: (id: string) => (e: React.MouseEvent<HTMLDivElement>) => void;
 }
-const CommentList = ({
+const YoutubeCommentList = ({
   comments,
   toggledComments,
   onSortTypeChange,
   onCommentClick,
-}: CommentListProps) => {
+}: YoutubeCommentListProps) => {
   return (
     <div className="flex flex-col w-full gap-4 ">
       {!!comments.length && (
@@ -39,4 +39,4 @@ const CommentList = ({
   );
 };
 
-export default CommentList;
+export default YoutubeCommentList;

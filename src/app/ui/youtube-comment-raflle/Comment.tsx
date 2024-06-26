@@ -1,5 +1,5 @@
 import { CustomCommentDataType } from "@/utils/parsedYoutubeCommentThread";
-import Avatar from "../common/Avatar/Avatar";
+import Avatar from "../common/avatar/Avatar";
 import getRelativeTime from "@/utils/getRelativeTime";
 import useToggle from "@/hooks/useToggle";
 import { HTMLAttributes } from "react";
@@ -9,7 +9,7 @@ import { HTMLAttributes } from "react";
 interface CommentProps
   extends CustomCommentDataType,
     HTMLAttributes<HTMLDivElement> {
-  isToggled: boolean;
+  isToggled?: boolean;
 }
 const Comment = ({
   authorDisplayName,
@@ -21,7 +21,7 @@ const Comment = ({
   isModified,
   commentId,
   onClick,
-  isToggled,
+  isToggled = false,
   ...rest
 }: CommentProps) => {
   return (
@@ -31,6 +31,7 @@ const Comment = ({
       className={`flex gap-1 cursor-pointer bg-white shadow-md rounded-xl py-1 relative p-1 ${
         isToggled ? "brightness-75 hover:brightness-50" : "hover:brightness-90"
       }`}
+      {...rest}
     >
       {isToggled && (
         <span className="text-3 text-green-500 absolute top-1/2 left-1/2 translate-y-[-50%]">
