@@ -1,6 +1,7 @@
 import { YoutubeVideoCustomData } from "@/app/youtube-comment-raffle/lib/actions";
 import Card from "../common/card/Card";
 import CardImage from "../common/card/CardImage";
+import getRelativeViecountUnit from "@/utils/getRelativeViewcountUnit";
 
 interface VideoInfoProps extends Omit<YoutubeVideoCustomData, "commentCount"> {}
 const VideoInfo = ({
@@ -20,7 +21,9 @@ const VideoInfo = ({
       <Card.Content className="flex flex-col p-0.5">
         <span className="font-bold truncate">{title}</span>
         <span className="text-gray-400 text-1.4">{channelTitle}</span>
-        <span className="text-gray-400 text-1.4">조회수 {viewCount}회</span>
+        <span className="text-gray-400 text-1.4">
+          조회수 {getRelativeViecountUnit(viewCount)}
+        </span>
       </Card.Content>
     </Card>
   );
