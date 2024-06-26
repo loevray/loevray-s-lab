@@ -168,7 +168,7 @@ const Page = () => {
     const maxWinners = winnerLimitInputState;
 
     while (winners.size < maxWinners) {
-      const randomRange = Math.floor(Math.random() * comments.length) + 1;
+      const randomRange = Math.floor(Math.random() * comments.length);
       const winner = comments[randomRange].commentId;
       winners.add(winner);
     }
@@ -246,7 +246,7 @@ const Page = () => {
               onChange={(e) => setWinnerLimitState(e)}
             />
             <span className="pr-2">
-              중, 댓글 목록에서 {winnerComments.selected.length}명 선택 됨
+              중 댓글 목록에서 {winnerComments.selected.length}명 선택 됨
             </span>
             <Button
               type="button"
@@ -261,14 +261,17 @@ const Page = () => {
         <section className="w-1/2 flex flex-col items-center gap-6">
           <div className="flex flex-col w-full gap-4 ">
             {!!comments.length && (
-              <select
-                className="w-10 border-2 border-solid border-black"
-                onChange={onSortTypeChange}
-                disabled={!comments.length}
-              >
-                <option>최신순</option>
-                <option>좋아요순</option>
-              </select>
+              <div>
+                <select
+                  className="w-10 border-2 border-solid border-black"
+                  onChange={onSortTypeChange}
+                  disabled={!comments.length}
+                >
+                  <option>최신순</option>
+                  <option>좋아요순</option>
+                </select>
+                <span className="pl-1">댓글 총{comments.length}개</span>
+              </div>
             )}
             <div className="flex flex-col h-60 overflow-y-auto pr-2 gap-1.4">
               {comments.map((comment) => (
