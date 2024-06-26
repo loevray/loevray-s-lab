@@ -9,7 +9,6 @@ import raffle from "@/utils/raffle";
 import { useMemo, useRef, useState } from "react";
 import VideoInfo from "../ui/youtube-comment-raflle/VideoInfo";
 import { CustomCommentDataType } from "@/utils/parsedYoutubeCommentThread";
-import Comment from "../ui/youtube-comment-raflle/Comment";
 import YoutubeLinkForm from "../ui/youtube-comment-raflle/YoutubeLinkForm";
 import CommentTypeForm, {
   CommentType,
@@ -93,6 +92,7 @@ const Page = () => {
       const selectedComment = comments.find(
         ({ commentId }) => commentId === id
       ) as CustomCommentDataType;
+
       const isSelected = !!winnerComments.find(
         ({ commentId }) => commentId === id
       );
@@ -137,17 +137,12 @@ const Page = () => {
 
   const handleSubmitYoutubeLink = async (e: React.FormEvent) => {
     e.preventDefault();
+
     const link = youtubeInputRef.current?.value || "";
     if (link === "") return alert("링크가 존재하지 않습니다");
 
     const videoData = await fetchYoutubeVideoMetadata(link);
     setVideoData(videoData);
-  };
-
-  const handleSubmitCommentList = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const link = youtubeInputRef.current?.value || "";
-    if (link === "") return alert("링크가 존재하지 않습니다!");
 
     const commentData = await fetchYoutubeToplevelComments(
       link,
@@ -160,28 +155,29 @@ const Page = () => {
     <main className="w-full h-full flex justify-center text-amber-950">
       <section className="w-1/2 flex flex-col items-center px-2 gap-7 pt-7">
         <VideoInfo {...videoData} />
-        <div className="w-full flex items-center gap-6">
-          <h1 className="text-2 font-bold">1. 유튜브 링크 삽입</h1>
+        <div className="w-full flex items-center ">
+          <h1 className="text-2 font-bold w-20">1. 유튜브 링크 삽입</h1>
           <YoutubeLinkForm
             inputRef={youtubeInputRef}
             handleSubmit={handleSubmitYoutubeLink}
           />
         </div>
-        <div className="w-full flex items-center gap-6">
-          <h1 className="text-2 font-bold">2. 당첨자 수 결정</h1>
-          <WinnerCountForm winnerCountInputRef={winnerLimitInputRef} />
-        </div>
-        <div className="w-full flex items-center gap-6">
-          <h1 className="text-2 font-bold">3. 댓글 유형 선택</h1>
+        <div className="w-full flex items-center ">
+          <h1 className="text-2 font-bold w-20">2. 댓글 유형 선택</h1>
           <CommentTypeForm
             onChange={onCommentTypeChange}
             commentType={commentType}
-            handleSubmit={handleSubmitCommentList}
           />
         </div>
-        <div className="w-full flex items-center gap-6">
-          <h1 className="text-2 font-bold">4. 추첨 방식 선택</h1>
-          <span>댓글 목록에서 {winnerComments.length}명 선택하였음</span>
+        <div className="w-full flex items-center">
+          <h1 className="text-2 font-bold w-20">3. 당첨자 수 입력</h1>
+          <WinnerCountForm winnerCountInputRef={winnerLimitInputRef} />
+        </div>
+        <div className="w-full flex items-center">
+          <h1 className="text-2 font-bold w-20">4. 추첨 방식 선택</h1>
+          <span className="pr-2">
+            댓글 목록에서 {winnerComments.length}명 선택 됨
+          </span>
           <Button
             type="button"
             text={leftWinner ? `남은 ${leftWinner}명 랜덤추첨` : "추첨 종료"}

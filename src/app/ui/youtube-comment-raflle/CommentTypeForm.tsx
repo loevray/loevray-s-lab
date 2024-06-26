@@ -4,7 +4,6 @@ import Button from "../common/Button";
 interface CommentTypeFormProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   commentType: CommentType;
-  handleSubmit: HTMLAttributes<HTMLFormElement>["onSubmit"];
 }
 
 export type CommentType = {
@@ -12,13 +11,9 @@ export type CommentType = {
   reply: boolean;
 };
 
-const CommentTypeForm = ({
-  onChange,
-  commentType,
-  handleSubmit,
-}: CommentTypeFormProps) => {
+const CommentTypeForm = ({ onChange, commentType }: CommentTypeFormProps) => {
   return (
-    <form className="flex gap-2" onSubmit={handleSubmit}>
+    <form className="flex gap-2">
       <div>
         <input
           className="h-1.5"
@@ -42,9 +37,8 @@ const CommentTypeForm = ({
           defaultChecked={commentType.reply}
           id="reply"
         />
-        <label htmlFor="reply">답글 목록</label>
+        <label htmlFor="reply">답글 목록(구현중)</label>
       </div>
-      <Button type="submit" text="불러오기" colorPalette="rin" />
     </form>
   );
 };
