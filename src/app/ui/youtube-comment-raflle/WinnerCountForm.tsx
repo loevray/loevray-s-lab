@@ -1,16 +1,18 @@
-import { RefObject, forwardRef } from "react";
+import { ChangeEvent, RefObject, forwardRef } from "react";
 
 const WinnerCountForm = ({
-  winnerCountInputRef,
+  winnerLimitState,
+  onChange,
 }: {
-  winnerCountInputRef: RefObject<HTMLInputElement>;
+  winnerLimitState: number;
+  onChange: (e: number) => void;
 }) => (
   <form>
     <input
       className="w-7 h-3 pl-1 shadow-xl bg-yellow-50 focus:bg-yellow-100 focus:outline-none"
-      ref={winnerCountInputRef}
       type="number"
-      defaultValue={1}
+      value={winnerLimitState}
+      onChange={(e) => onChange(e.target.value)}
     />
     명
   </form>
