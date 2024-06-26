@@ -46,6 +46,7 @@ const Page = () => {
     () => comments.toSorted((a, b) => b.likeCount - a.likeCount),
     [comments.length]
   );
+
   const sortedByNew = useMemo(
     () =>
       comments.toSorted(
@@ -258,7 +259,7 @@ const Page = () => {
             />
           </div>
         </section>
-        <section className="w-1/2 flex flex-col items-center gap-6">
+        <section className="w-1/2 max-w-70 flex flex-col items-center gap-6">
           <div className="flex flex-col w-full gap-4 ">
             {!!comments.length && (
               <div>
