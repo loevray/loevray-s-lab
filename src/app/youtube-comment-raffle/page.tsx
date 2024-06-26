@@ -9,9 +9,6 @@ import { useMemo, useRef, useState } from "react";
 import VideoInfo from "../ui/youtube-comment-raflle/VideoInfo";
 import { CustomCommentDataType } from "@/utils/parsedYoutubeCommentThread";
 import YoutubeLinkForm from "../ui/youtube-comment-raflle/YoutubeLinkForm";
-import CommentTypeForm, {
-  CommentType,
-} from "../ui/youtube-comment-raflle/CommentTypeForm";
 import WinnerCountForm from "../ui/youtube-comment-raflle/WinnerCountForm";
 
 import Button from "../ui/common/Button";
@@ -32,6 +29,11 @@ const DEFAULT_VIDEO_CUSTOM_DATA = {
 
 export type SortType = {
   [key in "좋아요순" | "최신순"]: boolean;
+};
+
+export type CommentType = {
+  thread: boolean;
+  reply: boolean;
 };
 
 const Page = () => {
@@ -232,26 +234,19 @@ const Page = () => {
             <YoutubeLinkForm
               inputRef={youtubeInputRef}
               handleSubmit={handleSubmitYoutubeLink}
-            />
-          </div>
-          <div className="w-full flex items-center ">
-            <h1 className="text-2 font-bold w-20">2. 댓글 유형 선택</h1>
-            <CommentTypeForm
               onChange={onCommentTypeChange}
               commentType={commentType}
             />
           </div>
           <div className="w-full flex items-center">
-            <h1 className="text-2 font-bold w-20">3. 당첨자 수 입력</h1>
+            <h1 className="text-2 font-bold w-20">2. 추첨인원/방식</h1>
+            총
             <WinnerCountForm
               winnerLimitState={winnerLimitInputState}
               onChange={(e) => setWinnerLimitState(e)}
             />
-          </div>
-          <div className="w-full flex items-center">
-            <h1 className="text-2 font-bold w-20">4. 추첨 방식 선택</h1>
             <span className="pr-2">
-              댓글 목록에서 {winnerComments.selected.length}명 선택 됨
+              중, 댓글 목록에서 {winnerComments.selected.length}명 선택 됨
             </span>
             <Button
               type="button"
