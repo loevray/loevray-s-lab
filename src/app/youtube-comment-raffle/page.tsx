@@ -5,7 +5,6 @@ import {
   fetchYoutubeToplevelComments,
   fetchYoutubeVideoMetadata,
 } from "@/app/youtube-comment-raffle/lib/actions";
-import raffle from "@/utils/raffle";
 import { useMemo, useRef, useState } from "react";
 import VideoInfo from "../ui/youtube-comment-raflle/VideoInfo";
 import { CustomCommentDataType } from "@/utils/parsedYoutubeCommentThread";
@@ -16,10 +15,8 @@ import CommentTypeForm, {
 import WinnerCountForm from "../ui/youtube-comment-raflle/WinnerCountForm";
 
 import Button from "../ui/common/Button";
-import YoutubeCommentList from "../ui/youtube-comment-raflle/YoutubeCommentList";
-import WinnerCommnetList from "../ui/youtube-comment-raflle/WinnerCommentList";
-import Modal from "../ui/common/modal/Modal";
 import Comment from "../ui/youtube-comment-raflle/Comment";
+import WinnerModal from "../ui/youtube-comment-raflle/WinnerModal";
 
 const DEFAULT_VIDEO_CUSTOM_DATA = {
   title: "영상 제목",
@@ -39,8 +36,9 @@ export type SortType = {
 
 const Page = () => {
   const youtubeInputRef = useRef<HTMLInputElement>(null);
-  const winnerLimitInputRef = useRef<HTMLInputElement>(null);
+  const [winnerLimitInputState, setWinnerLimitState] = useState(1);
 
+  const [isWinnerModalOpen, setIsWinnerModalOpen] = useState(false);
   const [comments, setComments] = useState<CustomCommentDataType[]>([]);
   const sortedByLike = useMemo(
     () => comments.toSorted((a, b) => b.likeCount - a.likeCount),
@@ -75,13 +73,6 @@ const Page = () => {
     [key: string]: boolean;
   }>({});
 
-  const leftWinner = useMemo(
-    () =>
-      +(winnerLimitInputRef.current?.value || 0) -
-      winnerComments.selected.length,
-    [winnerComments, winnerLimitInputRef, comments]
-  );
-
   const onCommentTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
 
@@ -108,9 +99,8 @@ const Page = () => {
       const isSelected = !!winnerComments.selected.find(
         ({ commentId }) => commentId === id
       );
-      const currentWinnersCount = winnerLimitInputRef.current?.value;
 
-      if (!currentWinnersCount) return alert("당첨자 수를 결정해주세요!");
+      if (!winnerLimitInputState) return alert("당첨자 수를 결정해주세요!");
 
       if (isSelected) {
         setWinnerComments((prev) => ({
@@ -123,8 +113,8 @@ const Page = () => {
           [id]: false,
         }));
       } else {
-        if (winnerComments.selected.length + 1 > +currentWinnersCount)
-          return alert(`${currentWinnersCount}명을 모두 고르셨습니다`);
+        if (winnerComments.selected.length + 1 > +winnerLimitInputState)
+          return alert(`${winnerLimitInputState}명을 모두 고르셨습니다`);
 
         setWinnerComments((prev) => ({
           ...structuredClone(prev),
@@ -154,7 +144,7 @@ const Page = () => {
       winners.add(key);
     }
 
-    const maxWinners = +(winnerLimitInputRef.current?.value || 0);
+    const maxWinners = winnerLimitInputState;
 
     while (winners.size < maxWinners) {
       const randomRange = Math.floor(Math.random() * comments.length) + 1;
@@ -184,6 +174,8 @@ const Page = () => {
       ...prev,
       all: [...newWinners],
     }));
+
+    setIsWinnerModalOpen(true);
   };
 
   const handleSubmitYoutubeLink = async (e: React.FormEvent) => {
@@ -202,78 +194,84 @@ const Page = () => {
     setComments(commentData);
   };
 
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
+  const handleWinnerModalClose = () => {
+    setIsWinnerModalOpen(false);
   };
 
+  const leftWinner = winnerLimitInputState - winnerComments.selected.length;
+
   return (
-    <main className="w-full h-full flex justify-center text-amber-950">
-      <Button onClick={handleOpen}>오픈</Button>
-      <section className="w-1/2 flex flex-col items-center px-2 gap-7 pt-7">
-        <VideoInfo {...videoData} />
-        <div className="w-full flex items-center ">
-          <h1 className="text-2 font-bold w-20">1. 유튜브 링크 삽입</h1>
-          <YoutubeLinkForm
-            inputRef={youtubeInputRef}
-            handleSubmit={handleSubmitYoutubeLink}
-          />
-        </div>
-        <div className="w-full flex items-center ">
-          <h1 className="text-2 font-bold w-20">2. 댓글 유형 선택</h1>
-          <CommentTypeForm
-            onChange={onCommentTypeChange}
-            commentType={commentType}
-          />
-        </div>
-        <div className="w-full flex items-center">
-          <h1 className="text-2 font-bold w-20">3. 당첨자 수 입력</h1>
-          <WinnerCountForm winnerCountInputRef={winnerLimitInputRef} />
-        </div>
-        <div className="w-full flex items-center">
-          <h1 className="text-2 font-bold w-20">4. 추첨 방식 선택</h1>
-          <span className="pr-2">
-            댓글 목록에서 {winnerComments.selected.length}명 선택 됨
-          </span>
-          <Button
-            type="button"
-            text={leftWinner ? `남은 ${leftWinner}명 랜덤추첨` : "추첨 종료"}
-            colorPalette="rin"
-            onClick={raffleComment}
-            disabled={!comments.length}
-            className="w-15"
-          />
-        </div>
-      </section>
-      <section className="w-1/2 flex flex-col items-center gap-6">
-        <div className="flex flex-col w-full gap-4 ">
-          {!!comments.length && (
-            <select
-              className="w-10 border-2 border-solid border-black"
-              onChange={onSortTypeChange}
-              disabled={!comments.length}
-            >
-              <option>최신순</option>
-              <option>좋아요순</option>
-            </select>
-          )}
-          <div className="flex flex-col h-60 overflow-y-auto pr-2 gap-1.4">
-            {comments.map((comment) => (
-              <Comment
-                isToggled={!!toggledComments[comment.commentId]}
-                key={comment.commentId}
-                {...comment}
-                onClick={onCommentClick(comment.commentId)}
-              />
-            ))}
+    <>
+      <WinnerModal
+        open={isWinnerModalOpen}
+        onClose={handleWinnerModalClose}
+        winnerComments={winnerComments.all}
+      />
+      <main className="w-full h-full flex justify-center text-amber-950">
+        <section className="w-1/2 flex flex-col items-center px-2 gap-7 pt-7">
+          <VideoInfo {...videoData} />
+          <div className="w-full flex items-center ">
+            <h1 className="text-2 font-bold w-20">1. 유튜브 링크 삽입</h1>
+            <YoutubeLinkForm
+              inputRef={youtubeInputRef}
+              handleSubmit={handleSubmitYoutubeLink}
+            />
           </div>
-        </div>
-        <WinnerCommnetList comments={winnerComments.all} />
-      </section>
-    </main>
+          <div className="w-full flex items-center ">
+            <h1 className="text-2 font-bold w-20">2. 댓글 유형 선택</h1>
+            <CommentTypeForm
+              onChange={onCommentTypeChange}
+              commentType={commentType}
+            />
+          </div>
+          <div className="w-full flex items-center">
+            <h1 className="text-2 font-bold w-20">3. 당첨자 수 입력</h1>
+            <WinnerCountForm
+              winnerLimitState={winnerLimitInputState}
+              onChange={(e) => setWinnerLimitState(e)}
+            />
+          </div>
+          <div className="w-full flex items-center">
+            <h1 className="text-2 font-bold w-20">4. 추첨 방식 선택</h1>
+            <span className="pr-2">
+              댓글 목록에서 {winnerComments.selected.length}명 선택 됨
+            </span>
+            <Button
+              type="button"
+              text={leftWinner ? `남은 ${leftWinner}명 랜덤추첨` : "추첨 종료"}
+              colorPalette="rin"
+              onClick={raffleComment}
+              disabled={!comments.length}
+              className="w-15"
+            />
+          </div>
+        </section>
+        <section className="w-1/2 flex flex-col items-center gap-6">
+          <div className="flex flex-col w-full gap-4 ">
+            {!!comments.length && (
+              <select
+                className="w-10 border-2 border-solid border-black"
+                onChange={onSortTypeChange}
+                disabled={!comments.length}
+              >
+                <option>최신순</option>
+                <option>좋아요순</option>
+              </select>
+            )}
+            <div className="flex flex-col h-60 overflow-y-auto pr-2 gap-1.4">
+              {comments.map((comment) => (
+                <Comment
+                  isToggled={!!toggledComments[comment.commentId]}
+                  key={comment.commentId}
+                  {...comment}
+                  onClick={onCommentClick(comment.commentId)}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      </main>
+    </>
   );
 };
 
