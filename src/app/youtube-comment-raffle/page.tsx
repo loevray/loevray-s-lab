@@ -76,6 +76,16 @@ const Page = () => {
     [key: string]: boolean;
   }>({});
 
+  const initializeStates = () => {
+    setToggledComments({});
+    setWinnerComments({
+      selected: [],
+      all: [],
+    });
+    setComments([]);
+    setWinnerLimitState(1);
+  };
+
   const onCommentTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
 
@@ -201,15 +211,19 @@ const Page = () => {
   const handleSubmitYoutubeLink = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (videoData.commentCount) {
+      initializeStates();
+    }
+
     const link = youtubeInputRef.current?.value || "";
     if (link === "") return alert("링크가 존재하지 않습니다");
 
-    const videoData = await fetchYoutubeVideoMetadata(link);
-    setVideoData(videoData);
+    const fetchedVideoData = await fetchYoutubeVideoMetadata(link);
+    setVideoData(fetchedVideoData);
 
     const commentData = await fetchYoutubeToplevelComments(
       link,
-      videoData.commentCount
+      fetchedVideoData.commentCount
     );
     setComments(commentData);
   };
