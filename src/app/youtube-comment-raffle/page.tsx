@@ -90,8 +90,38 @@ const Page = () => {
     }
   };
 
+  const onSelectedCommentClick = (id: string) => {
+    setWinnerComments((prev) => ({
+      ...structuredClone(prev),
+      selected: prev.selected.filter(({ commentId }) => commentId !== id),
+    }));
+
+    setToggledComments((prev) => ({
+      ...prev,
+      [id]: false,
+    }));
+  };
+
+  const onNotSelectedCommentClick = (
+    id: string,
+    selectedComment: CustomCommentDataType
+  ) => {
+    setWinnerComments((prev) => ({
+      ...structuredClone(prev),
+      selected: [
+        ...structuredClone(prev.selected),
+        { ...structuredClone(selectedComment) },
+      ],
+    }));
+    setToggledComments((prev) => ({
+      ...prev,
+      [id]: true,
+    }));
+  };
+
   const onCommentClick =
-    (id: string) => (e: React.MouseEvent<HTMLDivElement>) => {
+    (clickedId: string) =>
+    (e: React.MouseEvent<HTMLDivElement>, id: string = clickedId) => {
       const selectedComment = comments.find(
         ({ commentId }) => commentId === id
       ) as CustomCommentDataType;
@@ -100,34 +130,23 @@ const Page = () => {
         ({ commentId }) => commentId === id
       );
 
-      if (!winnerLimitInputState) return alert("당첨자 수를 결정해주세요!");
+      if (!winnerLimitInputState) {
+        return alert("당첨자 수를 결정해주세요!");
+      }
 
       if (isSelected) {
-        setWinnerComments((prev) => ({
-          ...structuredClone(prev),
-          selected: prev.selected.filter(({ commentId }) => commentId !== id),
-        }));
-
-        setToggledComments((prev) => ({
-          ...prev,
-          [id]: false,
-        }));
-      } else {
-        if (winnerComments.selected.length + 1 > +winnerLimitInputState)
-          return alert(`${winnerLimitInputState}명을 모두 고르셨습니다`);
-
-        setWinnerComments((prev) => ({
-          ...structuredClone(prev),
-          selected: [
-            ...structuredClone(prev.selected),
-            { ...structuredClone(selectedComment) },
-          ],
-        }));
-        setToggledComments((prev) => ({
-          ...prev,
-          [id]: true,
-        }));
+        onSelectedCommentClick(id);
+        return;
       }
+
+      const isLimitWinners =
+        winnerComments.selected.length + 1 > +winnerLimitInputState;
+
+      if (isLimitWinners) {
+        return alert(`${winnerLimitInputState}명을 모두 고르셨습니다`);
+      }
+
+      onNotSelectedCommentClick(id, selectedComment);
     };
 
   const raffleComment = () => {
