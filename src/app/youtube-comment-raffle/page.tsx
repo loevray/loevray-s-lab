@@ -19,6 +19,7 @@ import Button from "../ui/common/Button";
 import YoutubeCommentList from "../ui/youtube-comment-raflle/YoutubeCommentList";
 import WinnerCommnetList from "../ui/youtube-comment-raflle/WinnerCommentList";
 import Modal from "../ui/common/modal/Modal";
+import Comment from "../ui/youtube-comment-raflle/Comment";
 
 const DEFAULT_VIDEO_CUSTOM_DATA = {
   title: "영상 제목",
@@ -211,7 +212,6 @@ const Page = () => {
 
   return (
     <main className="w-full h-full flex justify-center text-amber-950">
-      <Modal open={open} onClose={handleClose} />
       <Button onClick={handleOpen}>오픈</Button>
       <section className="w-1/2 flex flex-col items-center px-2 gap-7 pt-7">
         <VideoInfo {...videoData} />
@@ -249,12 +249,28 @@ const Page = () => {
         </div>
       </section>
       <section className="w-1/2 flex flex-col items-center gap-6">
-        <YoutubeCommentList
-          comments={comments}
-          toggledComments={toggledComments}
-          onSortTypeChange={onSortTypeChange}
-          onCommentClick={onCommentClick}
-        />
+        <div className="flex flex-col w-full gap-4 ">
+          {!!comments.length && (
+            <select
+              className="w-10 border-2 border-solid border-black"
+              onChange={onSortTypeChange}
+              disabled={!comments.length}
+            >
+              <option>최신순</option>
+              <option>좋아요순</option>
+            </select>
+          )}
+          <div className="flex flex-col h-60 overflow-y-auto pr-2 gap-1.4">
+            {comments.map((comment) => (
+              <Comment
+                isToggled={!!toggledComments[comment.commentId]}
+                key={comment.commentId}
+                {...comment}
+                onClick={onCommentClick(comment.commentId)}
+              />
+            ))}
+          </div>
+        </div>
         <WinnerCommnetList comments={winnerComments.all} />
       </section>
     </main>

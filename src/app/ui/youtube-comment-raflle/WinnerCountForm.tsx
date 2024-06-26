@@ -10,6 +10,7 @@ const WinnerCountForm = ({
       className="w-7 h-3 pl-1 shadow-xl bg-yellow-50 focus:bg-yellow-100 focus:outline-none"
       ref={winnerCountInputRef}
       type="number"
+      defaultValue={1}
     />
     명
   </form>

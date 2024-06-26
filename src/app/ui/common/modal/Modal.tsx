@@ -11,13 +11,15 @@ import {
 import useControlled from "@/hooks/useControlled";
 import useClickAway from "@/hooks/useClickAway";
 
-interface ModalProps {
+export interface ModalProps {
   open: boolean;
   onClose: () => void;
+  children?: ReactNode;
 }
 
-const Modal = ({ open, onClose }: ModalProps) => {
+const Modal = ({ children, open, onClose }: ModalProps) => {
   const clickAwayRef = useRef<HTMLDivElement>(null);
+
   useClickAway({
     clickAwayRef,
     onClickAway: onClose,
@@ -28,6 +30,7 @@ const Modal = ({ open, onClose }: ModalProps) => {
       return true;
     },
   });
+
   return (
     open && (
       <Portal>
@@ -35,7 +38,7 @@ const Modal = ({ open, onClose }: ModalProps) => {
           ref={clickAwayRef}
           className="w-screen h-screen bg-black bg-opacity-60 z-50 absolute top-0 left-0 flex justify-center items-center"
         >
-          <div className="w-60 h-60 bg-white"></div>
+          {children}
         </div>
       </Portal>
     )
