@@ -3,13 +3,17 @@ import { HTMLAttributes, ReactNode } from "react";
 
 interface AccordionContentProps extends HTMLAttributes<HTMLDivElement> {}
 
-const AccordionContent = ({ children, ...rest }: AccordionContentProps) => {
+const AccordionContent = ({
+  children,
+  className,
+  ...rest
+}: AccordionContentProps) => {
   const { expanded } = useAccordionContext();
   return (
     <div
-      className={`transition-opacity px-1  ${
+      className={`transition-opacity px-1 w-full ${
         expanded ? "opacity-100 visible h-auto" : "opacity-0 invisible h-0"
-      } `}
+      } ${className}`}
       {...rest}
     >
       {children}

@@ -44,7 +44,7 @@ const Navigation = () => {
     ? mappedRoutesStyle[currentPath].backgroundColor
     : "bg-slate-100";
 
-  const [expanded, setExpanded] = useState<string | false>(false);
+  const [expanded, setExpanded] = useState<string | false>("accordion1");
 
   const handleToggle =
     (panel: string) => (e: SyntheticEvent, isExpanded: boolean) => {
@@ -59,10 +59,12 @@ const Navigation = () => {
         expanded={expanded === "accordion1"}
         handleToggle={handleToggle("accordion1")}
       >
-        <Accordion.Summary>메뉴1</Accordion.Summary>
+        <Accordion.Summary>유틸리티</Accordion.Summary>
         {mappedRoutesStyleArray.map(([link, { name }]) => (
-          <Accordion.Content key={link}>
-            <Link href={link}>{name}</Link>
+          <Accordion.Content key={link} className="px-0">
+            <Link href={link} className="hover:bg-slate-100 block p-1">
+              {name}
+            </Link>
           </Accordion.Content>
         ))}
       </Accordion>
@@ -71,9 +73,9 @@ const Navigation = () => {
         handleToggle={handleToggle("accordion2")}
       >
         <Accordion.Summary>메뉴2</Accordion.Summary>
-        <Accordion.Content>이동1</Accordion.Content>
-        <Accordion.Content>이동2</Accordion.Content>
-        <Accordion.Content>이동3</Accordion.Content>
+        <Accordion.Content>실험중 1</Accordion.Content>
+        <Accordion.Content>실험중 2</Accordion.Content>
+        <Accordion.Content>실험중 3</Accordion.Content>
       </Accordion>
     </nav>
   );
