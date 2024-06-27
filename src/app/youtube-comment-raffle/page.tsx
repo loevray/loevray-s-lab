@@ -15,6 +15,8 @@ import Button from "../ui/common/Button";
 import Comment from "../ui/youtube-comment-raflle/Comment";
 import WinnerModal from "../ui/youtube-comment-raflle/WinnerModal";
 import { useForm } from "react-hook-form";
+import useComments from "./hooks/useComments";
+import useVideoData from "./hooks/useVideoData";
 
 const DEFAULT_VIDEO_CUSTOM_DATA = {
   title: "영상 제목",
@@ -38,10 +40,13 @@ export type CommentType = {
 };
 
 const Page = () => {
+  const { comments, setComments, fetchComments } = useComments();
+  const { videoData, setVideoData, fetchVideoData } = useVideoData();
+
   const youtubeInputRef = useRef<HTMLInputElement>(null);
 
   const [isWinnerModalOpen, setIsWinnerModalOpen] = useState(false);
-  const [comments, setComments] = useState<CustomCommentDataType[]>([]);
+
   const sortedByLike = useMemo(
     () => comments.toSorted((a, b) => b.likeCount - a.likeCount),
     [comments.length]
@@ -54,10 +59,6 @@ const Page = () => {
           new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
       ),
     [comments.length]
-  );
-
-  const [videoData, setVideoData] = useState<YoutubeVideoCustomData>(
-    DEFAULT_VIDEO_CUSTOM_DATA
   );
 
   const [commentType, setCommentType] = useState<CommentType>({
