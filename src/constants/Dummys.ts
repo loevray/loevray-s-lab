@@ -75,7 +75,19 @@ const DUMMY = {
       }
     }
   ] as YoutubeCommentThread[],
-  YOUTUBE_VIDEO:''
+  YOUTUBE_VIDEO:'',
+  VIDEO_CUSTOM_DATA: {
+    title: "영상 제목",
+    channelTitle: "채널 이름",
+    commentCount: 0,
+    viewCount: 0,
+    thumbnail: {
+      url: "https://placehold.co/400x200/png",
+      width: 500,
+      height: 300,
+    },
+  }
+  
 }
 
 export default DUMMY

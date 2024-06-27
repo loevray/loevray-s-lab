@@ -5,7 +5,7 @@ import {
   fetchYoutubeToplevelComments,
   fetchYoutubeVideoMetadata,
 } from "@/app/youtube-comment-raffle/lib/actions";
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import VideoInfo from "../ui/youtube-comment-raflle/VideoInfo";
 import { CustomCommentDataType } from "@/utils/parsedYoutubeCommentThread";
 import YoutubeLinkForm from "../ui/youtube-comment-raflle/YoutubeLinkForm";
@@ -15,21 +15,9 @@ import Button from "../ui/common/Button";
 import Comment from "../ui/youtube-comment-raflle/Comment";
 import WinnerModal from "../ui/youtube-comment-raflle/WinnerModal";
 import { useForm } from "react-hook-form";
-import useComments from "./hooks/useComments";
-import useVideoData from "./hooks/useVideoData";
-import { raffle } from "@/utils/raffle";
 
-const DEFAULT_VIDEO_CUSTOM_DATA = {
-  title: "영상 제목",
-  channelTitle: "채널 이름",
-  commentCount: 0,
-  viewCount: 0,
-  thumbnail: {
-    url: "https://placehold.co/400x200/png",
-    width: 500,
-    height: 300,
-  },
-};
+import { raffle } from "@/utils/raffle";
+import DUMMY from "@/constants/Dummys";
 
 export type SortType = {
   [key in "좋아요순" | "최신순"]: boolean;
@@ -41,8 +29,11 @@ export type CommentType = {
 };
 
 const Page = () => {
-  const { comments, setComments, fetchComments } = useComments();
-  const { videoData, setVideoData, fetchVideoData } = useVideoData();
+  const [comments, setComments] = useState<CustomCommentDataType[]>([]);
+
+  const [videoData, setVideoData] = useState<YoutubeVideoCustomData>(
+    DUMMY.VIDEO_CUSTOM_DATA
+  );
 
   const [isWinnerModalOpen, setIsWinnerModalOpen] = useState(false);
 
