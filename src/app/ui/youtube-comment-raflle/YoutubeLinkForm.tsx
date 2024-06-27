@@ -26,7 +26,6 @@ const YoutubeLinkForm = ({
       className="flex flex-col"
       onSubmit={handleSubmit((data) => {
         onSubmit(data);
-        if (getValues("youtubeLink")) setValue("youtubeLink", "");
       })}
     >
       <div className="flex pb-1 gap-1">
