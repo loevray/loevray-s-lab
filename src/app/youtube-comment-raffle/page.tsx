@@ -228,7 +228,7 @@ const Page = () => {
         winnerComments={winnerComments.all}
       />
       <main className="w-full h-full flex justify-center text-amber-950">
-        <section className="w-1/2 flex flex-col items-center px-2 gap-7 pt-7">
+        <section className="w-1/2 flex flex-col items-center gap-7 pt-7">
           <VideoInfo {...videoData} />
           <div className="w-full flex items-center ">
             <h1 className="text-2 font-bold w-20">1. 유튜브 링크 삽입</h1>

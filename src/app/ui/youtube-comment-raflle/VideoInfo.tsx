@@ -11,7 +11,7 @@ const VideoInfo = ({
   viewCount,
 }: VideoInfoProps) => {
   return (
-    <Card className="hover:brightness-[.85] cursor-pointer">
+    <Card className="hover:brightness-[.85] cursor-pointer w-34 h-27">
       <CardImage
         src={thumbnail.url}
         width={thumbnail.width}
