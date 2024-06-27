@@ -44,8 +44,6 @@ const Page = () => {
   const { comments, setComments, fetchComments } = useComments();
   const { videoData, setVideoData, fetchVideoData } = useVideoData();
 
-  const youtubeInputRef = useRef<HTMLInputElement>(null);
-
   const [isWinnerModalOpen, setIsWinnerModalOpen] = useState(false);
 
   const sortedByLike = useMemo(
@@ -207,14 +205,12 @@ const Page = () => {
     setIsWinnerModalOpen(true);
   };
 
-  const handleSubmitYoutubeLink = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const handleSubmitYoutubeLink = async (data: { youtubeLink: string }) => {
     if (videoData.commentCount) {
       initializeStates();
     }
 
-    const link = youtubeInputRef.current?.value || "";
+    const link = data.youtubeLink;
     if (link === "") return alert("링크가 존재하지 않습니다");
 
     const fetchedVideoData = await fetchYoutubeVideoMetadata(link);
@@ -246,9 +242,8 @@ const Page = () => {
           <div className="w-full flex items-center ">
             <h1 className="text-2 font-bold w-20">1. 유튜브 링크 삽입</h1>
             <YoutubeLinkForm
-              inputRef={youtubeInputRef}
-              handleSubmit={handleSubmitYoutubeLink}
-              onChange={onCommentTypeChange}
+              onSubmit={handleSubmitYoutubeLink}
+              onCommentTypeChange={onCommentTypeChange}
               commentType={commentType}
             />
           </div>

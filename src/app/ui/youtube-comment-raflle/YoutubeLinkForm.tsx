@@ -1,22 +1,34 @@
-import { HTMLAttributes, RefObject, useRef } from "react";
+import { ComponentProps, HTMLAttributes, RefObject, useRef } from "react";
 import Button from "../common/Button";
 import { CommentType } from "@/app/youtube-comment-raffle/page";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 interface YoutubeLinkFormProps {
-  inputRef: RefObject<HTMLInputElement>;
-  handleSubmit: HTMLAttributes<HTMLFormElement>["onSubmit"];
-  onChange: HTMLAttributes<HTMLInputElement>["onChange"];
+  onSubmit: SubmitHandler<{ youtubeLink: string }>;
+  onCommentTypeChange: ComponentProps<"input">["onChange"];
   commentType: CommentType;
 }
 
 const YoutubeLinkForm = ({
-  inputRef,
-  handleSubmit,
-  onChange,
+  onSubmit,
+  onCommentTypeChange,
   commentType,
 }: YoutubeLinkFormProps) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    getValues,
+    setValue,
+  } = useForm<{ youtubeLink: string }>();
   return (
-    <form className="flex flex-col" onSubmit={handleSubmit}>
+    <form
+      className="flex flex-col"
+      onSubmit={handleSubmit((data) => {
+        onSubmit(data);
+        if (getValues("youtubeLink")) setValue("youtubeLink", "");
+      })}
+    >
       <div className="flex pb-1 gap-1">
         <div>
           <input
@@ -24,7 +36,6 @@ const YoutubeLinkForm = ({
             type="radio"
             name="youtube-comments"
             value="thread"
-            onChange={onChange}
             defaultChecked={commentType.thread}
             id="thread"
           />
@@ -37,7 +48,7 @@ const YoutubeLinkForm = ({
             name="youtube-comments"
             data-name="comments"
             value="reply"
-            onChange={onChange}
+            onChange={onCommentTypeChange}
             defaultChecked={commentType.reply}
             id="reply"
           />
@@ -47,13 +58,17 @@ const YoutubeLinkForm = ({
       <label className="text-1.2 text-gray-500">
         ex{")"} youtube.com/watch?v=xxx, youtu.be/xxx, youtube.com/shorts/xxx
       </label>
-      <div className="flex">
+      <div className="flex relative">
         <input
           placeholder="https://youtube.com/watch?v=videoId"
           className="w-45 h-3 pl-1 shadow-xl bg-yellow-50 focus:bg-yellow-100 focus:outline-none"
-          name="link"
-          ref={inputRef}
+          {...register("youtubeLink", {
+            required: "링크를 입력해주세요",
+          })}
         />
+        <label className="absolute bottom-[-3rem] text-red-500 text-1.2">
+          {errors.youtubeLink?.message}
+        </label>
         <Button
           type="submit"
           text="검색"
