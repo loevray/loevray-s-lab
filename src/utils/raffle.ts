@@ -1,13 +1,28 @@
-const raffle = (range:{low:number,high:number},maxWinner:number = 1) => {
-  const {low,high} = range;
-  
-  const winners = new Set<number>();
-  while(winners.size<maxWinner){
-    const randomRange = Math.floor(Math.random() * (high - low+1)) + low;
-    winners.add(randomRange)
-  }
-  
-  return Array.from(winners)
-}
+// utils/raffle.ts
 
-export default raffle
+export const raffle = <T>(
+  items: T[],
+  selectedIds: Set<string>,
+  count: number,
+  getId: (item: T) => string
+): T[] => {
+  const winners = new Set<string>(selectedIds);
+
+  const maxSelectableCount = Math.min(count, items.length);
+
+  while (winners.size < maxSelectableCount) {
+    const randomIndex = Math.floor(Math.random() * items.length);
+    const winnerId = getId(items[randomIndex]);
+    winners.add(winnerId);
+  }
+
+  const itemMap = items.reduce<{ [key: string]: T }>(
+    (acc, cur) => ({
+      ...acc,
+      [getId(cur)]: cur,
+    }),
+    {}
+  );
+
+  return Array.from(winners).map((winnerId) => itemMap[winnerId]);
+};

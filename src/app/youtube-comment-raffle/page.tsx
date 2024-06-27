@@ -17,6 +17,7 @@ import WinnerModal from "../ui/youtube-comment-raflle/WinnerModal";
 import { useForm } from "react-hook-form";
 import useComments from "./hooks/useComments";
 import useVideoData from "./hooks/useVideoData";
+import { raffle } from "@/utils/raffle";
 
 const DEFAULT_VIDEO_CUSTOM_DATA = {
   title: "영상 제목",
@@ -191,27 +192,12 @@ const Page = () => {
       winners.add(key);
     }
 
-    while (winners.size < winnerCount) {
-      const randomRange = Math.floor(Math.random() * comments.length);
-      const winner = comments[randomRange].commentId;
-      winners.add(winner);
-    }
-
-    const parsedComments = comments.reduce<{
-      [key: string]: CustomCommentDataType;
-    }>(
-      (acc, cur) => ({
-        ...structuredClone(acc),
-        [cur.commentId]: { ...cur },
-      }),
-      {}
+    const newWinners = raffle<CustomCommentDataType>(
+      comments,
+      winners,
+      winnerCount,
+      (item) => item.commentId
     );
-
-    const newWinners: CustomCommentDataType[] = [];
-
-    winners.forEach((winnerId) => {
-      newWinners.push(parsedComments[winnerId]);
-    });
 
     setWinnerComments((prev) => ({
       ...prev,
