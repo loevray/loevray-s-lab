@@ -14,6 +14,7 @@ import WinnerCountForm from "../ui/youtube-comment-raflle/WinnerCountForm";
 import Button from "../ui/common/Button";
 import Comment from "../ui/youtube-comment-raflle/Comment";
 import WinnerModal from "../ui/youtube-comment-raflle/WinnerModal";
+import { useForm } from "react-hook-form";
 
 const DEFAULT_VIDEO_CUSTOM_DATA = {
   title: "영상 제목",
@@ -38,7 +39,6 @@ export type CommentType = {
 
 const Page = () => {
   const youtubeInputRef = useRef<HTMLInputElement>(null);
-  const [winnerLimitInputState, setWinnerLimitState] = useState(1);
 
   const [isWinnerModalOpen, setIsWinnerModalOpen] = useState(false);
   const [comments, setComments] = useState<CustomCommentDataType[]>([]);
@@ -76,6 +76,21 @@ const Page = () => {
     [key: string]: boolean;
   }>({});
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+    setValue,
+  } = useForm<{ winnerCount: number }>({
+    mode: "onChange",
+    defaultValues: {
+      winnerCount: 1,
+    },
+  });
+
+  const winnerCount = watch("winnerCount");
+
   const initializeStates = () => {
     setToggledComments({});
     setWinnerComments({
@@ -83,7 +98,7 @@ const Page = () => {
       all: [],
     });
     setComments([]);
-    setWinnerLimitState(1);
+    setValue("winnerCount", 1);
   };
 
   const onCommentTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -143,7 +158,7 @@ const Page = () => {
         ({ commentId }) => commentId === id
       );
 
-      if (!winnerLimitInputState) {
+      if (!winnerCount) {
         return alert("당첨자 수를 결정해주세요!");
       }
 
@@ -152,11 +167,10 @@ const Page = () => {
         return;
       }
 
-      const isLimitWinners =
-        winnerComments.selected.length + 1 > +winnerLimitInputState;
+      const isLimitWinners = winnerComments.selected.length + 1 > +winnerCount;
 
       if (isLimitWinners) {
-        return alert(`${winnerLimitInputState}명을 모두 고르셨습니다`);
+        return alert(`${winnerCount}명을 모두 고르셨습니다`);
       }
 
       onNotSelectedCommentClick(id, selectedComment);
@@ -176,9 +190,7 @@ const Page = () => {
       winners.add(key);
     }
 
-    const maxWinners = winnerLimitInputState;
-
-    while (winners.size < maxWinners) {
+    while (winners.size < winnerCount) {
       const randomRange = Math.floor(Math.random() * comments.length);
       const winner = comments[randomRange].commentId;
       winners.add(winner);
@@ -232,7 +244,7 @@ const Page = () => {
     setIsWinnerModalOpen(false);
   };
 
-  const leftWinner = winnerLimitInputState - winnerComments.selected.length;
+  const leftWinner = winnerCount - winnerComments.selected.length;
 
   return (
     <>
@@ -257,8 +269,11 @@ const Page = () => {
             <h1 className="text-2 font-bold w-20">2. 추첨인원/방식</h1>
             총
             <WinnerCountForm
-              winnerLimitState={winnerLimitInputState}
-              onChange={(e) => setWinnerLimitState(e)}
+              errors={errors}
+              register={register}
+              disabled={!comments.length}
+              winnerCountLimit={comments.length - 1}
+              handleSubmit={handleSubmit}
             />
             <span className="pr-2">
               중 댓글 목록에서 {winnerComments.selected.length}명 선택 됨
@@ -268,7 +283,7 @@ const Page = () => {
               text={leftWinner ? `남은 ${leftWinner}명 랜덤추첨` : "추첨 종료"}
               colorPalette="rin"
               onClick={raffleComment}
-              disabled={!comments.length}
+              disabled={!comments.length || !!errors.winnerCount}
               className="w-15"
             />
           </div>
