@@ -80,16 +80,26 @@ const Page = () => {
     },
   });
 
+  const {
+    register: registerYoutubeLink,
+    handleSubmit: handleSubmitYoutubeLinkForm,
+    formState: { errors: youtubeLinkFormErros },
+    setValue: setYoutubeLinkFormValue,
+  } = useForm<{ youtubeLink: string }>();
+
   const winnerCount = watch("winnerCount");
 
   const initializeStates = () => {
+    if (!comments.length && !videoData.commentCount) return;
+    setVideoData(DUMMY.VIDEO_CUSTOM_DATA);
+    setComments([]);
     setToggledComments({});
     setWinnerComments({
       selected: [],
       all: [],
     });
-    setComments([]);
     setValue("winnerCount", 1);
+    setYoutubeLinkFormValue("youtubeLink", "");
   };
 
   const onCommentTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -229,13 +239,16 @@ const Page = () => {
       />
       <main className="w-full h-full flex justify-center text-amber-950">
         <section className="w-1/2 flex flex-col items-center gap-7 pt-7">
-          <VideoInfo {...videoData} />
+          <VideoInfo {...videoData} onClick={initializeStates} />
           <div className="w-full flex items-center ">
             <h1 className="text-2 font-bold w-20">1. 유튜브 링크 삽입</h1>
             <YoutubeLinkForm
               onSubmit={handleSubmitYoutubeLink}
               onCommentTypeChange={onCommentTypeChange}
               commentType={commentType}
+              register={registerYoutubeLink}
+              errors={youtubeLinkFormErros}
+              handleSubmit={handleSubmitYoutubeLinkForm}
             />
           </div>
           <div className="w-full flex items-center">

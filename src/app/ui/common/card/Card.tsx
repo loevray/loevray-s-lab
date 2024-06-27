@@ -1,13 +1,14 @@
-import { HTMLAttributes } from "react";
+import { ComponentProps, HTMLAttributes } from "react";
 import CardHeader from "./CardHeader";
 import CardContent from "./CardContent";
 import CardImage from "./CardImage";
 
-interface CardProps extends HTMLAttributes<HTMLElement> {}
-const Card = ({ children, className }: CardProps) => {
+interface CardProps extends ComponentProps<"article"> {}
+const Card = ({ children, className, ...rest }: CardProps) => {
   return (
     <article
       className={`w-30 h-25 shadow-lg bg-white rounded-2xl ${className}`}
+      {...rest}
     >
       {children}
     </article>

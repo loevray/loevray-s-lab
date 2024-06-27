@@ -1,26 +1,40 @@
 import { ComponentProps, HTMLAttributes, RefObject, useRef } from "react";
 import Button from "../common/Button";
 import { CommentType } from "@/app/youtube-comment-raffle/page";
-import { SubmitHandler, useForm } from "react-hook-form";
+import {
+  FieldErrors,
+  SubmitHandler,
+  UseFormHandleSubmit,
+  UseFormRegister,
+  useForm,
+} from "react-hook-form";
 
 interface YoutubeLinkFormProps {
   onSubmit: SubmitHandler<{ youtubeLink: string }>;
   onCommentTypeChange: ComponentProps<"input">["onChange"];
   commentType: CommentType;
+  handleSubmit: UseFormHandleSubmit<
+    {
+      youtubeLink: string;
+    },
+    undefined
+  >;
+  errors: FieldErrors<{
+    youtubeLink: string;
+  }>;
+  register: UseFormRegister<{
+    youtubeLink: string;
+  }>;
 }
 
 const YoutubeLinkForm = ({
   onSubmit,
   onCommentTypeChange,
   commentType,
+  handleSubmit,
+  errors,
+  register,
 }: YoutubeLinkFormProps) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    getValues,
-    setValue,
-  } = useForm<{ youtubeLink: string }>();
   return (
     <form
       className="flex flex-col"
