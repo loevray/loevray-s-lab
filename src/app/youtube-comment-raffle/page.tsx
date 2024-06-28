@@ -7,7 +7,6 @@ import {
 } from "@/app/youtube-comment-raffle/lib/actions";
 import { useMemo, useState } from "react";
 import VideoInfo from "../ui/youtube-comment-raflle/VideoInfo";
-import { CustomCommentDataType } from "@/utils/parsedYoutubeCommentThread";
 import YoutubeLinkForm from "../ui/youtube-comment-raflle/YoutubeLinkForm";
 import WinnerCountForm from "../ui/youtube-comment-raflle/WinnerCountForm";
 
@@ -18,6 +17,10 @@ import { useForm } from "react-hook-form";
 
 import { raffle } from "@/utils/raffle";
 import DUMMY from "@/constants/Dummys";
+import {
+  NormalizedYoutubeCommentType,
+  YoutubeCommentType,
+} from "@/utils/parsedYoutubeCommentThread";
 
 export type SortType = {
   [key in "좋아요순" | "최신순"]: boolean;
@@ -28,39 +31,51 @@ export type CommentType = {
   reply: boolean;
 };
 
+export type SortOptionType = "original" | "newest" | "like";
+
 const Page = () => {
-  const [comments, setComments] = useState<CustomCommentDataType[]>([]);
+  const [commentsData, setCommentsData] =
+    useState<NormalizedYoutubeCommentType>({
+      comments: {},
+      allIds: [],
+    });
+  const [sortOption, setSortOption] = useState<SortOptionType>("original");
+
+  const [winnerComments, setWinnerComments] = useState<YoutubeCommentType[]>(
+    []
+  );
+  const isCommentDataEmpty = !!!commentsData.allIds.length;
+
+  const origianlComments = commentsData.allIds.map(
+    (id) => commentsData.comments[id]
+  );
+
+  const sortedComments = useMemo(() => {
+    switch (sortOption) {
+      case "like":
+        return [...origianlComments].sort((a, b) => b.likeCount - a.likeCount);
+
+      case "newest":
+        return [...origianlComments].sort(
+          (a, b) =>
+            new Date(a.publishedAt).getTime() -
+            new Date(b.publishedAt).getTime()
+        );
+      default:
+        return origianlComments;
+    }
+  }, [sortOption, origianlComments]);
 
   const [videoData, setVideoData] = useState<YoutubeVideoCustomData>(
     DUMMY.VIDEO_CUSTOM_DATA
   );
+  const isVideoDataEmpty = !!!videoData.commentCount;
 
   const [isWinnerModalOpen, setIsWinnerModalOpen] = useState(false);
-
-  const sortedByLike = useMemo(
-    () => comments.toSorted((a, b) => b.likeCount - a.likeCount),
-    [comments.length]
-  );
-
-  const sortedByNew = useMemo(
-    () =>
-      comments.toSorted(
-        (a, b) =>
-          new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
-      ),
-    [comments.length]
-  );
 
   const [commentType, setCommentType] = useState<CommentType>({
     thread: true,
     reply: false,
-  });
-
-  const [winnerComments, setWinnerComments] = useState<{
-    [key in "selected" | "all"]: CustomCommentDataType[];
-  }>({
-    selected: [],
-    all: [],
   });
 
   const [toggledComments, setToggledComments] = useState<{
@@ -71,7 +86,7 @@ const Page = () => {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
+    getValues: getWinnerCountFromValues,
     setValue,
   } = useForm<{ winnerCount: number }>({
     mode: "onChange",
@@ -87,17 +102,14 @@ const Page = () => {
     setValue: setYoutubeLinkFormValue,
   } = useForm<{ youtubeLink: string }>();
 
-  const winnerCount = watch("winnerCount");
-
   const initializeStates = () => {
-    if (!comments.length && !videoData.commentCount) return;
+    if (isCommentDataEmpty || isVideoDataEmpty) return;
     setVideoData(DUMMY.VIDEO_CUSTOM_DATA);
-    setComments([]);
-    setToggledComments({});
-    setWinnerComments({
-      selected: [],
-      all: [],
+    setCommentsData({
+      comments: {},
+      allIds: [],
     });
+    setToggledComments({});
     setValue("winnerCount", 1);
     setYoutubeLinkFormValue("youtubeLink", "");
   };
@@ -110,38 +122,20 @@ const Page = () => {
 
   const onSortTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target;
-
-    if (value === "좋아요순") {
-      return setComments(sortedByLike);
-    }
-    if (value === "최신순") {
-      return setComments(sortedByNew);
-    }
+    setSortOption(value as SortOptionType);
   };
 
   const onSelectedCommentClick = (id: string) => {
-    setWinnerComments((prev) => ({
-      ...structuredClone(prev),
-      selected: prev.selected.filter(({ commentId }) => commentId !== id),
-    }));
-
-    setToggledComments((prev) => ({
-      ...prev,
-      [id]: false,
-    }));
+    setToggledComments((prev) => {
+      const prevToggleComments = {
+        ...prev,
+      };
+      delete prevToggleComments[id];
+      return prevToggleComments;
+    });
   };
 
-  const onNotSelectedCommentClick = (
-    id: string,
-    selectedComment: CustomCommentDataType
-  ) => {
-    setWinnerComments((prev) => ({
-      ...structuredClone(prev),
-      selected: [
-        ...structuredClone(prev.selected),
-        { ...structuredClone(selectedComment) },
-      ],
-    }));
+  const onNotSelectedCommentClick = (id: string) => {
     setToggledComments((prev) => ({
       ...prev,
       [id]: true,
@@ -151,13 +145,11 @@ const Page = () => {
   const onCommentClick =
     (clickedId: string) =>
     (e: React.MouseEvent<HTMLDivElement>, id: string = clickedId) => {
-      const selectedComment = comments.find(
-        ({ commentId }) => commentId === id
-      ) as CustomCommentDataType;
+      const selectedComment = commentsData.comments[id];
 
-      const isSelected = !!winnerComments.selected.find(
-        ({ commentId }) => commentId === id
-      );
+      const winnerCount = getWinnerCountFromValues("winnerCount");
+
+      const isSelected = toggledComments[id];
 
       if (!winnerCount) {
         return alert("당첨자 수를 결정해주세요!");
@@ -168,42 +160,37 @@ const Page = () => {
         return;
       }
 
-      const isLimitWinners = winnerComments.selected.length + 1 > +winnerCount;
+      const isLimitWinners =
+        Object.keys(toggledComments).length + 1 > +winnerCount;
 
       if (isLimitWinners) {
         return alert(`${winnerCount}명을 모두 고르셨습니다`);
       }
 
-      onNotSelectedCommentClick(id, selectedComment);
+      onNotSelectedCommentClick(id);
     };
 
   const raffleComment = () => {
-    if (!videoData) return alert("비디오 데이터가 없어요!");
-    if (!comments.length) return alert("댓글 데이터가 없어요!");
-
-    const selectedCommentIdCheckMap = winnerComments.selected.reduce<{
-      [key: string]: boolean;
-    }>((acc, cur) => ({ ...acc, [cur.commentId]: true }), {});
+    if (isVideoDataEmpty) return alert("비디오 데이터가 없어요!");
+    if (isCommentDataEmpty) return alert("댓글 데이터가 없어요!");
 
     const winners = new Set<string>();
 
-    for (const key in selectedCommentIdCheckMap) {
+    for (const key in toggledComments) {
       winners.add(key);
     }
 
-    const newWinners = raffle<CustomCommentDataType>(
-      comments,
+    const winnerCount = getWinnerCountFromValues("winnerCount");
+
+    const newWinners = raffle<YoutubeCommentType>(
+      sortedComments,
       winners,
       winnerCount,
       (item) => item.commentId
     );
 
-    setWinnerComments((prev) => ({
-      ...prev,
-      all: [...newWinners],
-    }));
-
     setIsWinnerModalOpen(true);
+    setWinnerComments(newWinners);
   };
 
   const handleSubmitYoutubeLink = async (data: { youtubeLink: string }) => {
@@ -221,21 +208,20 @@ const Page = () => {
       link,
       fetchedVideoData.commentCount
     );
-    setComments(commentData);
+
+    setCommentsData(commentData);
   };
 
   const handleWinnerModalClose = () => {
     setIsWinnerModalOpen(false);
   };
 
-  const leftWinner = winnerCount - winnerComments.selected.length;
-
   return (
     <>
       <WinnerModal
         open={isWinnerModalOpen}
         onClose={handleWinnerModalClose}
-        winnerComments={winnerComments.all}
+        winnerComments={winnerComments}
       />
       <main className="w-full h-full flex justify-center text-amber-950">
         <section className="w-1/2 flex flex-col items-center gap-7 pt-7">
@@ -253,44 +239,44 @@ const Page = () => {
           </div>
           <div className="w-full flex items-center">
             <h1 className="text-2 font-bold w-20">2. 추첨인원/방식</h1>
-            총
+            선택:
             <WinnerCountForm
               errors={errors}
               register={register}
-              disabled={!comments.length}
-              winnerCountLimit={comments.length - 1}
+              disabled={isVideoDataEmpty}
+              winnerCountLimit={origianlComments.length}
               handleSubmit={handleSubmit}
             />
             <span className="pr-2">
-              중 댓글 목록에서 {winnerComments.selected.length}명 선택 됨
+              중 댓글 목록에서 {Object.keys(toggledComments).length}명 선택 됨
             </span>
             <Button
               type="button"
-              text={leftWinner ? `남은 ${leftWinner}명 랜덤추첨` : "추첨 종료"}
+              text="남은 인원 랜덤 추첨"
               colorPalette="rin"
               onClick={raffleComment}
-              disabled={!comments.length || !!errors.winnerCount}
+              disabled={isCommentDataEmpty || !!errors.winnerCount}
               className="w-15"
             />
           </div>
         </section>
         <section className="w-1/2 max-w-70 flex flex-col items-center gap-6">
           <div className="flex flex-col w-full gap-4 ">
-            {!!comments.length && (
+            {!isCommentDataEmpty && (
               <div>
                 <select
                   className="w-10 border-2 border-solid border-black"
                   onChange={onSortTypeChange}
-                  disabled={!comments.length}
+                  disabled={isCommentDataEmpty}
                 >
-                  <option>최신순</option>
-                  <option>좋아요순</option>
+                  <option value="newest">최신순</option>
+                  <option value="like">좋아요순</option>
                 </select>
-                <span className="pl-1">댓글 총{comments.length}개</span>
+                <span className="pl-1">댓글 총{origianlComments.length}개</span>
               </div>
             )}
             <div className="flex flex-col h-60 overflow-y-auto pr-2 gap-1.4">
-              {comments.map((comment) => (
+              {sortedComments.map((comment) => (
                 <Comment
                   isToggled={!!toggledComments[comment.commentId]}
                   key={comment.commentId}

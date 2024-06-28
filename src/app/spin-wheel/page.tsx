@@ -46,7 +46,6 @@ const Page = () => {
         </div>
       </section>
       <section className="w-1/2 h-full flex flex-col pt-10">
-        {/* 버튼 밖으로 꺼내오기? */}
         <SpinWheelTextList isLocked={isRotating} />
       </section>
     </main>
