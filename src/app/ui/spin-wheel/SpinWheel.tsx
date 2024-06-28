@@ -21,14 +21,31 @@ const SpinWheel = ({ diameter, spinWheelRef, arrowRef }: SpinWheelProps) => {
         height: `${diameter}px`,
       }}
     >
-      <span
-        className="bg-red-500 w-4 h-5 absolute left-1/2 translate-x-[-50%] z-10"
-        style={{ clipPath: "polygon(50% 100%, 25% 0, 75% 0)" }}
-      />
+      <svg
+        className="absolute left-1/2 top-[-1rem] translate-x-[-50%] z-10"
+        width="45"
+        height="45"
+        viewBox="0 0 100 100"
+      >
+        <polygon points="50,100 25,0 75,0" className="fill-slate-800" />
+      </svg>
       <span
         className="display:none size-[1px] absolute left-1/2 translate-x-[-50%]"
         ref={arrowRef}
       />
+      <svg
+        viewBox={`0 0 ${diameter * 1.1} ${diameter * 1.1}`}
+        width={diameter * 1.1}
+        height={diameter * 1.1}
+        className="absolute left-1/2 top-1/2 translate-y-[-50%] translate-x-[-50%]"
+      >
+        <circle
+          r={diameter / 1.96}
+          cx="50%"
+          cy="50%"
+          className="fill-cyan-400"
+        />
+      </svg>
       <svg
         ref={spinWheelRef}
         viewBox={`0 0 ${diameter} ${diameter}`}
