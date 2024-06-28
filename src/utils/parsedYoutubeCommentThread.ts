@@ -1,21 +1,29 @@
 import { YoutubeCommentThread } from "@/app/youtube-comment-raffle/type";
 
 
-export interface CustomCommentDataType  {
-  authorDisplayName:string;
-  textOriginal:string;
-  publishedAt:string;
-  updatedAt:string;
-  likeCount:number;
-  authorProfileImageUrl:string;
-  isModified:boolean;
-  commentId:string;
+export interface YoutubeCommentType {
+    authorDisplayName:string;
+    textOriginal:string;
+    publishedAt:string;
+    updatedAt:string;
+    likeCount:number;
+    authorProfileImageUrl:string;
+    isModified:boolean;
+    commentId:string;
 }
 
-const parsedYoutubeCommentThread = (data: YoutubeCommentThread[]): CustomCommentDataType[] => {
+export interface NormalizedYoutubeCommentType {
+  comments:{[key:string]:YoutubeCommentType}
+  allIds:string[];
+}
+
+const parsedYoutubeCommentThread = (data: YoutubeCommentThread[]): NormalizedYoutubeCommentType => {
   const usedIds = new Set<string>();
 
-  const customComments: CustomCommentDataType[] = [];
+  const customComments:NormalizedYoutubeCommentType = {
+    comments:{},
+    allIds:[]
+  };
 
   data.forEach(
     ({
@@ -34,14 +42,14 @@ const parsedYoutubeCommentThread = (data: YoutubeCommentThread[]): CustomComment
       },
     }) => {
       const commentId = id;
-      
       if (usedIds.has(commentId)) {
         return; 
       }
       
       usedIds.add(commentId);
+      
 
-      customComments.push({
+      customComments.comments[commentId] = {
         authorDisplayName,
         authorProfileImageUrl,
         textOriginal,
@@ -50,7 +58,9 @@ const parsedYoutubeCommentThread = (data: YoutubeCommentThread[]): CustomComment
         likeCount,
         isModified: publishedAt !== updatedAt,
         commentId,
-      });
+      };
+      
+      customComments.allIds = Array.from(usedIds)
     }
   );
 
