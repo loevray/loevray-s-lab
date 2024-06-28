@@ -6,7 +6,11 @@ import Accordion from "../common/accordion/Accordion";
 import { SyntheticEvent, useState } from "react";
 import ROUTES from "./constants/route";
 
-export type RoutesType = "/" | "spin-wheel" | "youtube-comment-raffle";
+export type RoutesType =
+  | "/"
+  | "spin-wheel"
+  | "youtube-comment-raffle"
+  | "ghost-leg";
 
 export interface I_RoutesStyle {
   name: string;

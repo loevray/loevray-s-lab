@@ -17,6 +17,10 @@ import { MappedRoutesStyleType } from "../Navigation";
       name: "유튜브 댓글 추첨",
       backgroundColor: "bg-yellow-300",
     },
+    "ghost-leg":{
+      name:"사다리 타기",
+      backgroundColor:"bg-pink-200"
+    }
   },
  }
 
