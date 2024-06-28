@@ -1,3 +1,4 @@
+import handleCaretPosition from "@/utils/handleCaretPosition";
 import useSpinwheelStore from "../../../store/useSpinwheelStore";
 import Button from "../common/Button";
 import SpinWheelTextItem from "./SpinWheelTextItem";
@@ -38,6 +39,7 @@ const SpinWheelTextList = ({ isLocked }: { isLocked: boolean }) => {
         e.target.textContent !== ""
       )
         return;
+      if (e.target.textContent === "") e.preventDefault();
       deleteSector(id);
 
       const prevNode = (
@@ -46,6 +48,7 @@ const SpinWheelTextList = ({ isLocked }: { isLocked: boolean }) => {
         "[contentEditable]"
       ) as HTMLDivElement;
       prevNode.focus();
+      handleCaretPosition(prevNode);
     }
   };
 
