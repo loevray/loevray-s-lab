@@ -27,7 +27,11 @@ const SpinWheel = ({ diameter, spinWheelRef, arrowRef }: SpinWheelProps) => {
         height="45"
         viewBox="0 0 100 100"
       >
-        <polygon points="50,100 25,0 75,0" className="fill-slate-800" />
+        <polygon
+          points="50,100 25,0 75,0"
+          style={{ stroke: "white", strokeWidth: 1 }}
+          className="fill-slate-800"
+        />
       </svg>
       <span
         className="display:none size-[1px] absolute left-1/2 translate-x-[-50%]"
