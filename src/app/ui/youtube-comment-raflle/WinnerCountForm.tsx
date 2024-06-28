@@ -3,7 +3,6 @@ import {
   FieldErrors,
   UseFormHandleSubmit,
   UseFormRegister,
-  useForm,
 } from "react-hook-form";
 
 const WinnerCountForm = ({
@@ -41,7 +40,7 @@ const WinnerCountForm = ({
           {...register("winnerCount", {
             required: "추첨인원을 기입해주세요",
             pattern: {
-              value: /^[0-9]$/,
+              value: /^[0-9]*$/,
               message: "양의 정수만 입력 가능합니다",
             },
             min: {
