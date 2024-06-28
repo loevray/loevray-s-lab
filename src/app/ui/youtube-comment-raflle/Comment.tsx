@@ -1,14 +1,21 @@
-import { CustomCommentDataType } from "@/utils/parsedYoutubeCommentThread";
 import Avatar from "../common/avatar/Avatar";
 import getRelativeTime from "@/utils/getRelativeTime";
-import { HTMLAttributes } from "react";
+import { YoutubeCommentType } from "@/utils/parsedYoutubeCommentThread";
+import React, { ComponentProps, HTMLAttributes, MouseEvent } from "react";
 
 //코멘트 컴포넌트도 compound패턴 적용하면 좋아보임(임시)
 
 interface CommentProps
-  extends CustomCommentDataType,
-    HTMLAttributes<HTMLDivElement> {
+  extends YoutubeCommentType,
+    Omit<ComponentProps<"div">, "onClick"> {
   isToggled?: boolean;
+  onClick?: (
+    e: MouseEvent,
+    id: string,
+    isSelected: boolean,
+    canToggle: boolean
+  ) => void;
+  canToggle?: boolean;
 }
 const Comment = ({
   authorDisplayName,
@@ -20,13 +27,14 @@ const Comment = ({
   isModified,
   commentId,
   onClick,
+  canToggle,
   isToggled = false,
   ...rest
 }: CommentProps) => {
   return (
     <div
       {...rest}
-      onClick={onClick}
+      onClick={(e) => onClick?.(e, commentId, isToggled, !!canToggle)}
       className={`flex gap-1 cursor-pointer bg-white shadow-md rounded-xl py-1 relative p-1 border-[1px] break-all border-yellow-400 border-solid ${
         isToggled ? "brightness-75 hover:brightness-50" : "hover:brightness-90"
       }`}
@@ -64,4 +72,4 @@ const Comment = ({
   );
 };
 
-export default Comment;
+export default React.memo(Comment);

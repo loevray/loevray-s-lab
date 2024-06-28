@@ -5,7 +5,7 @@ import {
   fetchYoutubeToplevelComments,
   fetchYoutubeVideoMetadata,
 } from "@/app/youtube-comment-raffle/lib/actions";
-import { useMemo, useState } from "react";
+import { MouseEvent, useCallback, useMemo, useState } from "react";
 import VideoInfo from "../ui/youtube-comment-raflle/VideoInfo";
 import YoutubeLinkForm from "../ui/youtube-comment-raflle/YoutubeLinkForm";
 import WinnerCountForm from "../ui/youtube-comment-raflle/WinnerCountForm";
@@ -21,10 +21,6 @@ import {
   NormalizedYoutubeCommentType,
   YoutubeCommentType,
 } from "@/utils/parsedYoutubeCommentThread";
-
-export type SortType = {
-  [key in "좋아요순" | "최신순"]: boolean;
-};
 
 export type CommentType = {
   thread: boolean;
@@ -82,18 +78,22 @@ const Page = () => {
     [key: string]: boolean;
   }>({});
 
+  const toggledCommentsLength = Object.keys(toggledComments).length;
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-    getValues: getWinnerCountFromValues,
     setValue,
+    watch,
   } = useForm<{ winnerCount: number }>({
     mode: "onChange",
     defaultValues: {
       winnerCount: 1,
     },
   });
+
+  const winnerCount = watch("winnerCount");
 
   const {
     register: registerYoutubeLink,
@@ -142,15 +142,8 @@ const Page = () => {
     }));
   };
 
-  const onCommentClick =
-    (clickedId: string) =>
-    (e: React.MouseEvent<HTMLDivElement>, id: string = clickedId) => {
-      const selectedComment = commentsData.comments[id];
-
-      const winnerCount = getWinnerCountFromValues("winnerCount");
-
-      const isSelected = toggledComments[id];
-
+  const onCommentClick = useCallback(
+    (e: MouseEvent, id: string, isSelected: boolean, canToggle: boolean) => {
       if (!winnerCount) {
         return alert("당첨자 수를 결정해주세요!");
       }
@@ -160,15 +153,14 @@ const Page = () => {
         return;
       }
 
-      const isLimitWinners =
-        Object.keys(toggledComments).length + 1 > +winnerCount;
-
-      if (isLimitWinners) {
+      if (!canToggle) {
         return alert(`${winnerCount}명을 모두 고르셨습니다`);
       }
 
       onNotSelectedCommentClick(id);
-    };
+    },
+    []
+  );
 
   const raffleComment = () => {
     if (isVideoDataEmpty) return alert("비디오 데이터가 없어요!");
@@ -179,8 +171,6 @@ const Page = () => {
     for (const key in toggledComments) {
       winners.add(key);
     }
-
-    const winnerCount = getWinnerCountFromValues("winnerCount");
 
     const newWinners = raffle<YoutubeCommentType>(
       sortedComments,
@@ -194,10 +184,6 @@ const Page = () => {
   };
 
   const handleSubmitYoutubeLink = async (data: { youtubeLink: string }) => {
-    if (videoData.commentCount) {
-      initializeStates();
-    }
-
     const link = data.youtubeLink;
     if (link === "") return alert("링크가 존재하지 않습니다");
 
@@ -245,6 +231,7 @@ const Page = () => {
               register={register}
               disabled={isVideoDataEmpty}
               winnerCountLimit={origianlComments.length}
+              winnerCountMin={Math.max(1, toggledCommentsLength)}
               handleSubmit={handleSubmit}
             />
             <span className="pr-2">
@@ -278,10 +265,11 @@ const Page = () => {
             <div className="flex flex-col h-60 overflow-y-auto pr-2 gap-1.4">
               {sortedComments.map((comment) => (
                 <Comment
+                  canToggle={toggledCommentsLength < winnerCount}
                   isToggled={!!toggledComments[comment.commentId]}
                   key={comment.commentId}
                   {...comment}
-                  onClick={onCommentClick(comment.commentId)}
+                  onClick={onCommentClick}
                 />
               ))}
             </div>
