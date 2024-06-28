@@ -53,11 +53,12 @@ const Navigation = () => {
 
   return (
     <nav
-      className={`sticky top-0 h-screen w-20 ${currentBackgroundColor} flex flex-col gap-0.5`}
+      className={`sticky top-0 h-screen w-20 ${currentBackgroundColor} flex flex-col gap-0.5 items-center`}
     >
       <Accordion
         expanded={expanded === "accordion1"}
         handleToggle={handleToggle("accordion1")}
+        className="w-full"
       >
         <Accordion.Summary>유틸리티</Accordion.Summary>
         {mappedRoutesStyleArray.map(([link, { name }]) => (
@@ -71,12 +72,14 @@ const Navigation = () => {
       <Accordion
         expanded={expanded === "accordion2"}
         handleToggle={handleToggle("accordion2")}
+        className="w-full"
       >
         <Accordion.Summary>메뉴2</Accordion.Summary>
         <Accordion.Content>실험중 1</Accordion.Content>
         <Accordion.Content>실험중 2</Accordion.Content>
         <Accordion.Content>실험중 3</Accordion.Content>
       </Accordion>
+      <div className="text-1.4 text-gray-600">문의: rei980213@gmail.com</div>
     </nav>
   );
 };

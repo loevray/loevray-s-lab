@@ -1,9 +1,14 @@
 import AccordionContextProvider from "@/app/ui/common/accordion/provider/AccordionContextProvider";
-import { HTMLAttributes, ReactNode, SyntheticEvent } from "react";
+import {
+  ComponentProps,
+  HTMLAttributes,
+  ReactNode,
+  SyntheticEvent,
+} from "react";
 import AccordionSummary, { AccordionSummaryType } from "./AccordionSummary";
 import AccordionContent from "./AccordionContent";
 
-interface AccordionProps extends HTMLAttributes<HTMLDivElement> {
+interface AccordionProps extends ComponentProps<"div"> {
   defaultExpanded?: boolean;
   expanded?: boolean;
   handleToggle?: (e: SyntheticEvent, expanded: boolean) => void;
@@ -14,6 +19,7 @@ const Accordion = ({
   expanded,
   defaultExpanded = false,
   handleToggle,
+  className,
   ...rest
 }: AccordionProps) => {
   return (
@@ -22,7 +28,7 @@ const Accordion = ({
       expanded={expanded}
       handleToggle={handleToggle}
     >
-      <div className="bg-white shadow-lg pb-1" {...rest}>
+      <div className={`bg-white shadow-lg pb-1 ${className}`} {...rest}>
         {children}
       </div>
     </AccordionContextProvider>
