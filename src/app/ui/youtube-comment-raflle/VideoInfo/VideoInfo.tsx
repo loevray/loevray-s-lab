@@ -1,7 +1,7 @@
 import { YoutubeVideoCustomData } from "@/app/youtube-comment-raffle/lib/actions";
-import Card from "../common/card/Card";
-import CardImage from "../common/card/CardImage";
 import getRelativeViecountUnit from "@/utils/getRelativeViewcountUnit";
+import Card from "../../common/card/Card";
+import CardImage from "../../common/card/CardImage";
 
 interface VideoInfoProps extends Omit<YoutubeVideoCustomData, "commentCount"> {
   onClick: () => void;

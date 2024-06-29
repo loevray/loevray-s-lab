@@ -6,7 +6,6 @@ import {
   fetchYoutubeVideoMetadata,
 } from "@/app/youtube-comment-raffle/lib/actions";
 import { MouseEvent, useCallback, useMemo, useState } from "react";
-import VideoInfo from "../ui/youtube-comment-raflle/VideoInfo";
 import YoutubeLinkForm from "../ui/youtube-comment-raflle/YoutubeLinkForm";
 import WinnerCountForm from "../ui/youtube-comment-raflle/WinnerCountForm";
 
@@ -22,10 +21,13 @@ import {
   YoutubeCommentType,
 } from "@/utils/parsedYoutubeCommentThread";
 import CommentSkeleton from "../ui/youtube-comment-raflle/Comment/CommentSkeleton";
+import VideoInfo from "../ui/youtube-comment-raflle/VideoInfo/VideoInfo";
+import useLoadingState, { UseLoadingStateType } from "@/hooks/useLoadingState";
+import VideoInfoSkeleton from "../ui/youtube-comment-raflle/VideoInfo/VideoInfoSkeleton";
 
 export type SortOptionType = "original" | "newest" | "like";
 
-export type CommentLoadingStateType = "initial" | "pending" | "fulfilled";
+export type LoadingStates = "comments" | "video";
 
 const SKELETONS = Array(10).fill(0);
 
@@ -35,8 +37,12 @@ const Page = () => {
       comments: {},
       allIds: [],
     });
-  const [isLoadingComment, setIsLoadingComment] =
-    useState<CommentLoadingStateType>("initial");
+
+  const [isLoading, setIsLoading] = useLoadingState<LoadingStates>({
+    comments: "initial",
+    video: "initial",
+  });
+
   const [sortOption, setSortOption] = useState<SortOptionType>("original");
 
   const [winnerComments, setWinnerComments] = useState<YoutubeCommentType[]>(
@@ -101,7 +107,13 @@ const Page = () => {
 
   const initializeStates = () => {
     if (isCommentDataEmpty || isVideoDataEmpty) return;
-    setIsLoadingComment("initial");
+    setIsLoading((prev) => {
+      const newState = {} as UseLoadingStateType<LoadingStates>;
+      for (const key in prev) {
+        newState[key as LoadingStates] = "initial";
+      }
+      return newState;
+    });
     setVideoData(DUMMY.VIDEO_CUSTOM_DATA);
     setCommentsData({
       comments: {},
@@ -179,17 +191,31 @@ const Page = () => {
     const link = data.youtubeLink;
     if (link === "") return alert("링크가 존재하지 않습니다");
 
+    setIsLoading((prev) => ({
+      ...prev,
+      video: "pending",
+    }));
     const fetchedVideoData = await fetchYoutubeVideoMetadata(link);
     setVideoData(fetchedVideoData);
+    setIsLoading((prev) => ({
+      ...prev,
+      video: "fulfilled",
+    }));
 
-    setIsLoadingComment("pending");
+    setIsLoading((prev) => ({
+      ...prev,
+      comments: "pending",
+    }));
     const commentData = await fetchYoutubeToplevelComments(
       link,
       fetchedVideoData.commentCount
     );
 
     setCommentsData(commentData);
-    setIsLoadingComment("fulfilled");
+    setIsLoading((prev) => ({
+      ...prev,
+      comments: "fulfilled",
+    }));
   };
 
   const handleWinnerModalClose = () => {
@@ -261,9 +287,9 @@ const Page = () => {
               </div>
             )}
             <div className="flex flex-col h-60 overflow-y-auto pr-2 gap-1.4">
-              {isLoadingComment === "pending" &&
+              {isLoading.comments === "pending" &&
                 SKELETONS.map((el, i) => <CommentSkeleton key={i} />)}
-              {isLoadingComment === "fulfilled" &&
+              {isLoading.comments === "fulfilled" &&
                 !isCommentDataEmpty &&
                 sortedComments.map((comment) => (
                   <Comment
