@@ -4,6 +4,7 @@ import { DEFAULT_VALUES } from "@/constants/SpinWheel";
 import CircularSector from "./CircularSector";
 import Arrow from "./Arrow";
 import BorderCircle from "./BorderCircle";
+import CircularSectorContainer from "./CircularSectorContainer";
 
 interface SpinWheelProps {
   diameter: number;
@@ -23,18 +24,12 @@ const SpinWheel = ({ diameter, spinWheelRef, arrowRef }: SpinWheelProps) => {
         height: `${diameter}px`,
       }}
     >
-      <Arrow className="stroke-white storke-1" />
-      <span
-        className="display:none size-[1px] absolute left-1/2 translate-x-[-50%]"
-        ref={arrowRef}
-      />
+      <Arrow className="stroke-white storke-1" ref={arrowRef} />
       <BorderCircle diameter={diameter} borderWidth={3} />
-      <svg
+      <CircularSectorContainer
         ref={spinWheelRef}
-        viewBox={`0 0 ${diameter} ${diameter}`}
-        width={diameter}
-        height={diameter}
-        transform={`rotate(${DEFAULT_VALUES.DEG})`}
+        diameter={diameter}
+        defaultRotateDeg={DEFAULT_VALUES.DEG}
       >
         {sectorData.map((data) => (
           <CircularSector
@@ -44,7 +39,7 @@ const SpinWheel = ({ diameter, spinWheelRef, arrowRef }: SpinWheelProps) => {
             {...data}
           />
         ))}
-      </svg>
+      </CircularSectorContainer>
     </figure>
   );
 };

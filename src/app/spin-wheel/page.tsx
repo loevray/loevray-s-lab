@@ -1,7 +1,7 @@
 "use client";
 
 import { DEFAULT_VALUES } from "@/constants/SpinWheel";
-import useSpinWheel from "../../hooks/useSpinWheel";
+import useSpinWheel from "../ui/spin-wheel/hooks/useSpinWheel";
 import SpinWheel from "../ui/spin-wheel/SpinWheel";
 import Button from "../ui/common/Button";
 import SpinWheelTextList from "../ui/spin-wheel/SpinWheelTextList";
@@ -30,7 +30,7 @@ const Page = () => {
           돌려돌려 돌림판!
         </span>
         <SpinWheel
-          diameter={DEFAULT_VALUES.CIRCLE_DIAMETER} //지름은 무조건 4의 배수여야 함
+          diameter={DEFAULT_VALUES.CIRCLE_DIAMETER}
           spinWheelRef={spinWheelRef}
           arrowRef={arrowRef}
         />
