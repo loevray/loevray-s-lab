@@ -1,6 +1,3 @@
-import { ComponentProps, HTMLAttributes, RefObject, useRef } from "react";
-import Button from "../common/Button";
-import { CommentType } from "@/app/youtube-comment-raffle/page";
 import {
   FieldErrors,
   SubmitHandler,

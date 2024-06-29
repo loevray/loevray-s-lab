@@ -38,9 +38,9 @@ const WinnerCountForm = ({
       onSubmit={handleSubmit(onSubmit)}
     >
       <label htmlFor="number-of-winners" className="font-semibold">
-        당첨자 수
+        Number Of Winners
       </label>
-      <div className="w-14 h-3.5 relative">
+      <div className="w-18 h-3.5 relative">
         <input
           id="number-of-winners"
           disabled={disabled}

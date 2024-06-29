@@ -22,11 +22,6 @@ import {
   YoutubeCommentType,
 } from "@/utils/parsedYoutubeCommentThread";
 
-export type CommentType = {
-  thread: boolean;
-  reply: boolean;
-};
-
 export type SortOptionType = "original" | "newest" | "like";
 
 const Page = () => {
@@ -69,11 +64,6 @@ const Page = () => {
 
   const [isWinnerModalOpen, setIsWinnerModalOpen] = useState(false);
 
-  const [commentType, setCommentType] = useState<CommentType>({
-    thread: true,
-    reply: false,
-  });
-
   const [toggledComments, setToggledComments] = useState<{
     [key: string]: boolean;
   }>({});
@@ -112,12 +102,6 @@ const Page = () => {
     setToggledComments({});
     setValue("winnerCount", 1);
     setYoutubeLinkFormValue("youtubeLink", "");
-  };
-
-  const onCommentTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-
-    setCommentType((prev) => ({ ...prev, [value]: true }));
   };
 
   const onSortTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -159,7 +143,7 @@ const Page = () => {
 
       onNotSelectedCommentClick(id);
     },
-    []
+    [winnerCount]
   );
 
   const raffleComment = () => {
