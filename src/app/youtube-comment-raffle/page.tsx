@@ -225,7 +225,6 @@ const Page = () => {
           </div>
           <div className="w-full flex items-center">
             <h1 className="text-2 font-bold w-20">2. 추첨인원/방식</h1>
-            선택:
             <WinnerCountForm
               errors={errors}
               register={register}
@@ -234,23 +233,33 @@ const Page = () => {
               winnerCountMin={Math.max(1, toggledCommentsLength)}
               handleSubmit={handleSubmit}
             />
-            <span className="pr-2">
-              중 댓글 목록에서 {Object.keys(toggledComments).length}명 선택 됨
-            </span>
-            <Button
-              type="button"
-              text="남은 인원 랜덤 추첨"
-              colorPalette="rin"
-              onClick={raffleComment}
-              disabled={isCommentDataEmpty || !!errors.winnerCount}
-              className="w-15"
-            />
+            <div className="flex gap-1 items-center pl-1">
+              <span>|</span>
+              <span className="font-semibold">
+                {Object.keys(toggledComments).length}명
+              </span>
+              <span>선택 됨</span>
+              {!isCommentDataEmpty && (
+                <Button
+                  type="button"
+                  text={
+                    winnerCount > toggledCommentsLength
+                      ? "남은인원 랜덤 추첨"
+                      : "종료"
+                  }
+                  colorPalette="rin"
+                  onClick={raffleComment}
+                  disabled={isCommentDataEmpty || !!errors.winnerCount}
+                  className="w-15"
+                />
+              )}
+            </div>
           </div>
         </section>
         <section className="w-1/2 max-w-70 flex flex-col items-center gap-6">
           <div className="flex flex-col w-full gap-4 ">
             {!isCommentDataEmpty && (
-              <div>
+              <div className="flex gap-1">
                 <select
                   className="w-10 border-2 border-solid border-black"
                   onChange={onSortTypeChange}
@@ -259,7 +268,7 @@ const Page = () => {
                   <option value="newest">최신순</option>
                   <option value="like">좋아요순</option>
                 </select>
-                <span className="pl-1">댓글 총{origianlComments.length}개</span>
+                <span>댓글 총{origianlComments.length}개</span>
               </div>
             )}
             <div className="flex flex-col h-60 overflow-y-auto pr-2 gap-1.4">
