@@ -230,7 +230,12 @@ const Page = () => {
         onClose={handleWinnerModalClose}
         winnerComments={winnerComments}
       />
-      <button onClick={() => toast("나는 토스트").notify()}>gd</button>
+      <div className="flex">
+        <Button onClick={() => toast("나는 토스트").notify()}>디폴트</Button>
+        <Button onClick={() => toast("나는 토스트").error()}>에러</Button>
+        <Button onClick={() => toast("나는 토스트").success()}>성공</Button>
+        <Button onClick={() => toast("나는 토스트").warning()}>경고</Button>
+      </div>
       <main className="w-full h-full flex justify-between text-amber-950 px-7">
         <section className="flex flex-col gap-6.5 items-center pt-5">
           <VideoInfo {...videoData} onClick={initializeStates} />
