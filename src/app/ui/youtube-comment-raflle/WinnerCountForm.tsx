@@ -33,14 +33,18 @@ const WinnerCountForm = ({
 }: WinnerCountFormProps) => {
   const onSubmit = () => {};
   return (
-    <form className="flex flex-col relative" onSubmit={handleSubmit(onSubmit)}>
-      <label className="absolute top-[-2rem] left-[-2rem] text-1.2 w-20 text-red-500">
-        {errors.winnerCount?.message}
+    <form
+      className="flex flex-col relative text-1.8"
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <label htmlFor="number-of-winners" className="font-semibold">
+        당첨자 수
       </label>
-      <div>
+      <div className="w-14 h-3.5 relative">
         <input
+          id="number-of-winners"
           disabled={disabled}
-          className="w-7 h-3 pl-1 shadow-xl bg-yellow-50 focus:bg-yellow-100 focus:outline-none disabled:cursor-not-allowed disabled:bg-yellow-600"
+          className=" pl-1 pr-2 text-right w-full h-full shadow-xl bg-yellow-50 focus:bg-yellow-100 focus:outline-none disabled:cursor-not-allowed disabled:bg-yellow-600"
           {...register("winnerCount", {
             required: "추첨인원을 기입해주세요",
             pattern: {
@@ -57,7 +61,12 @@ const WinnerCountForm = ({
             },
           })}
         />
-        <span>명</span>
+        <span className="absolute right-0 top-0 h-full flex items-center font-semibold">
+          명
+        </span>
+        <label className="absolute bottom-[-2rem] left-0 text-1.2 w-20 text-red-500">
+          {errors.winnerCount?.message}
+        </label>
       </div>
     </form>
   );

@@ -35,7 +35,7 @@ const Comment = ({
     <div
       {...rest}
       onClick={(e) => onClick?.(e, commentId, isToggled, !!canToggle)}
-      className={`flex gap-1 cursor-pointer bg-white shadow-md rounded-xl py-1 relative p-1 border-[1px] break-all border-yellow-400 border-solid ${
+      className={`flex gap-1 cursor-pointer bg-white shadow-md rounded-xl py-1 relative p-1 border-[1px] break-all  ${
         isToggled ? "brightness-75 hover:brightness-50" : "hover:brightness-90"
       }`}
       {...rest}

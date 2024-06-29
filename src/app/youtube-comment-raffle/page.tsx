@@ -209,22 +209,18 @@ const Page = () => {
         onClose={handleWinnerModalClose}
         winnerComments={winnerComments}
       />
-      <main className="w-full h-full flex justify-center text-amber-950">
-        <section className="w-1/2 flex flex-col items-center gap-7 pt-7">
+      <main className="w-full h-full flex justify-between text-amber-950 px-7">
+        <section className="flex flex-col gap-6.5 items-center pt-5">
           <VideoInfo {...videoData} onClick={initializeStates} />
           <div className="w-full flex items-center ">
-            <h1 className="text-2 font-bold w-20">1. 유튜브 링크 삽입</h1>
             <YoutubeLinkForm
               onSubmit={handleSubmitYoutubeLink}
-              onCommentTypeChange={onCommentTypeChange}
-              commentType={commentType}
               register={registerYoutubeLink}
               errors={youtubeLinkFormErros}
               handleSubmit={handleSubmitYoutubeLinkForm}
             />
           </div>
-          <div className="w-full flex items-center">
-            <h1 className="text-2 font-bold w-20">2. 추첨인원/방식</h1>
+          <div className="w-full flex items-end text-1.8">
             <WinnerCountForm
               errors={errors}
               register={register}
@@ -233,8 +229,7 @@ const Page = () => {
               winnerCountMin={Math.max(1, toggledCommentsLength)}
               handleSubmit={handleSubmit}
             />
-            <div className="flex gap-1 items-center pl-1">
-              <span>|</span>
+            <div className="flex gap-1 items-end pl-1">
               <span className="font-semibold">
                 {Object.keys(toggledComments).length}명
               </span>
@@ -256,7 +251,7 @@ const Page = () => {
             </div>
           </div>
         </section>
-        <section className="w-1/2 max-w-70 flex flex-col items-center gap-6">
+        <section className="flex-1 max-w-70 flex flex-col items-center gap-6">
           <div className="flex flex-col w-full gap-4 ">
             {!isCommentDataEmpty && (
               <div className="flex gap-1">

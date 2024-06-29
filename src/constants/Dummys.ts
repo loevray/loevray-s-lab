@@ -82,9 +82,9 @@ const DUMMY = {
     commentCount: 0,
     viewCount: 0,
     thumbnail: {
-      url: "https://placehold.co/400x200/png",
-      width: 500,
-      height: 300,
+      url: "https://placehold.co/600x400/png",
+      width: 600,
+      height: 400,
     },
   }
   

@@ -15,7 +15,7 @@ const VideoInfo = ({
 }: VideoInfoProps) => {
   return (
     <Card
-      className="hover:bg-black hover:bg-opacity-[0.05] cursor-pointer w-34 h-27 relative group"
+      className="hover:bg-black hover:bg-opacity-[0.05] w-45 h-33 cursor-pointer relative group flex flex-col"
       onClick={onClick}
     >
       <button
@@ -32,7 +32,7 @@ const VideoInfo = ({
         alt="youtube-thumbnail"
         className="group-hover:brightness-90"
       />
-      <Card.Content className="flex flex-col p-0.5">
+      <Card.Content className="flex-1 flex flex-col justify-around p-0.5">
         <span className="font-bold truncate">{title}</span>
         <span className="text-gray-400 text-1.4">{channelTitle}</span>
         <span className="text-gray-400 text-1.4">

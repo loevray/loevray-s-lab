@@ -8,11 +8,10 @@ import {
   UseFormRegister,
   useForm,
 } from "react-hook-form";
+import YoutubeIcon from "./YoutubeIcon";
 
 interface YoutubeLinkFormProps {
   onSubmit: SubmitHandler<{ youtubeLink: string }>;
-  onCommentTypeChange: ComponentProps<"input">["onChange"];
-  commentType: CommentType;
   handleSubmit: UseFormHandleSubmit<
     {
       youtubeLink: string;
@@ -29,8 +28,6 @@ interface YoutubeLinkFormProps {
 
 const YoutubeLinkForm = ({
   onSubmit,
-  onCommentTypeChange,
-  commentType,
   handleSubmit,
   errors,
   register,
@@ -42,39 +39,17 @@ const YoutubeLinkForm = ({
         onSubmit(data);
       })}
     >
-      <div className="flex pb-1 gap-1">
-        <div>
-          <input
-            className="h-1.5"
-            type="radio"
-            name="youtube-comments"
-            value="thread"
-            defaultChecked={commentType.thread}
-            id="thread"
-          />
-          <label htmlFor="thread">댓글 목록</label>
-        </div>
-        <div>
-          <input
-            className="h-1.5"
-            type="radio"
-            name="youtube-comments"
-            data-name="comments"
-            value="reply"
-            onChange={onCommentTypeChange}
-            defaultChecked={commentType.reply}
-            id="reply"
-          />
-          <label htmlFor="reply">답글 목록(구현중)</label>
-        </div>
-      </div>
+      <label htmlFor="youtubeLink" className="text-1.8 font-semibold">
+        Youtube Link
+      </label>
       <label className="text-1.2 text-gray-500">
         ex{")"} youtube.com/watch?v=xxx, youtu.be/xxx, youtube.com/shorts/xxx
       </label>
-      <div className="flex relative">
+      <div className="flex items-center w-60 h-3.5 relative">
         <input
-          placeholder="https://youtube.com/watch?v=videoId"
-          className="w-45 h-3 pl-1 shadow-xl bg-yellow-50 focus:bg-yellow-100 focus:outline-none"
+          id="yotubeLink"
+          placeholder="Please fill out YouTube link"
+          className="w-full h-full pl-1 pr-5 shadow-xl focus:outline-none text-1.8"
           {...register("youtubeLink", {
             required: "링크를 입력해주세요",
           })}
@@ -82,12 +57,9 @@ const YoutubeLinkForm = ({
         <label className="absolute bottom-[-3rem] text-red-500 text-1.2">
           {errors.youtubeLink?.message}
         </label>
-        <Button
-          type="submit"
-          text="검색"
-          colorPalette="rin"
-          className="shadow-xl"
-        />
+        <button className="w-4.5 h-3 z-50 absolute right-0" type="submit">
+          <YoutubeIcon />
+        </button>
       </div>
     </form>
   );
