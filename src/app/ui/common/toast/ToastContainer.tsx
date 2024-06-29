@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { ToastEventType, observerInstance } from "./createObserver";
 import Portal from "../Portal/Portal";
 import CloseIcon from "./Icon/CloseIcon";
@@ -37,7 +37,6 @@ const ToastContainer = () => {
 
     const unsubscribe = observerInstance.observe(handleAddToast);
 
-    console.log(unsubscribe);
     return () => {
       unsubscribe();
     };
@@ -86,13 +85,18 @@ const ToastContainer = () => {
                 <IconComponent />
               </div>
               <div className="ms-3 text-1.4 text-black font-normal">
-                Set yourself free.
+                {toast.message}
               </div>
               <button
                 type="button"
                 className="ms-auto mx-0.5 my-0.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-0.5 hover:bg-gray-100 inline-flex items-center justify-center h-2 w-2 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
                 data-dismiss-target="#toast-default"
                 aria-label="Close"
+                onClick={() => {
+                  setToasts((prev) =>
+                    prev.filter((_toast) => _toast.id !== toast.id)
+                  );
+                }}
               >
                 <CloseIcon />
               </button>
