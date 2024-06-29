@@ -1,4 +1,4 @@
-import { utils, write, writeFile } from "xlsx";
+import { utils, writeFile } from "xlsx";
 
 const winnerToXlsx = <T,>(data: T[]) => {
   const workbook = utils.book_new();

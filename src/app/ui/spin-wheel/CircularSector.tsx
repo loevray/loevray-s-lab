@@ -1,19 +1,19 @@
 import getTruncateText from "@/utils/getTruncateText";
 import { SectorData } from "../../../store/useSpinwheelStore";
 
-interface SpinWheelSectorProps extends SectorData {
+interface CircularSectorProps extends SectorData {
   radius: number;
   totalSector: number;
 }
 
-const SpinWheelSector = ({
+const CircularSector = ({
   ratio,
   text,
   style,
   totalSector,
   accRatio = 0,
   radius,
-}: SpinWheelSectorProps) => {
+}: CircularSectorProps) => {
   const sectorRatio = ratio / totalSector;
   const sectorPercentage = sectorRatio * 100;
   const circumference = 2 * Math.PI * radius;
@@ -21,6 +21,7 @@ const SpinWheelSector = ({
   const sectorRotationDeg = (360 / totalSector) * accRatio;
   const sectorTextRotationDeg = ((360 * sectorRatio) / 2).toFixed(1);
   const truncatedText = getTruncateText(text, 9);
+
   return (
     <g transform={`rotate(${sectorRotationDeg})`} className="origin-center">
       <circle
@@ -54,4 +55,4 @@ const SpinWheelSector = ({
   );
 };
 
-export default SpinWheelSector;
+export default CircularSector;
