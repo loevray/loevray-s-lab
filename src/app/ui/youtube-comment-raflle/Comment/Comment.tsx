@@ -1,4 +1,4 @@
-import Avatar from "../common/avatar/Avatar";
+import Avatar from "../../common/avatar/Avatar";
 import getRelativeTime from "@/utils/getRelativeTime";
 import { YoutubeCommentType } from "@/utils/parsedYoutubeCommentThread";
 import React, { ComponentProps, HTMLAttributes, MouseEvent } from "react";

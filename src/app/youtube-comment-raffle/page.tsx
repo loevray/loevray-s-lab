@@ -11,7 +11,7 @@ import YoutubeLinkForm from "../ui/youtube-comment-raflle/YoutubeLinkForm";
 import WinnerCountForm from "../ui/youtube-comment-raflle/WinnerCountForm";
 
 import Button from "../ui/common/Button";
-import Comment from "../ui/youtube-comment-raflle/Comment";
+import Comment from "../ui/youtube-comment-raflle/Comment/Comment";
 import WinnerModal from "../ui/youtube-comment-raflle/WinnerModal";
 import { useForm } from "react-hook-form";
 
@@ -21,8 +21,13 @@ import {
   NormalizedYoutubeCommentType,
   YoutubeCommentType,
 } from "@/utils/parsedYoutubeCommentThread";
+import CommentSkeleton from "../ui/youtube-comment-raflle/Comment/CommentSkeleton";
 
 export type SortOptionType = "original" | "newest" | "like";
+
+export type CommentLoadingStateType = "initial" | "pending" | "fulfilled";
+
+const SKELETONS = Array(10).fill(0);
 
 const Page = () => {
   const [commentsData, setCommentsData] =
@@ -30,6 +35,8 @@ const Page = () => {
       comments: {},
       allIds: [],
     });
+  const [isLoadingComment, setIsLoadingComment] =
+    useState<CommentLoadingStateType>("initial");
   const [sortOption, setSortOption] = useState<SortOptionType>("original");
 
   const [winnerComments, setWinnerComments] = useState<YoutubeCommentType[]>(
@@ -94,6 +101,7 @@ const Page = () => {
 
   const initializeStates = () => {
     if (isCommentDataEmpty || isVideoDataEmpty) return;
+    setIsLoadingComment("initial");
     setVideoData(DUMMY.VIDEO_CUSTOM_DATA);
     setCommentsData({
       comments: {},
@@ -174,12 +182,14 @@ const Page = () => {
     const fetchedVideoData = await fetchYoutubeVideoMetadata(link);
     setVideoData(fetchedVideoData);
 
+    setIsLoadingComment("pending");
     const commentData = await fetchYoutubeToplevelComments(
       link,
       fetchedVideoData.commentCount
     );
 
     setCommentsData(commentData);
+    setIsLoadingComment("fulfilled");
   };
 
   const handleWinnerModalClose = () => {
@@ -251,15 +261,19 @@ const Page = () => {
               </div>
             )}
             <div className="flex flex-col h-60 overflow-y-auto pr-2 gap-1.4">
-              {sortedComments.map((comment) => (
-                <Comment
-                  canToggle={toggledCommentsLength < winnerCount}
-                  isToggled={!!toggledComments[comment.commentId]}
-                  key={comment.commentId}
-                  {...comment}
-                  onClick={onCommentClick}
-                />
-              ))}
+              {isLoadingComment === "pending" &&
+                SKELETONS.map((el, i) => <CommentSkeleton key={i} />)}
+              {isLoadingComment === "fulfilled" &&
+                !isCommentDataEmpty &&
+                sortedComments.map((comment) => (
+                  <Comment
+                    canToggle={toggledCommentsLength < winnerCount}
+                    isToggled={!!toggledComments[comment.commentId]}
+                    key={comment.commentId}
+                    {...comment}
+                    onClick={onCommentClick}
+                  />
+                ))}
             </div>
           </div>
         </section>

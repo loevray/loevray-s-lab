@@ -1,6 +1,6 @@
 import { YoutubeCommentType } from "@/utils/parsedYoutubeCommentThread";
 import Modal, { ModalProps } from "../common/modal/Modal";
-import Comment from "./Comment";
+import Comment from "./Comment/Comment";
 import Button from "../common/Button";
 import { ComponentProps } from "react";
 import winnerToXlsx from "@/utils/winnerToXlsx";

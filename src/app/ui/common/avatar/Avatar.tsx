@@ -1,5 +1,4 @@
-import Image, { ImageProps } from "next/image";
-import { HTMLAttributes, ImgHTMLAttributes } from "react";
+import { ImgHTMLAttributes } from "react";
 
 interface AvatarProps extends ImgHTMLAttributes<HTMLImageElement> {}
 
