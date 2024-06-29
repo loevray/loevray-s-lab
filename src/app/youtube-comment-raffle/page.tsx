@@ -24,6 +24,7 @@ import CommentSkeleton from "../ui/youtube-comment-raflle/Comment/CommentSkeleto
 import VideoInfo from "../ui/youtube-comment-raflle/VideoInfo/VideoInfo";
 import useLoadingState, { UseLoadingStateType } from "@/hooks/useLoadingState";
 import VideoInfoSkeleton from "../ui/youtube-comment-raflle/VideoInfo/VideoInfoSkeleton";
+import toast from "../ui/common/toast/createObserver";
 
 export type SortOptionType = "original" | "newest" | "like";
 
@@ -229,6 +230,7 @@ const Page = () => {
         onClose={handleWinnerModalClose}
         winnerComments={winnerComments}
       />
+      <button onClick={() => toast("나는 토스트").notify()}>gd</button>
       <main className="w-full h-full flex justify-between text-amber-950 px-7">
         <section className="flex flex-col gap-6.5 items-center pt-5">
           <VideoInfo {...videoData} onClick={initializeStates} />
