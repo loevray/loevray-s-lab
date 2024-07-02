@@ -1,3 +1,5 @@
+"use client";
+
 import { ButtonHTMLAttributes, HTMLAttributes } from "react";
 
 type DefaultColors = "miku" | "rin";

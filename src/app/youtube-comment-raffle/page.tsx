@@ -25,6 +25,8 @@ import VideoInfo from "../ui/youtube-comment-raflle/VideoInfo/VideoInfo";
 import useLoadingState, { UseLoadingStateType } from "@/hooks/useLoadingState";
 import VideoInfoSkeleton from "../ui/youtube-comment-raflle/VideoInfo/VideoInfoSkeleton";
 import toast from "../ui/common/toast/createObserver";
+import LinearProgress from "../ui/common/progress/LinearProgress";
+import LinearTest from "../ui/common/progress/LinearTest";
 
 export type SortOptionType = "original" | "newest" | "like";
 
@@ -230,12 +232,6 @@ const Page = () => {
         onClose={handleWinnerModalClose}
         winnerComments={winnerComments}
       />
-      <div className="flex">
-        <Button onClick={() => toast("나는 토스트").notify()}>디폴트</Button>
-        <Button onClick={() => toast("나는 토스트").error()}>에러</Button>
-        <Button onClick={() => toast("나는 토스트").success()}>성공</Button>
-        <Button onClick={() => toast("나는 토스트").warning()}>경고</Button>
-      </div>
       <main className="w-full h-full flex justify-between text-amber-950 px-7">
         <section className="flex flex-col gap-6.5 items-center pt-5">
           <VideoInfo {...videoData} onClick={initializeStates} />
