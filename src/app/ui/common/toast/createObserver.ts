@@ -39,11 +39,4 @@ const toast = (message:string,duration?:number) => {
 
 export default toast;
 
-/* 
-  1. const notify = () => toast('message') 이렇게 메시지를 전달하면, notify()호출을 통하여 토스트가 렌더링됨
-  2. notify는 ToastContainer의 렌더링을 촉발시키는 로직이어야 한다.
-    2-1. 다른 컴포넌트의 렌더링을 촉발시킨다?
-  3. ToastContainer는 ReactPortal로 body에 렌더링 되고 있어야함.
-*/
-
 
