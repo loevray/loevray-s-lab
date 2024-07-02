@@ -23,10 +23,6 @@ import {
 import CommentSkeleton from "../ui/youtube-comment-raflle/Comment/CommentSkeleton";
 import VideoInfo from "../ui/youtube-comment-raflle/VideoInfo/VideoInfo";
 import useLoadingState, { UseLoadingStateType } from "@/hooks/useLoadingState";
-import VideoInfoSkeleton from "../ui/youtube-comment-raflle/VideoInfo/VideoInfoSkeleton";
-import toast from "../ui/common/toast/createObserver";
-import LinearProgress from "../ui/common/progress/LinearProgress";
-import LinearTest from "../ui/common/progress/LinearTest";
 
 export type SortOptionType = "original" | "newest" | "like";
 

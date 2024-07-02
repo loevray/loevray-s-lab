@@ -8,6 +8,7 @@ import ToastDefaultIcon from "./Icon/ToastDefaultIcon";
 import ToastErrorIcon from "./Icon/ToastErrorIcon";
 import ToastSuccessIcon from "./Icon/ToastSuccessIcon";
 import ToastWarningIcon from "./Icon/ToastWarningIcon";
+import DecreaseProgress from "../progress/DecreaseProgress";
 interface Toast {
   id: number;
   message: string;
@@ -30,9 +31,6 @@ const ToastContainer = () => {
       const id = new Date().getTime();
 
       setToasts((prev) => [...prev, { id, message, duration, eventType }]);
-      setTimeout(() => {
-        setToasts((prev) => prev.filter((toast) => toast.id !== id));
-      }, duration);
     };
 
     const unsubscribe = observerInstance.observe(handleAddToast);
@@ -73,33 +71,40 @@ const ToastContainer = () => {
           const IconComponent = mappingIcon[toast.eventType].icon;
           const bg = mappingIcon[toast.eventType].color;
           return (
-            <div
-              key={toast.id}
-              id="toast-default"
-              className="flex items-center w-30 p-1.2 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
-              role="alert"
-            >
+            <div className="w-30" key={toast.id}>
               <div
-                className={`inline-flex items-center justify-center flex-shrink-0 w-3 h-3 text-blue-500 ${bg}  rounded-lg dark:bg-blue-800 dark:text-blue-200`}
+                id="toast-default"
+                className="flex items-center w-30 p-1.2 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
+                role="alert"
               >
-                <IconComponent />
+                <div
+                  className={`inline-flex items-center justify-center flex-shrink-0 w-3 h-3 text-blue-500 ${bg}  rounded-lg dark:bg-blue-800 dark:text-blue-200`}
+                >
+                  <IconComponent />
+                </div>
+                <div className="ms-3 text-1.4 text-black font-normal">
+                  {toast.message}
+                </div>
+                <button
+                  type="button"
+                  className="ms-auto mx-0.5 my-0.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-0.5 hover:bg-gray-100 inline-flex items-center justify-center h-2 w-2 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
+                  data-dismiss-target="#toast-default"
+                  aria-label="Close"
+                  onClick={() => {
+                    setToasts((prev) =>
+                      prev.filter((_toast) => _toast.id !== toast.id)
+                    );
+                  }}
+                >
+                  <CloseIcon />
+                </button>
               </div>
-              <div className="ms-3 text-1.4 text-black font-normal">
-                {toast.message}
-              </div>
-              <button
-                type="button"
-                className="ms-auto mx-0.5 my-0.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-0.5 hover:bg-gray-100 inline-flex items-center justify-center h-2 w-2 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
-                data-dismiss-target="#toast-default"
-                aria-label="Close"
-                onClick={() => {
-                  setToasts((prev) =>
-                    prev.filter((_toast) => _toast.id !== toast.id)
-                  );
-                }}
-              >
-                <CloseIcon />
-              </button>
+              <DecreaseProgress
+                duration={toast.duration}
+                onComplete={() =>
+                  setToasts((prev) => prev.filter(({ id }) => toast.id !== id))
+                }
+              />
             </div>
           );
         })}

@@ -11,9 +11,12 @@ const LinearProgress = ({
 }: LinearProgressProps) => {
   const currentX = -Math.max(100 - value, 0).toFixed(1);
   return (
-    <span {...rest} className="w-full relative overflow-hidden bg-cyan-200">
+    <span
+      {...rest}
+      className="w-full block relative overflow-hidden h-1 bg-cyan-200"
+    >
       <span
-        className="bg-cyan-500 absolute left-0 top-0 w-full ease-linear h-full transition-transform"
+        className="bg-cyan-500 block absolute left-0 top-0 w-full ease-linear h-full transition-transform"
         style={{
           transform: `translateX(${currentX}%)`,
         }}
