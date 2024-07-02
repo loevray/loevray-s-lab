@@ -35,6 +35,9 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      boxShadow:{
+        'radial':'0 0 4px 2px rgba(0, 0, 0, 0.1)'
+      },
       keyframes:{
         RTL: {
           'from': { transform: 'translateX(0%)' },
