@@ -1,6 +1,6 @@
 const ToastDefaultIcon = () => {
   return (
-    <div className="inline-flex items-center justify-center flex-shrink-0 w-2 h-2 text-blue-500 bg-blue-100 rounded-lg dark:bg-blue-800 dark:text-blue-200">
+    <>
       <svg
         className="w-1.8 h-1.8"
         aria-hidden="true"
@@ -17,7 +17,7 @@ const ToastDefaultIcon = () => {
         />
       </svg>
       <span className="sr-only">Fire icon</span>
-    </div>
+    </>
   );
 };
 
