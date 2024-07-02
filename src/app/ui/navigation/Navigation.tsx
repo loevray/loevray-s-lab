@@ -66,9 +66,11 @@ const Navigation = () => {
           className="w-full"
         >
           <Accordion.Summary>메뉴2</Accordion.Summary>
-          <Accordion.Content>실험중 1</Accordion.Content>
-          <Accordion.Content>실험중 2</Accordion.Content>
-          <Accordion.Content>실험중 3</Accordion.Content>
+          <Accordion.Content className="px-0">
+            <Link href={"/lab-1"} className="hover:bg-slate-100 block p-1">
+              실험실 1
+            </Link>
+          </Accordion.Content>
         </Accordion>
       </section>
       <section>
