@@ -25,7 +25,7 @@ export const observerInstance = createObserver();
 
 export type ToastEventType = 'default'| 'warning' | 'error' | 'success';
 
-const showToast = (eventType:ToastEventType, message:string, duration = 2500) => {
+const showToast = (eventType:ToastEventType, message:string, duration = 3000) => {
   observerInstance.notify({eventType,message,duration})
 }
 

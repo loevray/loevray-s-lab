@@ -71,10 +71,10 @@ const ToastContainer = () => {
           const IconComponent = mappingIcon[toast.eventType].icon;
           const bg = mappingIcon[toast.eventType].color;
           return (
-            <div className="w-30" key={toast.id}>
+            <div className="w-30 rounded-lg overflow-hidden" key={toast.id}>
               <div
                 id="toast-default"
-                className="flex items-center w-30 p-1.2 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
+                className="flex items-center w-30 p-1.2 text-gray-500 bg-white  shadow dark:text-gray-400 dark:bg-gray-800"
                 role="alert"
               >
                 <div
