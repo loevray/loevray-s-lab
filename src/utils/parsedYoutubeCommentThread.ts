@@ -10,6 +10,7 @@ export interface YoutubeCommentType {
     authorProfileImageUrl:string;
     isModified:boolean;
     commentId:string;
+    authorChannelId:string;
 }
 
 export interface NormalizedYoutubeCommentType {
@@ -24,6 +25,7 @@ const parsedYoutubeCommentThread = (data: YoutubeCommentThread[]): NormalizedYou
     comments:{},
     allIds:[]
   };
+  
 
   data.forEach(
     ({
@@ -37,6 +39,9 @@ const parsedYoutubeCommentThread = (data: YoutubeCommentThread[]): NormalizedYou
             publishedAt,
             updatedAt,
             likeCount,
+            authorChannelId:{
+              value
+            }
           },
         },
       },
@@ -57,11 +62,13 @@ const parsedYoutubeCommentThread = (data: YoutubeCommentThread[]): NormalizedYou
         updatedAt,
         likeCount,
         isModified: publishedAt !== updatedAt,
+        authorChannelId:value,
         commentId,
       };
       
       customComments.allIds = Array.from(usedIds)
     }
+    
   );
 
   return customComments;

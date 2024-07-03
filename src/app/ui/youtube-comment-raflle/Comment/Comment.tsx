@@ -26,6 +26,7 @@ const Comment = ({
   likeCount,
   isModified,
   commentId,
+  authorChannelId,
   onClick,
   canToggle,
   isToggled = false,
