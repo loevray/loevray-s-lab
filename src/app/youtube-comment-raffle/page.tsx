@@ -42,32 +42,12 @@ const Page = () => {
     video: "initial",
   });
 
-  const [sortOption, setSortOption] = useState<SortOptionType>("original");
-
   const [winnerComments, setWinnerComments] = useState<YoutubeCommentType[]>(
     []
   );
   const isCommentDataEmpty = !!!commentsData.allIds.length;
 
-  const origianlComments = commentsData.allIds.map(
-    (id) => commentsData.comments[id]
-  );
-
-  const sortedComments = useMemo(() => {
-    switch (sortOption) {
-      case "like":
-        return [...origianlComments].sort((a, b) => b.likeCount - a.likeCount);
-
-      case "newest":
-        return [...origianlComments].sort(
-          (a, b) =>
-            new Date(a.publishedAt).getTime() -
-            new Date(b.publishedAt).getTime()
-        );
-      default:
-        return origianlComments;
-    }
-  }, [sortOption, origianlComments]);
+  const comments = commentsData.allIds.map((id) => commentsData.comments[id]);
 
   const [videoData, setVideoData] = useState<YoutubeVideoCustomData>(
     DUMMY.VIDEO_CUSTOM_DATA
@@ -123,11 +103,6 @@ const Page = () => {
     setYoutubeLinkFormValue("youtubeLink", "");
   };
 
-  const onSortTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { value } = e.target;
-    setSortOption(value as SortOptionType);
-  };
-
   const onSelectedCommentClick = (id: string) => {
     setToggledComments((prev) => {
       const prevToggleComments = {
@@ -176,7 +151,7 @@ const Page = () => {
     }
 
     const newWinners = raffle<YoutubeCommentType>(
-      sortedComments,
+      comments,
       winners,
       winnerCount,
       (item) => item.commentId
@@ -244,7 +219,7 @@ const Page = () => {
               errors={errors}
               register={register}
               disabled={isVideoDataEmpty}
-              winnerCountLimit={origianlComments.length}
+              winnerCountLimit={comments.length}
               winnerCountMin={Math.max(1, toggledCommentsLength)}
               handleSubmit={handleSubmit}
             />
@@ -274,15 +249,7 @@ const Page = () => {
           <div className="flex flex-col w-full gap-4 ">
             {!isCommentDataEmpty && (
               <div className="flex gap-1">
-                <select
-                  className="w-10 border-2 border-solid border-black"
-                  onChange={onSortTypeChange}
-                  disabled={isCommentDataEmpty}
-                >
-                  <option value="newest">최신순</option>
-                  <option value="like">좋아요순</option>
-                </select>
-                <span>댓글 총{origianlComments.length}개</span>
+                <span>댓글 총{comments.length}개</span>
               </div>
             )}
             <div className="flex flex-col h-60 overflow-y-auto pr-2 gap-1.4">
@@ -290,7 +257,7 @@ const Page = () => {
                 SKELETONS.map((el, i) => <CommentSkeleton key={i} />)}
               {isLoading.comments === "fulfilled" &&
                 !isCommentDataEmpty &&
-                sortedComments.map((comment) => (
+                comments.map((comment) => (
                   <Comment
                     canToggle={toggledCommentsLength < winnerCount}
                     isToggled={!!toggledComments[comment.commentId]}
