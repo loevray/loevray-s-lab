@@ -1,4 +1,4 @@
-const isDesktop = () => {
+const isDesktop = (window:Window) => {
   if(window !== undefined){
     if(window.matchMedia('(min-width: 768px)').matches) return true
     return false

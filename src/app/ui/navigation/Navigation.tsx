@@ -51,7 +51,7 @@ const Navigation = () => {
 
   return (
     <nav
-      className={`fixed md:sticky bottom-0 md:top-0 h-4.5 md:h-screen w-screen md:w-20 bg-white ${currentBackgroundColor} flex flex-col justify-between
+      className={`fixed md:sticky bottom-0 md:top-0 h-5 md:h-screen w-screen md:w-20 bg-white ${currentBackgroundColor} flex flex-col justify-between
       `}
     >
       <section className="flex h-full flex-col gap-0.5">
