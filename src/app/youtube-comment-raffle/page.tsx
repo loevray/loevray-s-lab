@@ -276,42 +276,44 @@ const Page = () => {
             </div>
           </div>
         </section>
-        <section className="flex-1 max-w-70 flex flex-col items-center gap-6">
-          <div className="flex flex-col w-full gap-4 ">
-            {!isCommentDataEmpty && (
-              <div className="flex gap-1">
-                <form>
-                  <input
-                    type="checkbox"
-                    id="duplicated-id"
-                    onChange={(e) => {
-                      setOptions({
-                        duplicatedId: e.target.checked,
-                      });
-                    }}
-                  />
-                  <label htmlFor="duplicated-id">중복 아이디 제거</label>
-                </form>
-                <span>댓글 총{comments.length}개</span>
+        {isLoading.comments !== "initial" && (
+          <section className="flex-1 max-w-70 flex flex-col items-center gap-6">
+            <div className="flex flex-col w-full gap-4 ">
+              {!isCommentDataEmpty && (
+                <div className="flex gap-1">
+                  <form>
+                    <input
+                      type="checkbox"
+                      id="duplicated-id"
+                      onChange={(e) => {
+                        setOptions({
+                          duplicatedId: e.target.checked,
+                        });
+                      }}
+                    />
+                    <label htmlFor="duplicated-id">중복 아이디 제거</label>
+                  </form>
+                  <span>댓글 총{comments.length}개</span>
+                </div>
+              )}
+              <div className="flex flex-col h-60 overflow-y-auto pr-2 gap-1.4">
+                {isLoading.comments === "pending" &&
+                  SKELETONS.map((el, i) => <CommentSkeleton key={i} />)}
+                {isLoading.comments === "fulfilled" &&
+                  !isCommentDataEmpty &&
+                  comments.map((comment) => (
+                    <Comment
+                      canToggle={toggledCommentsLength < winnerCount}
+                      isToggled={!!toggledComments[comment.commentId]}
+                      key={comment.commentId}
+                      {...comment}
+                      onClick={onCommentClick}
+                    />
+                  ))}
               </div>
-            )}
-            <div className="flex flex-col h-60 overflow-y-auto pr-2 gap-1.4">
-              {isLoading.comments === "pending" &&
-                SKELETONS.map((el, i) => <CommentSkeleton key={i} />)}
-              {isLoading.comments === "fulfilled" &&
-                !isCommentDataEmpty &&
-                comments.map((comment) => (
-                  <Comment
-                    canToggle={toggledCommentsLength < winnerCount}
-                    isToggled={!!toggledComments[comment.commentId]}
-                    key={comment.commentId}
-                    {...comment}
-                    onClick={onCommentClick}
-                  />
-                ))}
             </div>
-          </div>
-        </section>
+          </section>
+        )}
       </main>
     </>
   );
