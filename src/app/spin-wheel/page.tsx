@@ -31,7 +31,7 @@ const Page = () => {
           돌려잇
         </span>
         <SpinWheel
-          diameter={isDesktop(window) ? DEFAULT_VALUES.CIRCLE_DIAMETER : 320}
+          diameter={isDesktop() ? DEFAULT_VALUES.CIRCLE_DIAMETER : 320}
           spinWheelRef={spinWheelRef}
           arrowRef={arrowRef}
         />
