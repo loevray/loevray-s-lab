@@ -45,9 +45,41 @@ const Page = () => {
   const [winnerComments, setWinnerComments] = useState<YoutubeCommentType[]>(
     []
   );
+
+  const [options, setOptions] = useState<{
+    duplicatedId: boolean;
+  }>({
+    duplicatedId: false,
+  });
+
   const isCommentDataEmpty = !!!commentsData.allIds.length;
 
-  const comments = commentsData.allIds.map((id) => commentsData.comments[id]);
+  const originalComments = commentsData.allIds.map(
+    (id) => commentsData.comments[id]
+  );
+
+  console.log(originalComments);
+
+  const filterComments = (comments: YoutubeCommentType[]) => {
+    if (options.duplicatedId) {
+      const uniqueSet = new Set();
+      const uniqueCommentData: YoutubeCommentType[] = [];
+
+      comments.forEach((comment) => {
+        if (!uniqueSet.has(comment.authorChannelId)) {
+          uniqueSet.add(comment.authorChannelId);
+          uniqueCommentData.push({ ...structuredClone(comment) });
+        } else {
+          console.log(comment);
+        }
+      });
+
+      return uniqueCommentData;
+    }
+    return originalComments;
+  };
+
+  const comments = filterComments(originalComments);
 
   const [videoData, setVideoData] = useState<YoutubeVideoCustomData>(
     DUMMY.VIDEO_CUSTOM_DATA
@@ -249,6 +281,18 @@ const Page = () => {
           <div className="flex flex-col w-full gap-4 ">
             {!isCommentDataEmpty && (
               <div className="flex gap-1">
+                <form>
+                  <input
+                    type="checkbox"
+                    id="duplicated-id"
+                    onChange={(e) => {
+                      setOptions({
+                        duplicatedId: e.target.checked,
+                      });
+                    }}
+                  />
+                  <label htmlFor="duplicated-id">중복 아이디 제거</label>
+                </form>
                 <span>댓글 총{comments.length}개</span>
               </div>
             )}
