@@ -27,7 +27,7 @@ const Page = () => {
     <main className="w-full h-full flex items-center">
       <section className="w-1/2 h-full flex justify-center items-center flex-col gap-1">
         <span ref={winTextRef} className="italic text-3 pb-5">
-          돌려돌려 돌림판!
+          돌려잇
         </span>
         <SpinWheel
           diameter={DEFAULT_VALUES.CIRCLE_DIAMETER}

@@ -54,11 +54,10 @@ const Page = () => {
 
   const isCommentDataEmpty = !!!commentsData.allIds.length;
 
-  const originalComments = commentsData.allIds.map(
-    (id) => commentsData.comments[id]
+  const originalComments = useMemo(
+    () => commentsData.allIds.map((id) => commentsData.comments[id]),
+    [commentsData.allIds]
   );
-
-  console.log(originalComments);
 
   const filterComments = (comments: YoutubeCommentType[]) => {
     if (options.duplicatedId) {
