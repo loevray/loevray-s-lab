@@ -2,14 +2,16 @@ import { ComponentProps, HTMLAttributes } from "react";
 import CardHeader from "./CardHeader";
 import CardContent from "./CardContent";
 import CardImage from "./CardImage";
+import { twMerge } from "tailwind-merge";
 
 interface CardProps extends ComponentProps<"article"> {}
 const Card = ({ children, className, ...rest }: CardProps) => {
+  const mergedClass = twMerge(
+    "w-30 aspect-video shadow-lg bg-white rounded-2xl",
+    className
+  );
   return (
-    <article
-      className={`w-30 h-25 shadow-lg bg-white rounded-2xl ${className}`}
-      {...rest}
-    >
+    <article className={mergedClass} {...rest}>
       {children}
     </article>
   );

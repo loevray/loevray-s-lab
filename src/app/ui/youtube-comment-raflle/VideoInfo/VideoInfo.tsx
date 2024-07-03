@@ -15,7 +15,7 @@ const VideoInfo = ({
 }: VideoInfoProps) => {
   return (
     <Card
-      className="hover:bg-black hover:bg-opacity-[0.05] w-full h-26  md:w-45 md:h-33 cursor-pointer relative group flex flex-col"
+      className="hover:bg-black hover:bg-opacity-[0.05] w-full aspect-[16/9]  md:w-45 cursor-pointer relative group flex flex-col"
       onClick={onClick}
     >
       <button
