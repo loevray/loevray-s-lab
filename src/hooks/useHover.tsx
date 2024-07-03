@@ -1,8 +1,9 @@
-import { RefObject, useEffect, useRef, useState } from "react";
+import { RefObject, useEffect, useState } from "react";
 
 interface UseHoverProps {
   hoverRef: RefObject<HTMLElement>;
 }
+
 const useHover = ({ hoverRef }: UseHoverProps) => {
   const [isHover, setIsHover] = useState(false);
 
