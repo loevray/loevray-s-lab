@@ -9,7 +9,6 @@ import ROUTES from "./constants/route";
 import {
   BeakerIcon,
   HomeIcon,
-  HomeModernIcon,
   LifebuoyIcon,
 } from "@heroicons/react/24/outline";
 import { PlayCircleIcon } from "@heroicons/react/24/outline";
@@ -18,11 +17,12 @@ export type RoutesType =
   | "/"
   | "spin-wheel"
   | "youtube-comment-raffle"
-  | "ghost-leg";
+  | "lab-1";
 
 export interface I_RoutesStyle {
   name: string;
   backgroundColor: string;
+  icon: React.ComponentType<React.ComponentProps<"svg">>;
 }
 export type MappedRoutesStyleType = {
   [key in RoutesType]: I_RoutesStyle;
@@ -55,6 +55,7 @@ const Navigation = () => {
       `}
     >
       <section className="flex h-full flex-col gap-0.5">
+        {/* desktop ui */}
         <Accordion
           expanded={expanded === "accordion1"}
           handleToggle={handleToggle("accordion1")}
@@ -82,19 +83,13 @@ const Navigation = () => {
           </Accordion.Content>
         </Accordion>
 
+        {/* mobile ui  */}
         <div className="flex h-full justify-around items-center border-t-2 border-gray-100 md:hidden">
-          <Link href="/">
-            <HomeIcon className="size-2.5" />
-          </Link>
-          <Link href="/spin-wheel">
-            <LifebuoyIcon className="size-2.5" />
-          </Link>
-          <Link href="youtube-comment-raffle">
-            <PlayCircleIcon className="size-2.5" />
-          </Link>
-          <Link href="lab-1">
-            <BeakerIcon className="size-2.5" />
-          </Link>
+          {mappedRoutesStyleArray.map(([link, { icon: Icon }]) => (
+            <Link href={link} key={link}>
+              <Icon className={`size-2.5`} />
+            </Link>
+          ))}
         </div>
       </section>
       <section className="hidden md:block">
