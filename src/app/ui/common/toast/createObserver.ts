@@ -3,7 +3,7 @@
 interface NotifyProps{
   eventType:ToastEventType; 
   message:string; 
-  duration?:number
+  duration:number
 }
 
 type Observer = ({eventType,message,duration}:NotifyProps) => void;
@@ -25,17 +25,12 @@ export const observerInstance = createObserver();
 
 export type ToastEventType = 'default'| 'warning' | 'error' | 'success';
 
-const showToast = (eventType:ToastEventType, message:string, duration = 3000) => {
+const showToast = ({eventType, message, duration}:NotifyProps) => {
   observerInstance.notify({eventType,message,duration})
 }
 
-const toast = (message:string,duration?:number) => {
-  const notify = () => showToast('default', message, duration);
-  const warning = () => showToast('warning', message, duration);
-  const error = () => showToast('error', message, duration);
-  const success = () => showToast('success', message, duration);
-  return {notify,warning,error,success}
-}
+const toast = ({eventType = 'default',message,duration = 3000}:{eventType?:ToastEventType;message:string;duration?:number}) => showToast({eventType,message,duration});
+  
 
 export default toast;
 
