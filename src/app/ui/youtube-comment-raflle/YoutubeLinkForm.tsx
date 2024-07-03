@@ -31,7 +31,7 @@ const YoutubeLinkForm = ({
 }: YoutubeLinkFormProps) => {
   return (
     <form
-      className="flex flex-col"
+      className="flex flex-col w-full"
       onSubmit={handleSubmit((data) => {
         onSubmit(data);
       })}
@@ -39,10 +39,10 @@ const YoutubeLinkForm = ({
       <label htmlFor="youtubeLink" className="text-1.8 font-semibold">
         Youtube Link
       </label>
-      <label className="text-1.2 text-gray-500">
+      <label className="hidden md:block text-1.2 text-gray-500">
         ex{")"} youtube.com/watch?v=xxx, youtu.be/xxx, youtube.com/shorts/xxx
       </label>
-      <div className="flex items-center w-60 h-3.5 relative">
+      <div className="flex items-center w-full md:w-60 h-3.5 relative">
         <input
           id="yotubeLink"
           placeholder="Please fill out YouTube link"

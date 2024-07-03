@@ -18,7 +18,7 @@ const WinnerModal = ({ open, onClose, winnerComments }: WinnerModalProps) => {
         onClose();
       }}
     >
-      <div className="w-90 p-2 bg-yellow-50 flex">
+      <div className="w-30 md:w-90 p-2 bg-yellow-50 flex">
         <div className="w-60 h-60 flex flex-col  gap-2 overflow-y-auto pr-1">
           {winnerComments.map((comment) => (
             <Comment key={comment.commentId} {...comment} />

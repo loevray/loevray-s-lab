@@ -234,8 +234,8 @@ const Page = () => {
         onClose={handleWinnerModalClose}
         winnerComments={winnerComments}
       />
-      <main className="w-full h-full flex justify-between text-amber-950 px-7">
-        <section className="flex flex-col gap-6.5 items-center pt-5">
+      <main className="w-full h-full flex flex-col md:flex-row p-2 justify-between text-amber-950 gap-5">
+        <section className="flex flex-col gap-5 items-center pt-2 md:pt-5">
           <VideoInfo {...videoData} onClick={initializeStates} />
           <div className="w-full flex items-center ">
             <YoutubeLinkForm
@@ -245,7 +245,7 @@ const Page = () => {
               handleSubmit={handleSubmitYoutubeLinkForm}
             />
           </div>
-          <div className="w-full flex items-end text-1.8">
+          <div className="w-full flex justify-center gap-5 text-1.8 flex-wrap">
             <WinnerCountForm
               errors={errors}
               register={register}
@@ -254,7 +254,7 @@ const Page = () => {
               winnerCountMin={Math.max(1, toggledCommentsLength)}
               handleSubmit={handleSubmit}
             />
-            <div className="flex gap-1 items-end pl-1">
+            <div className="flex gap-1 items-end md:pl-1">
               <span className="font-semibold">
                 {Object.keys(toggledComments).length}명
               </span>
@@ -270,7 +270,7 @@ const Page = () => {
                   colorPalette="rin"
                   onClick={raffleComment}
                   disabled={isCommentDataEmpty || !!errors.winnerCount}
-                  className="w-15"
+                  className="w-15 "
                 />
               )}
             </div>
