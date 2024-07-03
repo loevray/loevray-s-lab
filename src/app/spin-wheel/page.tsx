@@ -5,6 +5,7 @@ import useSpinWheel from "../ui/spin-wheel/hooks/useSpinWheel";
 import SpinWheel from "../ui/spin-wheel/SpinWheel";
 import Button from "../ui/common/Button";
 import SpinWheelTextList from "../ui/spin-wheel/SpinWheelTextList";
+import isDesktop from "@/utils/isDesktop";
 
 const Page = () => {
   const onStart = () => console.log("돌림판 시작");
@@ -24,13 +25,13 @@ const Page = () => {
   });
 
   return (
-    <main className="w-full h-full flex items-center">
-      <section className="w-1/2 h-full flex justify-center items-center flex-col gap-1">
+    <main className="w-full h-full flex flex-col md:flex-row items-center">
+      <section className="w-full md:w-1/2 h-full flex justify-center items-center flex-col md:gap-1">
         <span ref={winTextRef} className="italic text-3 pb-5">
           돌려잇
         </span>
         <SpinWheel
-          diameter={DEFAULT_VALUES.CIRCLE_DIAMETER}
+          diameter={isDesktop() ? DEFAULT_VALUES.CIRCLE_DIAMETER : 320}
           spinWheelRef={spinWheelRef}
           arrowRef={arrowRef}
         />
@@ -45,7 +46,7 @@ const Page = () => {
           )}
         </div>
       </section>
-      <section className="w-1/2 h-full flex flex-col pt-10">
+      <section className="w-full md:w-1/2 h-full flex flex-col items-center pt-5 md:pt-10">
         <SpinWheelTextList isLocked={isRotating} />
       </section>
     </main>

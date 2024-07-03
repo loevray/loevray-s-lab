@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./global.css";
 
@@ -10,10 +10,11 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "loevray's lab",
   description: "다양한 기능을 가진 사이트",
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
@@ -25,9 +26,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className}`}>
         <ToastContainer />
-        <div className="flex min-h-screen">
+        <div className="flex flex-col md:flex-row-reverse min-h-dvh overflow-y-auto">
+          <div className="md:flex-1 min-h-dvh md:p-5">{children}</div>
           <Navigation />
-          <div className="flex-1 min-h-screen p-5">{children}</div>
         </div>
       </body>
     </html>

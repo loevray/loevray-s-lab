@@ -32,7 +32,7 @@ const SpinWheelTextItem = ({
   return (
     <div
       className="flex shrink-0  items-center justify-between 
-      border-cyan-400 border-solid border-2  h-4.5 w-47 rounded-md text-1.4 px-1 shadow-md"
+      border-cyan-400 border-solid border-2  h-4.5 w-33 md:w-47 rounded-md text-1.4 px-1 shadow-md"
       ref={hoverRef}
     >
       <div className="w-2 flex justify-center relative">
@@ -53,7 +53,7 @@ const SpinWheelTextItem = ({
         onInput={onInput}
         onKeyDown={(e: KeyEventWithChangeEventType) => onKeyDown(e)}
       />
-      <div className="w-4">{`x${ratio}`}</div>
+      <div className="flex justify-center w-4">{`x${ratio}`}</div>
       <div className="flex flex-col gap-0.2">
         <button
           className="rounded-full size-1.6 bg-teal-300 hover:bg-teal-400 flex justify-center items-center "
@@ -70,7 +70,7 @@ const SpinWheelTextItem = ({
           -
         </button>
       </div>
-      <div className="w-[50px]">{percentage}</div>
+      <div className="w-[50px] hidden md:block">{percentage}</div>
     </div>
   );
 };
