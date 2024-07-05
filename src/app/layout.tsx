@@ -26,7 +26,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className}`}>
         <ToastContainer />
-        <div className="flex flex-col md:flex-row-reverse min-h-dvh overflow-y-auto">
+        <div className="flex flex-col md:flex-row-reverse min-h-dvh overflow-y-auto md:overflow-y-visible">
           <div className="md:flex-1 min-h-dvh md:p-5">{children}</div>
           <Navigation />
         </div>
