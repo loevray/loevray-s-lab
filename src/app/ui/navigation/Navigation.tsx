@@ -6,18 +6,12 @@ import Accordion from "../common/accordion/Accordion";
 import { SyntheticEvent, useState } from "react";
 import ROUTES from "./constants/route";
 
-import {
-  BeakerIcon,
-  HomeIcon,
-  LifebuoyIcon,
-} from "@heroicons/react/24/outline";
-import { PlayCircleIcon } from "@heroicons/react/24/outline";
-
 export type RoutesType =
   | "/"
   | "spin-wheel"
   | "youtube-comment-raffle"
-  | "lab-1";
+  | "lab-1"
+  | "ghost-leg";
 
 export interface I_RoutesStyle {
   name: string;

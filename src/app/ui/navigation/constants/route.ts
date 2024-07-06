@@ -1,5 +1,6 @@
-import { BeakerIcon, HomeIcon, HomeModernIcon, LifebuoyIcon, PlayCircleIcon } from "@heroicons/react/24/outline";
+import { BeakerIcon, HomeIcon,  LifebuoyIcon, PlayCircleIcon } from "@heroicons/react/24/outline";
 import { MappedRoutesStyleType } from "../Navigation";
+import LadderIcon from "../LadderIcon";
 
 
  const ROUTES:{
@@ -22,9 +23,14 @@ import { MappedRoutesStyleType } from "../Navigation";
       backgroundColor: "md:bg-yellow-300",
       icon: PlayCircleIcon
     },
+    "ghost-leg":{
+      name:"사다리 타기",
+      backgroundColor:"md:bg-pink-200",
+      icon:LadderIcon
+    },
     "lab-1":{
       name:"실험실",
-      backgroundColor:"md:bg-pink-200",
+      backgroundColor:"md:bg-emerald-200",
       icon: BeakerIcon
     }
   },
