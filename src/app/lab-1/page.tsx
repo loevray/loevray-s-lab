@@ -24,7 +24,6 @@ const Page = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [userCount, setUserCount] = useState(2);
   const [pathArray, setPathArray] = useState<LadderPathProps[][]>([]);
-  const [currentPath, setCurrentPath] = useState<number | null>(null);
   const minHorizontalLines = userCount - 1;
   const columnGap = ladderWidth / minHorizontalLines;
 
@@ -176,7 +175,6 @@ const Page = () => {
           ctx.stroke();
         }
       }
-      setCurrentPath(userIndex);
     },
     [columnGap, pathArray]
   );
