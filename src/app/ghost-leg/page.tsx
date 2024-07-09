@@ -142,80 +142,75 @@ const Page = () => {
     });
   };
 
-  const showResultPath = useCallback(
-    (e: MouseEvent, startPoint: number) => {
-      const canvas = canvasRef.current;
-      if (!canvas) return;
+  const showResultPath = (startPoint: number) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
 
-      const ctx = canvas.getContext("2d");
-      if (!ctx) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
-      redrawLadder(); // Redraw the ladder
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+    redrawLadder(); // Redraw the ladder
 
-      const userIndex = startPoint - 1;
-      let nextLine = pathArray[userIndex][0];
+    let nextLine = pathArray[startPoint][0];
 
-      let prevX = LADDER.X + userIndex * columnGap;
-      let prevY = LADDER.Y;
-      let currentIndex = userIndex;
+    let prevX = LADDER.X + startPoint * columnGap;
+    let prevY = LADDER.Y;
+    let currentIndex = startPoint;
 
-      ctx.lineWidth = 5;
-      ctx.strokeStyle = "red";
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = "red";
 
-      let t = 0;
-      while (nextLine) {
-        ++t;
-        if (t >= 1000) break; //혹시 모르는 예외처리...
-        const { startX, endX, y } = nextLine.coord;
-        const { vertical } = nextLine.connectedIndex;
+    let t = 0;
+    while (nextLine) {
+      ++t;
+      if (t >= 1000) break; //혹시 모르는 예외처리...
+      const { startX, endX, y } = nextLine.coord;
+      const { vertical } = nextLine.connectedIndex;
 
-        // 수직 경로
+      // 수직 경로
+      ctx.beginPath();
+      ctx.moveTo(prevX, prevY);
+      ctx.lineTo(prevX, y);
+      ctx.stroke();
+
+      // 수평 경로
+      ctx.beginPath();
+      ctx.moveTo(startX, y);
+      ctx.lineTo(endX, y);
+      ctx.stroke();
+
+      const nextLineIndex = pathArray[vertical].findIndex(
+        ({ coord }) =>
+          coord.startX === endX && coord.endX === startX && coord.y === y
+      );
+
+      const tempNextLine = pathArray[vertical]?.[nextLineIndex + 1];
+      currentIndex = vertical;
+      if (tempNextLine && nextLineIndex !== -1) {
+        nextLine = tempNextLine;
+        prevX = endX;
+        prevY = y;
+      } else {
         ctx.beginPath();
-        ctx.moveTo(prevX, prevY);
-        ctx.lineTo(prevX, y);
+        ctx.moveTo(endX, y);
+        ctx.lineTo(endX, LADDER.Y + LADDER.HEIGHT);
         ctx.stroke();
 
-        // 수평 경로
-        ctx.beginPath();
-        ctx.moveTo(startX, y);
-        ctx.lineTo(endX, y);
-        ctx.stroke();
-
-        const nextLineIndex = pathArray[vertical].findIndex(
-          ({ coord }) =>
-            coord.startX === endX && coord.endX === startX && coord.y === y
-        );
-
-        const tempNextLine = pathArray[vertical]?.[nextLineIndex + 1];
-
-        if (tempNextLine && nextLineIndex !== -1) {
-          nextLine = tempNextLine;
-          currentIndex = vertical;
-          prevX = endX;
-          prevY = y;
-        } else {
-          ctx.beginPath();
-          ctx.moveTo(endX, y);
-          ctx.lineTo(endX, LADDER.Y + LADDER.HEIGHT);
-          ctx.stroke();
-
-          getPrize(currentIndex);
-          break;
-        }
+        getPrize(startPoint, currentIndex);
+        break;
       }
-    },
-    [columnGap, pathArray]
-  );
+    }
+  };
 
-  const renderStartNumberButtons = useCallback(() => {
+  const renderStartNumberButtons = () => {
     const buttons = [];
     for (let i = 0; i < userCount; ++i) {
       buttons.push(
         <Button
           key={i}
           text={`${i + 1}`}
-          onClick={(e) => showResultPath(e, i + 1)}
+          onClick={() => showResultPath(i)}
           style={{
             position: "absolute",
             left: `${i * columnGap + LADDER.X / 2}px`,
@@ -227,7 +222,7 @@ const Page = () => {
       );
     }
     return buttons;
-  }, [userCount, showResultPath, columnGap, isValid]);
+  };
 
   const startNumberButtons = renderStartNumberButtons();
   const renderPrizeInputs = () => {
@@ -283,8 +278,8 @@ const Page = () => {
       message: `${index + 1}번 사다리 ${prize}당첨!`,
     });
 
-  const getPrize = (endPoint: number) => {
-    prizeToast(endPoint, getValues(`prizes.${endPoint}`));
+  const getPrize = (startPoint: number, endPoint: number) => {
+    prizeToast(startPoint, getValues(`prizes.${endPoint}`));
   };
 
   const showTotalResult = () => {};
