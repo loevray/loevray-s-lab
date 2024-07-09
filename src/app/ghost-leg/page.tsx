@@ -27,6 +27,7 @@ const Page = () => {
     handleSubmit,
     formState: { isValid },
     reset: resetPrizeInputs,
+    getValues,
   } = useForm();
 
   const minHorizontalLines = userCount - 1;
@@ -157,6 +158,7 @@ const Page = () => {
 
       let prevX = LADDER.X + userIndex * columnGap;
       let prevY = LADDER.Y;
+      let currentIndex = userIndex;
 
       ctx.lineWidth = 5;
       ctx.strokeStyle = "red";
@@ -189,6 +191,7 @@ const Page = () => {
 
         if (tempNextLine && nextLineIndex !== -1) {
           nextLine = tempNextLine;
+          currentIndex = vertical;
           prevX = endX;
           prevY = y;
         } else {
@@ -196,6 +199,9 @@ const Page = () => {
           ctx.moveTo(endX, y);
           ctx.lineTo(endX, LADDER.Y + LADDER.HEIGHT);
           ctx.stroke();
+
+          getPrize(currentIndex);
+          break;
         }
       }
     },
@@ -261,7 +267,7 @@ const Page = () => {
     drawHorizontalLines(horizontalLines, ctx);
   };
 
-  const notify = () =>
+  const invalidToast = () =>
     toast({ message: "빈 칸을 모두 채워주세요!", eventType: "warning" });
 
   const onValid = () => {
@@ -269,8 +275,17 @@ const Page = () => {
     setIsStartGame(true);
   };
 
-  const onInvalid = () => notify();
+  const onInvalid = () => invalidToast();
 
+  const prizeToast = (index: number, prize: string) =>
+    toast({
+      eventType: "success",
+      message: `${index + 1}번 사다리 ${prize}당첨!`,
+    });
+
+  const getPrize = (endPoint: number) => {
+    prizeToast(endPoint, getValues(`prizes.${endPoint}`));
+  };
   return (
     <main>
       <div>
