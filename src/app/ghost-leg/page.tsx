@@ -286,6 +286,8 @@ const Page = () => {
   const getPrize = (endPoint: number) => {
     prizeToast(endPoint, getValues(`prizes.${endPoint}`));
   };
+
+  const showTotalResult = () => {};
   return (
     <main>
       <div>
@@ -301,14 +303,17 @@ const Page = () => {
           disabled={isStartGame}
         />
         {isStartGame ? (
-          <Button
-            text="초기화"
-            onClick={() => {
-              initializeLadder();
-              resetPrizeInputs();
-              setIsStartGame(false);
-            }}
-          />
+          <>
+            <Button
+              text="초기화"
+              onClick={() => {
+                initializeLadder();
+                resetPrizeInputs();
+                setIsStartGame(false);
+              }}
+            />
+            <Button text="전체 결과" onClick={showTotalResult} />
+          </>
         ) : (
           <Button
             text="사다리 시작"

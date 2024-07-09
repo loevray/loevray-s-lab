@@ -2,6 +2,11 @@ import useHover from "@/hooks/useHover";
 import EditableDiv from "../common/EditableDiv";
 import { KeyEventWithChangeEventType } from "./SpinWheelTextList";
 import { useRef } from "react";
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/solid";
 
 interface SpinWheelTextItemProps {
   text: string;
@@ -43,7 +48,7 @@ const SpinWheelTextItem = ({
             className="rounded-full size-2 bg-white text-red-500 flex justify-center items-center absolute border-[1px] border-solid border-gray-300"
             onClick={onRemoveButtonClick}
           >
-            X
+            <XMarkIcon className="size-1.6" />
           </button>
         )}
       </div>
@@ -54,20 +59,20 @@ const SpinWheelTextItem = ({
         onKeyDown={(e: KeyEventWithChangeEventType) => onKeyDown(e)}
       />
       <div className="flex justify-center w-4">{`x${ratio}`}</div>
-      <div className="flex flex-col gap-0.2">
+      <div className="flex flex-col gap-0.4">
         <button
-          className="rounded-full size-1.6 bg-teal-300 hover:bg-teal-400 flex justify-center items-center "
+          className="rounded-full size-1.6 bg-cyan-300 hover:bg-cyan-400 flex justify-center items-center"
           disabled={isLocked}
           onClick={() => onModifyButtonClick(ratio + 1)}
         >
-          +
+          <ChevronUpIcon className="size-1.4 fill-black" />
         </button>
         <button
-          className="rounded-full size-1.6 bg-teal-300 hover:bg-teal-400 flex justify-center items-center "
+          className="rounded-full size-1.6 bg-cyan-300 hover:bg-cyan-400 flex justify-center items-center"
           disabled={isLocked}
           onClick={() => onModifyButtonClick(ratio - 1)}
         >
-          -
+          <ChevronDownIcon className="size-1.4 fill-black" />
         </button>
       </div>
       <div className="w-[50px] hidden md:block">{percentage}</div>
