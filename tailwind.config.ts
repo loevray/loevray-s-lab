@@ -45,7 +45,8 @@ const config: Config = {
         },
       },
       animation:{
-        'decrease-progress':'RTL'
+        'decrease-progress':'RTL',
+        'fast-spin':'spin 0.6s ease-in-out infinite'
       }
     },
   },

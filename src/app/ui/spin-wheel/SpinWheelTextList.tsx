@@ -68,13 +68,13 @@ const SpinWheelTextList = ({ isLocked }: { isLocked: boolean }) => {
             initializeSectorData();
           }}
         >
-          <ArrowPathIcon className="fill-white" />
+          <ArrowPathIcon className="fill-white hover:animate-fast-spin" />
         </button>
         <button
-          className="size-3 rounded-xl bg-cyan-400 p-0.4 shadow-lg hover:bg-cyan-500"
+          className="size-3 rounded-xl bg-cyan-400 p-0.4 shadow-lg hover:bg-cyan-500 "
           onClick={() => addSector()}
         >
-          <PlusIcon className="fill-white" />
+          <PlusIcon className="fill-white " />
         </button>
       </div>
       <article className="flex flex-col gap-1.4 max-h-[60vh] overflow-y-auto mt-1 md:mt-2 md:pr-1 pb-5">
