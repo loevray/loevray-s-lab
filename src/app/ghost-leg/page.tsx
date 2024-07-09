@@ -22,6 +22,7 @@ const Page = () => {
   const [userCount, setUserCount] = useState(2);
   const [pathArray, setPathArray] = useState<LadderPathProps[][]>([]);
   const [isStartGame, setIsStartGame] = useState(false);
+  const pathSet = new Set();
   const {
     register,
     handleSubmit,
@@ -40,6 +41,7 @@ const Page = () => {
   const initializePath = () => {
     const newPathArray = Array.from({ length: userCount }, () => []);
     setPathArray(newPathArray);
+    pathSet.clear();
   };
 
   const initializeLadder = () => {
@@ -76,7 +78,11 @@ const Page = () => {
       const connectedVerticalIndex = currentVerticalIndex + 1;
 
       const x = LADDER.X + currentVerticalIndex * columnGap;
-      const y = LADDER.Y + Math.random() * LADDER.HEIGHT;
+      let y = LADDER.Y + Math.random() * LADDER.HEIGHT;
+      while (!pathSet.has(y)) {
+        y = LADDER.Y + Math.random() * LADDER.HEIGHT;
+      }
+      pathSet.add(y);
 
       ctx.beginPath();
       ctx.moveTo(x, y);
