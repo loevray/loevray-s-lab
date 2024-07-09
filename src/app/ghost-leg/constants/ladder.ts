@@ -1,6 +1,6 @@
 const LADDER = {
   WIDTH:1000,
-  HEIGHT:500,
+  HEIGHT:600,
   X:100,
   Y:50
 }
