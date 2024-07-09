@@ -27,7 +27,7 @@ const Page = () => {
   }, [userCount]);
 
   const initializeLadder = () => {
-    if (userCount < 2 || userCount > 20) {
+    if (userCount < 2 || userCount > 10) {
       alert("유저 수는 2명 이상 20명 이하로 설정해주세요.");
       return;
     }
@@ -113,7 +113,7 @@ const Page = () => {
     });
   };
 
-  const showResult = useCallback(
+  const showResultPath = useCallback(
     (e: MouseEvent, startPoint: number) => {
       const canvas = canvasRef.current;
       if (!canvas) return;
@@ -181,7 +181,7 @@ const Page = () => {
         <Button
           key={i}
           text={`${i + 1}`}
-          onClick={(e) => showResult(e, i + 1)}
+          onClick={(e) => showResultPath(e, i + 1)}
           style={{
             position: "absolute",
             left: `${i * columnGap + LADDER.X / 2}px`,
@@ -192,22 +192,28 @@ const Page = () => {
       );
     }
     return buttons;
-  }, [userCount, showResult, columnGap]);
+  }, [userCount, showResultPath, columnGap]);
+
+  const renderPrizeInputs = () => {};
+
+  const showTotalResult = () => {};
   return (
     <main>
       <div>
-        <h1>사다리타기</h1>
-        <label htmlFor="userCount">유저 수 (최대 20명):</label>
+        <label htmlFor="userCount">유저 수 (최대 10명):</label>
         <input
           type="number"
           id="userCount"
           min="2"
-          max="20"
+          max="10"
           value={userCount}
           onChange={(e) => setUserCount(Number(e.target.value))}
         />
         <div className="relative">{renderButtons()}</div>
-        <canvas ref={canvasRef} width={1200} height={750} />
+        <div className="w-[70vw]">
+          <canvas ref={canvasRef} width={1200} height={750} />
+        </div>
+        <div className="relative">{}</div>
       </div>
     </main>
   );
