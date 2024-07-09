@@ -59,16 +59,16 @@ const SpinWheelTextItem = ({
         onKeyDown={(e: KeyEventWithChangeEventType) => onKeyDown(e)}
       />
       <div className="flex justify-center w-4">{`x${ratio}`}</div>
-      <div className="flex flex-col gap-0.4">
+      <div className="flex flex-col">
         <button
-          className="rounded-full size-1.6 bg-cyan-300 hover:bg-cyan-400 flex justify-center items-center"
+          className="rounded-full size-1.6 hover:bg-gray-100 flex justify-center items-center"
           disabled={isLocked}
           onClick={() => onModifyButtonClick(ratio + 1)}
         >
           <ChevronUpIcon className="size-1.4 fill-black" />
         </button>
         <button
-          className="rounded-full size-1.6 bg-cyan-300 hover:bg-cyan-400 flex justify-center items-center"
+          className="rounded-full size-1.6 hover:bg-gray-100 flex justify-center items-center"
           disabled={isLocked}
           onClick={() => onModifyButtonClick(ratio - 1)}
         >

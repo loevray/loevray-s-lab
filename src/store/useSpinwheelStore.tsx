@@ -54,7 +54,7 @@ const mixSectorBackground = (sectorData: SectorData[]) =>
 
 type UpdateSectorTextType = (id: string, text: string) => void;
 
-type AddSectorType = (prevId: string) => void;
+type AddSectorType = (prevId?: string) => void;
 
 type DeleteSectorType = (deleteId: string) => void;
 
@@ -85,7 +85,9 @@ const useSpinwheelStore = create<{
       addSector: (prevId) =>
         set(() => {
           const newSectorData = get().sectorData;
-          const prevIndex = newSectorData.findIndex(({ id }) => prevId === id);
+          let prevIndex = newSectorData.findIndex(({ id }) => prevId === id);
+          if (prevIndex === -1) prevIndex = newSectorData.length - 1;
+
           const newSector = {
             id: uuidv4(),
             text: "",

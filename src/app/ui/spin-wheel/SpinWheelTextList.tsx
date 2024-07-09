@@ -1,8 +1,8 @@
 import handleCaretPosition from "@/utils/handleCaretPosition";
 import useSpinwheelStore from "../../../store/useSpinwheelStore";
-import Button from "../common/Button";
 import SpinWheelTextItem from "./SpinWheelTextItem";
 import { DEFAULT_VALUES } from "@/constants/SpinWheel";
+import { ArrowPathIcon, PlusIcon } from "@heroicons/react/16/solid";
 
 export type KeyEventWithChangeEventType = React.KeyboardEvent &
   React.ChangeEvent<HTMLDivElement>;
@@ -59,16 +59,25 @@ const SpinWheelTextList = ({ isLocked }: { isLocked: boolean }) => {
 
   const onRemoveButtonClick = (id: string) => () => deleteSector(id);
   return (
-    <>
-      <Button
-        disabled={isLocked}
-        onClick={() => {
-          initializeSectorData();
-          console.log("초기화 됨", sectorData);
-        }}
-        text="룰렛초기화"
-      />
-      <article className="flex flex-col gap-1.4 max-h-[60vh] overflow-y-auto mt-1 md:mt-5 md:pr-1 pb-5">
+    <div className="md:min-w-50">
+      <div className="flex w-full md:pr-1 gap-1">
+        <button
+          className="size-3 rounded-xl bg-cyan-400 p-0.4 shadow-lg hover:bg-cyan-500"
+          disabled={isLocked}
+          onClick={() => {
+            initializeSectorData();
+          }}
+        >
+          <ArrowPathIcon className="fill-white" />
+        </button>
+        <button
+          className="size-3 rounded-xl bg-cyan-400 p-0.4 shadow-lg hover:bg-cyan-500"
+          onClick={() => addSector()}
+        >
+          <PlusIcon className="fill-white" />
+        </button>
+      </div>
+      <article className="flex flex-col gap-1.4 max-h-[60vh] overflow-y-auto mt-1 md:mt-2 md:pr-1 pb-5">
         {sectorData.map(({ id, text, ratio }, index) => (
           <SpinWheelTextItem
             key={id}
@@ -84,7 +93,7 @@ const SpinWheelTextList = ({ isLocked }: { isLocked: boolean }) => {
           />
         ))}
       </article>
-    </>
+    </div>
   );
 };
 
