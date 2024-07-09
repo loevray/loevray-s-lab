@@ -79,9 +79,11 @@ const Page = () => {
 
       const x = LADDER.X + currentVerticalIndex * columnGap;
       let y = LADDER.Y + Math.random() * LADDER.HEIGHT;
-      while (!pathSet.has(y)) {
+
+      while (pathSet.has(y)) {
         y = LADDER.Y + Math.random() * LADDER.HEIGHT;
       }
+
       pathSet.add(y);
 
       ctx.beginPath();
