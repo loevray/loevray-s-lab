@@ -8,7 +8,7 @@ import LadderIcon from "../LadderIcon";
  } = {
   STYLE:{
     "/": {
-      name: "메인",
+      name: "홈",
       backgroundColor: "md:bg-slate-100",
       hoverColor:'md:hover:bg-gray-200',
       icon:HomeIcon

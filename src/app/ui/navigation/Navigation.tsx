@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import Accordion from "../common/accordion/Accordion";
 import { SyntheticEvent, useState } from "react";
 import ROUTES from "./constants/route";
+import { EnvelopeIcon } from "@heroicons/react/24/outline";
 
 export type RoutesType =
   | "/"
@@ -65,9 +66,13 @@ const Navigation = () => {
         </div>
       </section>
       <section className="hidden md:block">
-        <span className="w-full flex justify-center pb-1 text-1.4 text-black font-semibold">
-          문의: rei980213@gmail.com
-        </span>
+        <Link
+          href="https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=rei980213@gmail.com"
+          target="_blank"
+          className={` size-4.5 rounded-3xl ${pathColor.hoverBg} flex justify-center items-center`}
+        >
+          <EnvelopeIcon className="size-3" />
+        </Link>
       </section>
     </nav>
   );
