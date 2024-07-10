@@ -13,6 +13,7 @@ import Button from "../ui/common/Button";
 import { useForm } from "react-hook-form";
 import toast from "../ui/common/toast/createObserver";
 import isDesktop from "@/utils/isDesktop";
+import TotalResultModal from "../ui/ghost-leg/TotalResultModal";
 
 interface LadderPathProps {
   coord: {
@@ -29,7 +30,9 @@ const Page = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [userCount, setUserCount] = useState(2);
   const [pathArray, setPathArray] = useState<LadderPathProps[][]>([]);
+  const [totalResult, setTotalResult] = useState<string[]>([]);
   const [isStartGame, setIsStartGame] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const pathSet = new Set();
   const {
     register,
@@ -153,7 +156,7 @@ const Page = () => {
     });
   };
 
-  const showResultPath = (startPoint: number) => {
+  const getPathResult = (startPoint: number, draw = true) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -180,17 +183,18 @@ const Page = () => {
       const { vertical } = nextLine.connectedIndex;
 
       // 수직 경로
-      ctx.beginPath();
-      ctx.moveTo(prevX, prevY);
-      ctx.lineTo(prevX, y);
-      ctx.stroke();
+      if (draw) {
+        ctx.beginPath();
+        ctx.moveTo(prevX, prevY);
+        ctx.lineTo(prevX, y);
+        ctx.stroke();
 
-      // 수평 경로
-      ctx.beginPath();
-      ctx.moveTo(startX, y);
-      ctx.lineTo(endX, y);
-      ctx.stroke();
-
+        // 수평 경로
+        ctx.beginPath();
+        ctx.moveTo(startX, y);
+        ctx.lineTo(endX, y);
+        ctx.stroke();
+      }
       const nextLineIndex = pathArray[vertical].findIndex(
         ({ coord }) =>
           coord.startX === endX && coord.endX === startX && coord.y === y
@@ -203,13 +207,14 @@ const Page = () => {
         prevX = endX;
         prevY = y;
       } else {
-        ctx.beginPath();
-        ctx.moveTo(endX, y);
-        ctx.lineTo(endX, LADDER.Y + LADDER.HEIGHT);
-        ctx.stroke();
+        if (draw) {
+          ctx.beginPath();
+          ctx.moveTo(endX, y);
+          ctx.lineTo(endX, LADDER.Y + LADDER.HEIGHT);
+          ctx.stroke();
+        }
 
-        getPrize(startPoint, currentIndex);
-        break;
+        return getValues(`prizes.${currentIndex}`);
       }
     }
   };
@@ -221,14 +226,17 @@ const Page = () => {
         <Button
           key={i}
           text={`${i + 1}`}
-          onClick={() => showResultPath(i)}
+          onClick={() => {
+            const result = getPathResult(i);
+            prizeToast(i, result);
+          }}
           style={{
             position: "absolute",
             left: `${i * columnGap + LADDER.X / 2}px`,
             top: "10px",
           }}
           className="w-5 translate-x-[50%]"
-          disabled={!isValid}
+          disabled={!isValid || !isStartGame}
         />
       );
     }
@@ -290,10 +298,6 @@ const Page = () => {
       message: `${index + 1}번 사다리 ${prize}당첨!`,
     });
 
-  const getPrize = (startPoint: number, endPoint: number) => {
-    prizeToast(startPoint, getValues(`prizes.${endPoint}`));
-  };
-
   const warningNotInteger = () =>
     toast({ eventType: "warning", message: "정수만 입력 가능합니다" });
   const warningUserCountRange = () =>
@@ -308,9 +312,21 @@ const Page = () => {
     setUserCount(Number(value));
   };
 
-  const showTotalResult = () => {};
+  const getTotalResults = () => {
+    const results = Array(userCount).fill(null);
+    for (let i = 0; i < userCount; i++) {
+      results[i] = getPathResult(i, false);
+    }
+    return results;
+  };
+
   return (
     <main>
+      <TotalResultModal
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+        mappedResult={totalResult}
+      />
       <div>
         <label htmlFor="userCount">유저 수 (최대 10명):</label>
         <input
@@ -332,9 +348,16 @@ const Page = () => {
                 initializeLadder();
                 resetPrizeInputs();
                 setIsStartGame(false);
+                setTotalResult([]);
               }}
             />
-            <Button text="전체 결과" onClick={showTotalResult} />
+            <Button
+              text="전체 결과"
+              onClick={() => {
+                setTotalResult(getTotalResults());
+                setIsOpen(true);
+              }}
+            />
           </>
         ) : (
           <Button
