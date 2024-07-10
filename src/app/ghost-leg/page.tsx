@@ -53,10 +53,6 @@ const Page = () => {
   };
 
   const initializeLadder = () => {
-    if (userCount < 2 || userCount > 10) {
-      alert("유저 수는 2명 이상 10명 이하로 설정해주세요.");
-      return;
-    }
     initializePath();
     drawInitialLadder();
   };
@@ -304,9 +300,10 @@ const Page = () => {
     toast({ eventType: "warning", message: "2명이상 10명이하만 가능합니다" });
 
   const onInputUserCount = (value: string) => {
+    console.log(value);
     const regex = /^[0-9]*$/;
     if (!regex.test(value)) return warningNotInteger();
-    if (Number(value) > 10 || Number(value) < 2) return warningUserCountRange();
+    if (Number(value) > 10) return warningUserCountRange();
 
     setUserCount(Number(value));
   };
@@ -321,7 +318,7 @@ const Page = () => {
           min="2"
           max="10"
           value={userCount}
-          onInput={(e) =>
+          onChange={(e) =>
             onInputUserCount((e.target as HTMLInputElement).value)
           }
           className="ring-2 disabled:cursor-not-allowed w-4"
@@ -342,7 +339,10 @@ const Page = () => {
         ) : (
           <Button
             text="사다리 시작"
-            onClick={handleSubmit(onValid, onInvalid)}
+            onClick={(e) => {
+              if (userCount < 2) return warningUserCountRange();
+              handleSubmit(onValid, onInvalid)(e);
+            }}
           />
         )}
         <div className="relative">
