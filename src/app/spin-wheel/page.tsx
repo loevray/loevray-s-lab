@@ -8,9 +8,6 @@ import SpinWheelTextList from "../ui/spin-wheel/SpinWheelTextList";
 import isDesktop from "@/utils/isDesktop";
 
 const Page = () => {
-  const onStart = () => console.log("돌림판 시작");
-  const onStop = () => console.log("돌림판 멈춤");
-
   const {
     start,
     stop,
@@ -19,10 +16,7 @@ const Page = () => {
     spinWheelRef,
     arrowRef,
     winTextRef,
-  } = useSpinWheel({
-    onStart,
-    onStop,
-  });
+  } = useSpinWheel({});
 
   return (
     <main className="w-full h-full flex flex-col md:flex-row items-center">

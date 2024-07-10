@@ -1,10 +1,18 @@
 "use client";
 
-import { MouseEvent, useCallback, useEffect, useRef, useState } from "react";
+import {
+  FormEvent,
+  MouseEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import LADDER from "./constants/ladder";
 import Button from "../ui/common/Button";
 import { useFieldArray, useForm } from "react-hook-form";
 import toast from "../ui/common/toast/createObserver";
+import { error } from "console";
 
 interface LadderPathProps {
   coord: {
@@ -46,7 +54,7 @@ const Page = () => {
 
   const initializeLadder = () => {
     if (userCount < 2 || userCount > 10) {
-      alert("유저 수는 2명 이상 20명 이하로 설정해주세요.");
+      alert("유저 수는 2명 이상 10명 이하로 설정해주세요.");
       return;
     }
     initializePath();
@@ -139,7 +147,6 @@ const Page = () => {
       ctx.stroke();
     }
 
-    console.log(pathArray);
     pathArray.forEach((verticalPath) => {
       verticalPath.forEach(({ coord: { startX, endX, y } }) => {
         ctx.beginPath();
@@ -233,6 +240,7 @@ const Page = () => {
   };
 
   const startNumberButtons = renderStartNumberButtons();
+
   const renderPrizeInputs = () => {
     const inputs = [];
     for (let i = 0; i < userCount; ++i) {
@@ -290,19 +298,33 @@ const Page = () => {
     prizeToast(startPoint, getValues(`prizes.${endPoint}`));
   };
 
+  const warningNotInteger = () =>
+    toast({ eventType: "warning", message: "정수만 입력 가능합니다" });
+  const warningUserCountRange = () =>
+    toast({ eventType: "warning", message: "2명이상 10명이하만 가능합니다" });
+
+  const onInputUserCount = (value: string) => {
+    const regex = /^[0-9]*$/;
+    if (!regex.test(value)) return warningNotInteger();
+    if (Number(value) > 10 || Number(value) < 2) return warningUserCountRange();
+
+    setUserCount(Number(value));
+  };
+
   const showTotalResult = () => {};
   return (
     <main>
       <div>
         <label htmlFor="userCount">유저 수 (최대 10명):</label>
         <input
-          type="number"
           id="userCount"
           min="2"
           max="10"
           value={userCount}
-          onChange={(e) => setUserCount(Number(e.target.value))}
-          className="ring-2 disabled:cursor-not-allowed"
+          onInput={(e) =>
+            onInputUserCount((e.target as HTMLInputElement).value)
+          }
+          className="ring-2 disabled:cursor-not-allowed w-4"
           disabled={isStartGame}
         />
         {isStartGame ? (
