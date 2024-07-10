@@ -50,8 +50,8 @@ const Navigation = () => {
       className={`fixed md:rounded-r-[2rem] md:sticky bottom-0 md:top-0 h-5 md:h-screen w-screen md:w-20 bg-white ${pathColor.bg} flex flex-col justify-between
       `}
     >
-      <section className="flex h-1/2 flex-col gap-0.5">
-        <div className="flex md:flex-col h-full justify-around items-center  ">
+      <section className="flex h-full md:h-1/2 flex-col gap-0.5">
+        <div className="flex md:flex-col h-full justify-around md:justify-evenly items-center">
           {mappedRoutesStyleArray.map(([link, { icon: Icon, name }]) => (
             <Link
               className={`md:rounded-2xl md:flex md:w-full md:pl-1 items-center gap-1 ${pathColor.hoverBg} md:py-1`}
@@ -59,7 +59,7 @@ const Navigation = () => {
               key={link}
             >
               <Icon className={`size-2.5 md:size-3`} />
-              <span>{name}</span>
+              <span className="hidden md:block">{name}</span>
             </Link>
           ))}
         </div>

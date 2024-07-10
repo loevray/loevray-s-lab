@@ -18,13 +18,13 @@ const WinnerModal = ({ open, onClose, winnerComments }: WinnerModalProps) => {
         onClose();
       }}
     >
-      <div className="w-30 md:w-90 p-2 bg-yellow-50 flex">
-        <div className="w-60 h-60 flex flex-col  gap-2 overflow-y-auto pr-1">
+      <div className="flex flex-col w-30 md:w-65 p-2 items-center bg-yellow-50 gap-2 rounded-2xl">
+        <Button colorPalette="rin" text="엑셀 다운" onClick={download} />
+        <div className="w-full h-60 flex flex-col  gap-2 overflow-y-auto pr-1">
           {winnerComments.map((comment) => (
             <Comment key={comment.commentId} {...comment} />
           ))}
         </div>
-        <Button colorPalette="rin" text="엑셀 다운" onClick={download} />
       </div>
     </Modal>
   );

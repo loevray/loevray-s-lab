@@ -10,9 +10,9 @@ import {
 } from "react";
 import LADDER from "./constants/ladder";
 import Button from "../ui/common/Button";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import toast from "../ui/common/toast/createObserver";
-import { error } from "console";
+import isDesktop from "@/utils/isDesktop";
 
 interface LadderPathProps {
   coord: {
@@ -349,7 +349,11 @@ const Page = () => {
           {startNumberButtons.map((button) => button)}
         </div>
         <div className="w-[70vw]">
-          <canvas ref={canvasRef} width={1200} height={650} />
+          <canvas
+            ref={canvasRef}
+            width={isDesktop() ? 1200 : 500}
+            height={isDesktop() ? 650 : 300}
+          />
         </div>
         <form className="relative">{prizeInputs.map((input) => input)}</form>
       </div>
