@@ -40,29 +40,44 @@ const ToastContainer = () => {
     };
   }, []);
 
-  const mappingIcon: {
+  type MappingIconType = {
     [key in ToastEventType]: {
       icon: () => JSX.Element;
-      color: string;
+      color: {
+        icon: string;
+        progress: string;
+      };
     };
-  } = {
+  };
+
+  const mappingIcon: MappingIconType = {
     default: {
       icon: ToastDefaultIcon,
-      color: "bg-blue-100 text-blue-500 dark:bg-blue-800 dark:text-blue-200",
+      color: {
+        icon: "bg-blue-100 text-blue-500",
+        progress: "bg-blue-500",
+      },
     },
     warning: {
       icon: ToastWarningIcon,
-      color:
-        "text-orange-500 bg-orange-100 dark:bg-orange-700 dark:text-orange-200",
+      color: {
+        icon: "text-orange-500 bg-orange-100",
+        progress: "bg-orange-500",
+      },
     },
     error: {
       icon: ToastErrorIcon,
-      color: "text-red-500 bg-red-100 dark:bg-red-800 dark:text-red-200",
+      color: {
+        icon: "text-red-500 bg-red-100",
+        progress: "bg-red-500",
+      },
     },
     success: {
       icon: ToastSuccessIcon,
-      color:
-        "text-green-500 bg-green-100  dark:bg-green-800 dark:text-green-200",
+      color: {
+        icon: "text-green-500 bg-green-100",
+        progress: "bg-green-500",
+      },
     },
   };
 
@@ -75,14 +90,14 @@ const ToastContainer = () => {
       <div className="fixed top-0 right-0 z-[1000] m-4 flex flex-col gap-2">
         {toasts.map(({ eventType, id, duration, message }) => {
           const IconComponent = mappingIcon[eventType].icon;
-          const iconColor = mappingIcon[eventType].color;
+          const { color } = mappingIcon[eventType];
           return (
             <Toast
               key={id}
               id={id}
               duration={duration}
               Icon={IconComponent}
-              iconColor={iconColor}
+              color={color}
               message={message}
               onCloseButtonClick={onCloseButtonClick}
               onComplete={onCloseButtonClick}

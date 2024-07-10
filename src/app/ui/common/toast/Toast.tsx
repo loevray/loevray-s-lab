@@ -5,7 +5,10 @@ import useHover from "@/hooks/useHover";
 
 interface ToastProps {
   Icon: () => JSX.Element;
-  iconColor: string;
+  color: {
+    icon: string;
+    progress: string;
+  };
   duration: number;
   message: string;
   onCloseButtonClick: (id: number) => void;
@@ -16,7 +19,7 @@ interface ToastProps {
 const Toast = ({
   duration,
   Icon,
-  iconColor,
+  color,
   onCloseButtonClick,
   onComplete,
   id,
@@ -38,7 +41,7 @@ const Toast = ({
         role="alert"
       >
         <div
-          className={`inline-flex items-center justify-center flex-shrink-0 w-3 h-3  ${iconColor}  rounded-lg `}
+          className={`inline-flex items-center justify-center flex-shrink-0 w-3 h-3  ${color.icon}  rounded-lg `}
         >
           <Icon />
         </div>
@@ -55,7 +58,7 @@ const Toast = ({
       </div>
       <DecreaseProgress
         duration={duration}
-        colorSet={iconColor}
+        colorSet={color.progress}
         shouldPause={isHover}
         onComplete={onCompleteById}
       />
