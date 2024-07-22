@@ -368,17 +368,12 @@ const Page = () => {
             }}
           />
         )}
-        <div className="relative">
+
+        <div className="w-[70vw] h-[80vh] overflow-x-auto relative">
           {startNumberButtons.map((button) => button)}
+          <canvas ref={canvasRef} width={1200} height={650} />
+          <form className="relative">{prizeInputs.map((input) => input)}</form>
         </div>
-        <div className="w-[70vw]">
-          <canvas
-            ref={canvasRef}
-            width={isDesktop() ? 1200 : 500}
-            height={isDesktop() ? 650 : 300}
-          />
-        </div>
-        <form className="relative">{prizeInputs.map((input) => input)}</form>
       </div>
     </main>
   );
