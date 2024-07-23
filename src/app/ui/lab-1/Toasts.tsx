@@ -1,3 +1,5 @@
+"use client";
+
 import Button from "../common/Button";
 import toast from "../common/toast/createObserver";
 
