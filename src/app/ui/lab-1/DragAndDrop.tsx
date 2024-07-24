@@ -1,27 +1,27 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 const initialItems = ["Item 1", "Item 2", "Item 3", "Item 4"];
 
 const DragAndDrop = () => {
   const [items, setItems] = useState(initialItems);
-  const [draggingIndex, setDraggingIndex] = useState(-1);
+  const draggingIndex = useRef(-1);
 
   const onDragStart = (index: number) => {
-    setDraggingIndex(index);
+    draggingIndex.current = index;
   };
 
   const onDragOver = (index: number) => {
-    if (draggingIndex === -1 || draggingIndex === index) return;
+    if (draggingIndex.current === -1 || draggingIndex.current === index) return;
     const newItems = [...items];
-    const [draggedItem] = newItems.splice(draggingIndex, 1);
+    const [draggedItem] = newItems.splice(draggingIndex.current, 1);
     newItems.splice(index, 0, draggedItem);
-    setDraggingIndex(index);
+    draggingIndex.current = index;
     setItems(newItems);
   };
 
   const onDragEnd = () => {
-    setDraggingIndex(-1);
+    draggingIndex.current = -1;
   };
 
   return (
