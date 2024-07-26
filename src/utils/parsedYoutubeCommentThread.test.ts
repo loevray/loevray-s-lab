@@ -8,6 +8,7 @@ test('parse youtube comment like { name: comment }', () => {
     'comments':{
       'comment1':{
       authorDisplayName: "User1",
+      authorChannelId:'channelId1',
       textOriginal: "This is a comment",
       publishedAt: "2023-01-01T00:00:00Z",
       authorProfileImageUrl:'http://example.com/image1.jpg',
@@ -18,6 +19,7 @@ test('parse youtube comment like { name: comment }', () => {
     },
     'comment2':{
       authorDisplayName: "User2",
+      authorChannelId:'channelId2',
       textOriginal: "This is another comment",
       publishedAt: "2023-01-02T00:00:00Z",
       authorProfileImageUrl:'http://example.com/image2.jpg',
