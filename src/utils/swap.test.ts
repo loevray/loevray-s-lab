@@ -1,6 +1,5 @@
 import swap from "./swap";
 
-
 describe('swap array elements each other', () => {
   const array = [1,2,3,4];
   const index1 = 0;
