@@ -1,10 +1,8 @@
 "use client";
 
+import swap from "@/utils/swap";
 import { useRef, useState } from "react";
 const initialItems = ["Item 1", "Item 2", "Item 3", "Item 4"];
-
-const swap = <T,>(arr: T[], index1: number, index2: number) =>
-  ([arr[index1], arr[index2]] = [arr[index2], arr[index1]]);
 
 const DragAndDrop = () => {
   const [items, setItems] = useState(initialItems);
@@ -19,7 +17,7 @@ const DragAndDrop = () => {
 
     const newItems = [...items];
 
-    swap<string>(newItems, draggingIndex.current, index);
+    swap(newItems, draggingIndex.current, index);
     draggingIndex.current = index;
     setItems(newItems);
   };
