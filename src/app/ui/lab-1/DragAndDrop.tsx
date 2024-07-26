@@ -3,17 +3,19 @@
 import swap from "@/utils/swap";
 import { useRef, useState } from "react";
 const initialItems = ["Item 1", "Item 2", "Item 3", "Item 4"];
+const NULL_INDEX = -1;
 
 const DragAndDrop = () => {
   const [items, setItems] = useState(initialItems);
-  const draggingIndex = useRef(-1);
+  const draggingIndex = useRef(NULL_INDEX);
 
   const onDragStart = (index: number) => {
     draggingIndex.current = index;
   };
 
   const onDragOver = (index: number) => {
-    if (draggingIndex.current === -1 || draggingIndex.current === index) return;
+    if (draggingIndex.current === NULL_INDEX || draggingIndex.current === index)
+      return;
 
     const newItems = [...items];
 
@@ -23,7 +25,7 @@ const DragAndDrop = () => {
   };
 
   const onDragEnd = () => {
-    draggingIndex.current = -1;
+    draggingIndex.current = NULL_INDEX;
   };
 
   return (
