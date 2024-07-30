@@ -14,6 +14,7 @@ import { useForm } from "react-hook-form";
 import toast from "../ui/common/toast/createObserver";
 import isDesktop from "@/utils/isDesktop";
 import TotalResultModal from "../ui/ghost-leg/TotalResultModal";
+import ghostLegRegex from "./constants/regex";
 
 interface LadderPathProps {
   coord: {
@@ -304,8 +305,7 @@ const Page = () => {
     toast({ eventType: "warning", message: "2명이상 10명이하만 가능합니다" });
 
   const onInputUserCount = (value: string) => {
-    console.log(value);
-    const regex = /^[0-9]*$/;
+    const regex = ghostLegRegex.onlyInteger;
     if (!regex.test(value)) return warningNotInteger();
     if (Number(value) > 10) return warningUserCountRange();
 
